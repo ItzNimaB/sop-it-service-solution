@@ -14,6 +14,8 @@ export default function Filter({
 
   const columnFilterValue = column.getFilterValue();
 
+  const { saveSearch } = table.options.meta ?? {};
+
   return (
     <Input
       className="my-2 h-fit rounded border py-1 shadow"
@@ -22,20 +24,21 @@ export default function Filter({
 
         column.setFilterValue(value);
 
-        setSearchParams(
-          (prev) => {
-            const paramsObject = Object.fromEntries(prev.entries());
+        if (saveSearch)
+          setSearchParams(
+            (prev) => {
+              const paramsObject = Object.fromEntries(prev.entries());
 
-            if (value === "") {
-              delete paramsObject[column.id];
+              if (value === "") {
+                delete paramsObject[column.id];
 
-              return paramsObject;
-            }
+                return paramsObject;
+              }
 
-            return { ...paramsObject, [column.id]: value.trim() };
-          },
-          { replace: true },
-        );
+              return { ...paramsObject, [column.id]: value.trim() };
+            },
+            { replace: true },
+          );
       }}
       onClick={(e) => e.stopPropagation()}
       placeholder="Søg..."
