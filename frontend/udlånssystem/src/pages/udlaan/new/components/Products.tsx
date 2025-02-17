@@ -29,6 +29,7 @@ export default function NewLoanProducts({
           columns={columns}
           data={products}
           onRowClick={handleaddProduct}
+          saveSearch={false}
         />
       </div>
       <div className="splitscreen">

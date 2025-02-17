@@ -18,6 +18,7 @@ import {
   type ColumnFiltersState,
   type Header,
   type PaginationState,
+  type RowData,
   type SortingState,
   flexRender,
   getCoreRowModel,
@@ -34,6 +35,12 @@ import { Slider } from "./ui/slider";
 import "@styles/table.css";
 import "@styles/tablePagination.css";
 
+declare module "@tanstack/table-core" {
+  interface TableMeta<TData extends RowData> {
+    saveSearch?: boolean;
+  }
+}
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -42,6 +49,7 @@ interface DataTableProps<TData, TValue> {
   pageSize?: number;
   withFilters?: boolean;
   withPagination?: boolean;
+  saveSearch?: boolean;
 }
 
 export default function DataTable<TData, TValue>({
@@ -52,6 +60,7 @@ export default function DataTable<TData, TValue>({
   pageSize = 20,
   withFilters = true,
   withPagination = true,
+  saveSearch = true,
 }: DataTableProps<TData, TValue>) {
   const [searchParams] = useSearchParams();
 
@@ -79,6 +88,7 @@ export default function DataTable<TData, TValue>({
       sorting,
       columnFilters,
     },
+    meta: { saveSearch },
     autoResetPageIndex: false,
   });
 
