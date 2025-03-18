@@ -29,28 +29,32 @@ export default function LoanProducts() {
       className="flex flex-col gap-5"
       defaultValue={["activeItems"]}
     >
-      <AccordionItem value="activeItems" className="flex flex-col gap-1">
-        <AccordionTrigger className="!border-0">
-          Lånte produkter:
-        </AccordionTrigger>
-        <AccordionContent className="flex flex-col">
-          {activeItems.map((item, i) => (
-            <ItemLink item={item} key={i} />
-          ))}
-        </AccordionContent>
-      </AccordionItem>
+      {activeItems.length > 0 && (
+        <AccordionItem value="activeItems" className="flex flex-col gap-1">
+          <AccordionTrigger className="!border-0 px-2 focus:outline-none">
+            Lånte produkter: ({activeItems.length})
+          </AccordionTrigger>
+          <AccordionContent className="flex flex-col">
+            {activeItems.map((item, i) => (
+              <ItemLink item={item} key={i} />
+            ))}
+          </AccordionContent>
+        </AccordionItem>
+      )}
 
-      <AccordionItem value="returnedItems" className="flex flex-col gap-1">
-        <AccordionTrigger className="!border-0">
-          Returnerede produkter:
-        </AccordionTrigger>
+      {returnedItems.length > 0 && (
+        <AccordionItem value="returnedItems" className="flex flex-col gap-1">
+          <AccordionTrigger className="!border-0 px-2 focus:outline-none">
+            <div>Returnerede produkter: ({returnedItems.length})</div>
+          </AccordionTrigger>
 
-        <AccordionContent className="flex flex-col">
-          {returnedItems.map((item, i) => (
-            <ItemLink item={item} key={i} />
-          ))}
-        </AccordionContent>
-      </AccordionItem>
+          <AccordionContent className="flex flex-col">
+            {returnedItems.map((item, i) => (
+              <ItemLink item={item} key={i} />
+            ))}
+          </AccordionContent>
+        </AccordionItem>
+      )}
     </Accordion>
   );
 }
