@@ -189,6 +189,7 @@ export default function DataTable<TData, TValue>({
                           if (goToLink) onRowClick(row.original);
                           return false;
                         }}
+                        onMouseLeave={() => clearTimeout(pressDownDuration)}
                       >
                         <ToolTip
                           display={cell.getValue() as string}
