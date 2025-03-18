@@ -1,15 +1,9 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { CurrentUserContext } from "@/App";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { toast } from "sonner";
 
-export const getSession = () =>
-  new Promise((resolve) => {
-    const token = Cookies.get("token");
-    resolve(token);
-  });
 //validate session token
 export const validateSession = async () => {
   let { data } = await axios.post("auth/validate").catch((err) => {
@@ -22,28 +16,36 @@ export const validateSession = async () => {
 };
 
 //login user
-export const loginViaSession = async () => {
+export function useLoginViaSession() {
   const { setCurrentUser } = useContext(CurrentUserContext);
 
-  let { data } = await axios.get("auth/cookies");
+  async function loginViaSession() {
+    let { data } = await axios.get("auth/cookies");
 
-  const { token } = data;
+    const { token } = data;
 
-  if (!token) {
-    setCurrentUser(null);
-    return false;
+    if (!token) {
+      setCurrentUser(null);
+      return false;
+    }
+
+    let res = await validateSession();
+
+    if (res && !res.error) {
+      setCurrentUser(res.user);
+      return true;
+    } else {
+      setCurrentUser(null);
+      return false;
+    }
   }
 
-  let res = await validateSession();
+  useEffect(() => {
+    loginViaSession();
+  }, []);
 
-  if (res && !res.error) {
-    setCurrentUser(res.user);
-    return true;
-  } else {
-    setCurrentUser(null);
-    return false;
-  }
-};
+  return { loginViaSession };
+}
 
 export async function loginViaCredentials(username: string, password: string) {
   let output = { status: 500, message: "Server error", user: undefined };

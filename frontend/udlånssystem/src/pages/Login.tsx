@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 
-import { loginViaCredentials, loginViaSession } from "@services/login";
+import { loginViaCredentials, useLoginViaSession } from "@services/login";
 
 import { CurrentUserContext } from "@/App";
 
@@ -9,7 +9,7 @@ import "@styles/loginPage.css";
 export default function LoginPage() {
   const { setCurrentUser } = useContext(CurrentUserContext);
 
-  loginViaSession();
+  useLoginViaSession();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -35,23 +35,6 @@ export default function LoginPage() {
     return errorMessages ? " error " : " ";
   }
 
-  let isRunningAway = false;
-  let runningLeft = true;
-  let runningRight = false;
-
-  function runAway() {
-    if (password && username) return;
-    if (isRunningAway === false) {
-      isRunningAway = !isRunningAway;
-    } else {
-      runningLeft = !runningLeft;
-      runningRight = !runningRight;
-    }
-  }
-  function stopRunning() {
-    isRunningAway = false;
-  }
-
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center gap-4 overflow-hidden bg-[#f5f5f5] p-[2rem_0rem] px-0 py-8">
       <div className="flex h-fit max-h-full w-[min(50%,_500px)] max-w-[700px] flex-col gap-4 rounded-3xl bg-white p-8 shadow-2xl">
@@ -66,7 +49,6 @@ export default function LoginPage() {
 
           <div className="question mt-[20px]">
             <input
-              onInput={stopRunning}
               onFocus={resetError}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -79,7 +61,6 @@ export default function LoginPage() {
           </div>
           <div className={"question" + isErrClass()}>
             <input
-              onInput={stopRunning}
               onFocus={resetError}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -91,14 +72,7 @@ export default function LoginPage() {
             <label className={isErrClass()}>Adgangskode</label>
           </div>
           <div className="flex w-full justify-center">
-            <button
-              className={isRunningAway ? "run-away" : ""}
-              // class:run-left={isRunningAway && runningLeft}
-              // class:run-right={isRunningAway && runningRight}
-              onMouseEnter={runAway}
-            >
-              Login
-            </button>
+            <button>Login</button>
           </div>
         </form>
       </div>
