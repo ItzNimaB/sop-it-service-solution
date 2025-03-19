@@ -79,12 +79,10 @@ services:
     ports:
       - "389:389"
       - "636:636"
-    environment:
-      LDAP_ORGANISATION: "SOP"
-      LDAP_DOMAIN: "sop.dk"
-      LDAP_BASE_DN: "dc=sop,dc=dk"
-      LDAP_ADMIN_PASSWORD: "admin"
+    env_file:
+      - backend/.docker.env
     networks:
+      - public
       - internal
 
 networks:
