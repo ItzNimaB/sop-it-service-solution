@@ -1,0 +1,37 @@
+name: Full Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Check if running in act
+        id: is_act
+        run: |
+          if [ "$ACT" = "true" ]; then
+            echo "act=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "act=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Deploy via SSH
+        if: steps.is_act.outputs.act == 'false'
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/lager/sop-it-service-solution
+            git pull origin main
+            docker system prune -f
+            docker compose -f docker-compose.yml build
+            docker compose -f docker-compose.yml up -d
