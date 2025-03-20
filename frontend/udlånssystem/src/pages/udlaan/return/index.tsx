@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
-import Table from "@components/table";
+import Table, { type ExcludeList } from "@components/table";
 
 import getData from "@data/getData";
 import { columnsFormatter } from "@helpers/tableHelpers";
@@ -13,8 +13,7 @@ import { toast } from "sonner";
 
 import "@styles/return.css";
 
-const exclude = [
-  "date_returned",
+const exclude: ExcludeList<itemsFromLoan> = [
   "loan_id",
   "Stregkode",
   "Returneret",
