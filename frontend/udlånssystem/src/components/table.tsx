@@ -35,10 +35,12 @@ import { Slider } from "./ui/slider";
 import "@styles/table.css";
 import "@styles/tablePagination.css";
 
+export type ExcludeList<T> = (keyof T)[];
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  exclude?: string[];
+  exclude?: ExcludeList<TData>;
   onRowClick?: (row: TData) => void;
   pageSize?: number;
   withFilters?: boolean;
@@ -117,7 +119,7 @@ export default function DataTable<TData, TValue>({
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
-                  if (exclude.includes(header.id)) return null;
+                  if (exclude.includes(header.id as keyof TData)) return null;
 
                   return (
                     <TableHead key={header.id}>
@@ -155,7 +157,8 @@ export default function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => {
-                    if (exclude.includes(cell.column.id)) return null;
+                    if (exclude.includes(cell.column.id as keyof TData))
+                      return null;
 
                     let goToLink = true;
 

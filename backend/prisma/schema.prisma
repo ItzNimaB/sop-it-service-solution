@@ -289,3 +289,12 @@ view buildings_view {
   UUID Int     @id @default(0)
   Navn String? @db.VarChar(255)
 }
+
+view user_loans {
+  UUID             Int       @id @default(0) @db.UnsignedInt
+  Produkt          String    @db.VarChar(255)
+  Returneret       DateTime? @db.DateTime(0)
+  Returneringsdato DateTime? @db.DateTime(0)
+  item_id          Int       @db.UnsignedInt
+  user_id          Int       @default(0) @db.UnsignedInt
+}

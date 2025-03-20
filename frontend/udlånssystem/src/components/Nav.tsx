@@ -63,6 +63,7 @@ export default function Nav() {
           text="Produkttyper"
           icon="fa-solid fa-barcode"
         />
+        <NavBtn destination="/brugere" text="Brugere" icon="fa-solid fa-user" />
 
         <NavMenu
           buttons={[
