@@ -26,12 +26,11 @@ jobs:
         if: steps.is_act.outputs.act == 'false'
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.SERVER_HOST_NAME }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
           script: |
             cd /home/lager/sop-it-service-solution
             git pull origin main
             docker system prune -f
-            docker compose -f docker-compose.yml build
-            docker compose -f docker-compose.yml up -d
+            npm run docker:prod
