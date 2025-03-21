@@ -8,6 +8,8 @@ services:
       target: prod
     env_file:
       - frontend/udlånssystem/.env
+    depends_on:
+      - backend
     networks:
       - internal
 
@@ -17,6 +19,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
       target: prod
+    depends_on:
+      - db
     env_file:
       - backend/.env
       - backend/.docker.env
@@ -53,41 +57,13 @@ services:
       - public
       - internal
 
-  ldap:
-    container_name: ldap
-    image: osixia/openldap:1.5.0
-    ports:
-      - "389:389"
-      - "636:636"
-    env_file:
-      - backend/.docker.env
-    command: --copy-service
-    volumes:
-      - ./backend/ldap:/container/service/slapd/assets/config/bootstrap/ldif/custom
-    networks:
-      - public
-      - internal
-
-  phpldapadmin:
-    image: osixia/phpldapadmin:0.9.0
-    container_name: phpldapadmin
-    environment:
-      PHPLDAPADMIN_LDAP_HOSTS: ldap
-    ports:
-      - "6443:443"
-    depends_on:
-      - ldap
-    networks:
-      - public
-      - internal
-
 networks:
   public:
     driver: bridge
   internal:
     name: internal
     internal: true
-  
+
 volumes:
   db:
     driver: local

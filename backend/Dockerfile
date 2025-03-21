@@ -8,12 +8,12 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 
-COPY . .
-
 RUN npm ci
+
+COPY . .
 
 RUN npm install pm2 -g
 
-CMD pm2 start && tail -f /dev/null
+CMD ["pm2-runtime", "ecosystem.config.js"]
 
 EXPOSE 3000

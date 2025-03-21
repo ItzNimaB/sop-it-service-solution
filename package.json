@@ -4,6 +4,7 @@
     "frontend": "cd frontend/udlånssystem && npm run dev",
     "backend": "cd backend && npm run dev",
     "build": "cd frontend/udlånssystem && npm run build",
-    "docker:dev": "docker compose -f docker-compose.dev.yml up -d --build"
+    "docker:dev": "docker compose -f docker-compose.dev.yml up -d --build",
+    "docker:prod": "docker compose -f docker-compose.yml up -d --build"
   }
 }

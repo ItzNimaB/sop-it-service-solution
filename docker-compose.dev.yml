@@ -8,7 +8,6 @@ services:
       target: dev
     env_file:
       - frontend/udlånssystem/.env
-    command: ["npm", "run", "dev", "--", "--host"]
     depends_on:
       - backend
     volumes:
@@ -23,7 +22,6 @@ services:
       context: ./backend
       dockerfile: Dockerfile.dev
       target: dev
-    command: ["sh", "-c", "npm run db:push && npm run dev"]
     depends_on:
       - db
     env_file:

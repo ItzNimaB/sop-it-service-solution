@@ -7,3 +7,5 @@ WORKDIR /app
 COPY . .
 
 RUN npm install
+
+CMD ["sh", "-c", "npm run db:push && npm run dev"]
