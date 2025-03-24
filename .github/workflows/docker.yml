@@ -1,12 +1,15 @@
-name: Full Deployment
+name: Deploy Docker
 
 on:
   push:
     branches:
       - main
+    paths:
+      - "backend/**" # So far, only the backend is being deployed via Docker
 
 jobs:
   deploy:
+    name: Build and Deploy
     runs-on: ubuntu-latest
 
     steps:
