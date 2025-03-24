@@ -5,7 +5,7 @@
   "description": "",
   "main": "dist/src/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/src/index.js",
     "dev": "nodemon",
     "test": "vitest --run",
@@ -52,6 +52,7 @@
     "prettier": "^3.3.3",
     "prisma": "^5.19.0",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.11",
     "tsconfig-paths": "^4.2.0",
     "vitest": "^3.0.3"
   }
