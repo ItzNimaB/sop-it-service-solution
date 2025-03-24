@@ -1,17 +1,17 @@
 name: sop-udlaanssystem
 services:
-  frontend:
-    container_name: frontend
-    build:
-      context: ./frontend/udlånssystem
-      dockerfile: Dockerfile
-      target: prod
-    env_file:
-      - frontend/udlånssystem/.env
-    depends_on:
-      - backend
-    networks:
-      - internal
+  # frontend:
+  #   container_name: frontend
+  #   build:
+  #     context: ./frontend/udlånssystem
+  #     dockerfile: Dockerfile
+  #     target: prod
+  #   env_file:
+  #     - frontend/udlånssystem/.env
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - internal
 
   backend:
     container_name: backend
@@ -43,19 +43,19 @@ services:
       - public
       - internal
 
-  nginx:
-    container_name: nginx
-    image: nginx:1.19.6
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - frontend
-      - backend
-    networks:
-      - public
-      - internal
+  # nginx:
+  #   container_name: nginx
+  #   image: nginx:1.19.6
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #   depends_on:
+  #     - frontend
+  #     - backend
+  #   networks:
+  #     - public
+  #     - internal
 
 networks:
   public:
