@@ -109,7 +109,7 @@ export default function DataTable<TData, TValue>({
     setColumnFilters(newFilters);
   }, [searchParams]);
 
-  let pressDownDuration: NodeJS.Timeout;
+  let pressDownDuration: ReturnType<typeof setTimeout>;
 
   return (
     <div className="defaultTable flex h-full w-full flex-col">

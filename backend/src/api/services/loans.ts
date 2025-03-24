@@ -7,6 +7,7 @@ import {
 } from "@/functions";
 import { generateLoanHTML } from "@/functions/generateLoanHTML";
 import { createLoanSchema } from "@/schemas/loans";
+import { Prisma, items_in_loan } from "@prisma/client";
 
 export async function createOne(values: ILoanCreateInput): Promise<IResponse> {
   const { data, error } = createLoanSchema.safeParse(values);
@@ -64,7 +65,7 @@ interface Item {
 export async function returnLoan(items: Item[]): Promise<IResponse> {
   if (!items) return { status: 400, data: { success: false } };
 
-  var itemsInLoan = [];
+  var itemsInLoan: Prisma.Prisma__items_in_loanClient<items_in_loan>[] = [];
 
   for (const item of items) {
     const findItemInLoan = await prisma.items_in_loan.findFirst({

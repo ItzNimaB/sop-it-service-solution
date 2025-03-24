@@ -1,5 +1,6 @@
 import { prismaGetRefs as prisma } from "@/configs/prisma.config";
 import { createItemSchema, getItemSchema } from "@/schemas/item";
+import { items, Prisma } from "@prisma/client";
 
 export async function getOne(UUID?: string | number): Promise<IResponse> {
   const { data, error } = getItemSchema.safeParse({ UUID });
@@ -27,7 +28,7 @@ export async function createMultiple(
 
   if (validated.error) return { status: 400, data: validated.error };
 
-  const transactions = [];
+  const transactions: Prisma.Prisma__itemsClient<items>[] = [];
 
   for (let i = 0; i < validated.data.amount; i++) {
     const itemTransaction = prisma.items.create({
