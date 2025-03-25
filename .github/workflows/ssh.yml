@@ -1,19 +1,25 @@
-name: SSH Test
+name: Test SSH Connection
 
 on:
   workflow_dispatch:
 
 jobs:
   ssh-test:
+    name: Test SSH to Server
     runs-on: ubuntu-latest
 
     steps:
-      - name: Create SSH key file
+      - name: Debug SSH key format
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SERVER_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "${{ secrets.SERVER_SSH_PRIVATE_KEY }}" > temp_key
+          chmod 600 temp_key
+          ssh-keygen -lf temp_key || echo "❌ Couldn't read private key"
 
-      - name: Test SSH connection
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST_NAME }} "echo ✅ SSH connection successful"
+      - name: test ssh connection
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST_NAME }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          script: |
+            echo ${{ secrets.SERVER_SSH_PRIVATE_KEY }} 
