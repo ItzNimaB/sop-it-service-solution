@@ -15,6 +15,9 @@ jobs:
           chmod 600 temp_key
           ssh-keygen -lf temp_key || echo "❌ Couldn't read private key"
 
+      - name: Echo SERVER_HOST_NAME
+        run: echo ${{ secrets.SERVER_HOST_NAME }}
+
       - name: test ssh connection
         uses: appleboy/ssh-action@master
         with:
