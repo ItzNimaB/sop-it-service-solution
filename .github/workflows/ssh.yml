@@ -1,4 +1,4 @@
-name: SSH Test (raw shell)
+name: SSH Test
 
 on:
   workflow_dispatch:
@@ -6,12 +6,14 @@ on:
 jobs:
   ssh-test:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Decode SSH private key from base64
+      - name: Create SSH key file
         run: |
-          echo "${{ secrets.SERVER_SSH_PRIVATE_KEY_BASE64 }}" | base64 -d > ~/.ssh/id_rsa
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SERVER_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-      - name: Try raw SSH connection
+      - name: Test SSH connection
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST_NAME }} "echo ✅ SSH connection successful"
