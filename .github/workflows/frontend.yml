@@ -40,6 +40,15 @@ jobs:
       - name: Build frontend
         run: tsc -b || true && vite build || true
 
+      - name: Test SSH connection
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_HOST_NAME }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          script: echo "✅ SSH connection successful"
+        if: steps.is_act.outputs.act == 'false'
+
       - name: Deploy to server
         if: steps.is_act.outputs.act == 'false'
         uses: appleboy/scp-action@v0.1.4
