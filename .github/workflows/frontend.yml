@@ -39,7 +39,10 @@ jobs:
         run: npm ci
 
       - name: Build frontend
-        run: tsc -b || true && vite build || true
+        run: |
+          set -e
+          tsc -b
+          vite build
 
       - name: Test SSH connection
         uses: appleboy/ssh-action@v1.0.0
