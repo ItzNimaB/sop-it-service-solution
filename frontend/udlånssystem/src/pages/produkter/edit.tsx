@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
+import { Button } from "@components/ui/button";
+
 import { findActiveLoan } from "@helpers/loanHelpers";
 import useData from "@hooks/useData";
 
@@ -9,7 +11,6 @@ import EditLayout from "@layouts/edit";
 import { LoanHistory, fields, zodSchema } from "./util";
 
 import "@styles/productsEdit.css";
-import { Button } from "@components/ui/button";
 
 interface itemModelWithItemsInLoan extends itemModel {
   items_in_loan: itemInLoanModel[];

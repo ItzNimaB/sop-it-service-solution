@@ -19,9 +19,7 @@ export function verifyLDAP(
       if (err) return res.status(err).json(unauthorizedResponse);
 
       if (!user) {
-        return res
-          .status(401)
-          .json(unauthorizedResponse);
+        return res.status(401).json(unauthorizedResponse);
       }
 
       req.user = user;

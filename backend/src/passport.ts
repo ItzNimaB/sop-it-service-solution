@@ -41,7 +41,7 @@ const opts: LdapStrategy.Options = {
 passport.use(
   new LdapStrategy(opts, (req, user, done) => {
     console.log(user);
-    
+
     done(null, user);
   })
 );

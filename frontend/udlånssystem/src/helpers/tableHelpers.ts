@@ -15,8 +15,10 @@ function EnableFilter(header: string) {
   return true;
 }
 
-export function columnsFormatter<T>(headers: string[]): ColumnDef<T, any>[]
-export function columnsFormatter<T>(headers?: string[]): ColumnDef<T, any>[] | undefined
+export function columnsFormatter<T>(headers: string[]): ColumnDef<T, any>[];
+export function columnsFormatter<T>(
+  headers?: string[],
+): ColumnDef<T, any>[] | undefined;
 
 export function columnsFormatter<T>(headers?: string[]) {
   if (!headers) return;

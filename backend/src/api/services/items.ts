@@ -1,6 +1,6 @@
 import { prismaGetRefs as prisma } from "@/configs/prisma.config";
 import { createItemSchema, getItemSchema } from "@/schemas/item";
-import { items, Prisma } from "@prisma/client";
+import { Prisma, items } from "@prisma/client";
 
 export async function getOne(UUID?: string | number): Promise<IResponse> {
   const { data, error } = getItemSchema.safeParse({ UUID });
