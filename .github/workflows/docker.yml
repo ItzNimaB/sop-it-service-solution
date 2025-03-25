@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "backend/**" # So far, only the backend is being deployed via Docker
+  workflow_dispatch:
 
 jobs:
   deploy:
