@@ -41,6 +41,11 @@ jobs:
       - name: Build frontend
         run: npm run build
 
+      - name: Debug SSH key format
+        run: |
+          echo "${{ secrets.SERVER_SSH_PRIVATE_KEY }}" | ssh-keygen -yf - || echo "❌ SSH key is invalid or unreadable"
+        if: steps.is_act.outputs.act == 'false'
+
       - name: Test SSH connection
         uses: appleboy/ssh-action@v1.0.0
         with:
