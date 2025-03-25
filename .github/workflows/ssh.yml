@@ -16,7 +16,7 @@ jobs:
           ssh-keygen -lf temp_key || echo "❌ Couldn't read private key"
 
       - name: Attempt SSH connection
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.SERVER_HOST_NAME }}
           username: ${{ secrets.SERVER_USERNAME }}
