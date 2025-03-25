@@ -25,6 +25,7 @@ export default function UserSelect({
         data={users}
         onRowClick={handleUserSelection}
         pageSize={17}
+        saveSearch={false}
       />
     </div>
   );

@@ -18,6 +18,7 @@ import {
   type ColumnFiltersState,
   type Header,
   type PaginationState,
+  type RowData,
   type SortingState,
   flexRender,
   getCoreRowModel,
@@ -45,6 +46,7 @@ interface DataTableProps<TData, TValue> {
   pageSize?: number;
   withFilters?: boolean;
   withPagination?: boolean;
+  saveSearch?: boolean;
 }
 
 export default function DataTable<TData, TValue>({
@@ -55,6 +57,7 @@ export default function DataTable<TData, TValue>({
   pageSize = 20,
   withFilters = true,
   withPagination = true,
+  saveSearch = true,
 }: DataTableProps<TData, TValue>) {
   const [searchParams] = useSearchParams();
 
@@ -82,6 +85,7 @@ export default function DataTable<TData, TValue>({
       sorting,
       columnFilters,
     },
+    meta: { saveSearch },
     autoResetPageIndex: false,
   });
 
