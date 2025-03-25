@@ -1,24 +1,17 @@
-name: Test SSH Connection
+name: SSH Test (raw shell)
 
 on:
   workflow_dispatch:
 
 jobs:
   ssh-test:
-    name: Test SSH to Server
     runs-on: ubuntu-latest
-
     steps:
-      - name: Debug SSH key format
+      - name: Decode SSH private key from base64
         run: |
-          echo "${{ secrets.SERVER_SSH_PRIVATE_KEY }}" > temp_key
-          chmod 600 temp_key
-          ssh-keygen -lf temp_key || echo "❌ Couldn't read private key"
+          echo "${{ secrets.SERVER_SSH_PRIVATE_KEY_BASE64 }}" | base64 -d > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
-      - name: Attempt SSH connection
-        uses: appleboy/ssh-action@v0.1.4
-        with:
-          host: ${{ secrets.SERVER_HOST_NAME }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-          script: echo "✅ SSH connection successful"
+      - name: Try raw SSH connection
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST_NAME }} "echo ✅ SSH connection successful"
