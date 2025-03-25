@@ -24,8 +24,11 @@ services:
     env_file:
       - backend/.env
       - backend/.docker.env
+    ports:
+      - "5000:5000"
     networks:
       - internal
+      - public
 
   db:
     container_name: db
