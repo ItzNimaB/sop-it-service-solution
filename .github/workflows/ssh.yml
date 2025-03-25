@@ -1,57 +1,31 @@
-name: CI/CD
+name: Test SSH Connection
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-  build:
-
+  ssh-test:
+    name: Test SSH to Server
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [20.x]
-
-    env:
-      VITE_APP_BACKEND_URL: ${{ vars.VITE_APP_BACKEND_URL }}
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Install and build frontend
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm run i
-    - run: npm run build
-    
+      - name: Debug SSH key format
+        run: |
+          echo "${{ secrets.SERVER_SSH_PRIVATE_KEY }}" > temp_key
+          chmod 600 temp_key
+          ssh-keygen -lf temp_key || echo "❌ Couldn't read private key"
 
-    - name: Delete old frontend files
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SERVER_HOST_NAME }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-        script: |
-          echo delete old frontend files
+      - name: Echo SERVER_HOST_NAME
+        run: echo ${{ secrets.SERVER_HOST_NAME }}
 
-    - name: Deploy to server
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.SERVER_HOST_NAME }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-        source: "frontend/udlånssystem/dist/*"
-        target: "/var/www/lager"
-        strip_components: 3
-            
-    - name: Restart NGINX
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SERVER_HOST_NAME }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-        script: |
-          echo restart nginx
-
-    
+      - name: test ssh connection
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST_NAME }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          script: |
+            echo ${{ secrets.SERVER_SSH_PRIVATE_KEY }} 
