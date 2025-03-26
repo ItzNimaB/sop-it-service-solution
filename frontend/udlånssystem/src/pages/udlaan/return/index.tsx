@@ -8,9 +8,10 @@ import { columnsFormatter } from "@/helpers/tableHelpers";
 import useBarcode from "@/hooks/useBarcode";
 import useData from "@/hooks/useData";
 
-import "@styles/return.css";
 import axios from "axios";
 import { toast } from "sonner";
+
+import "@/styles/return.css";
 
 const exclude: ExcludeList<itemsFromLoan> = [
   "loan_id",

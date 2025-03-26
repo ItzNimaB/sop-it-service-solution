@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import "@styles/toggle.css";
+import "@/styles/toggle.css";
 
 export default function Toggle() {
   const [darkmode, setDarkmode] = useState(

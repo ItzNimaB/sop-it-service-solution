@@ -7,9 +7,10 @@ import { findActiveLoan } from "@/helpers/loanHelpers";
 import useData from "@/hooks/useData";
 
 import EditLayout from "@/layouts/edit";
-import "@styles/productsEdit.css";
 
 import { LoanHistory, fields, zodSchema } from "./util";
+
+import "@/styles/productsEdit.css";
 
 interface itemModelWithItemsInLoan extends itemModel {
   items_in_loan: itemInLoanModel[];

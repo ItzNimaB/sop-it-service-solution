@@ -2,7 +2,7 @@ import { forwardRef, useEffect, useState } from "react";
 
 import getData from "@/data/getData";
 
-import "@styles/pdf.css";
+import "@/styles/pdf.css";
 
 interface LoansPdfProps {
   loan: loanModel;
