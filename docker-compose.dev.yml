@@ -79,14 +79,12 @@ services:
       - "636:636"
     env_file:
       - backend/.docker.env
-    # command: --copy-service
+    command: --copy-service
     volumes:
-      - ./backend/ldap/data:/var/lib/ldap
-      - ./backend/ldap/config:/etc/ldap/slapd.d
-    networks:
-      - public
-      - internal
-    # restart: unless-stopped
+      - ldap_data:/var/lib/ldap
+      - ldap_config:/etc/ldap/slapd.d
+      - ./ldap/ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom
+      - ./ldap/schemas:/container/service/slapd/assets/config/bootstrap/schema/custom
 
   phpldapadmin:
     image: osixia/phpldapadmin:0.9.0
@@ -111,7 +109,8 @@ networks:
 volumes:
   db:
     driver: local
-  samba-data:
+  ldap_data:
+  ldap_config:
 
 configs:
   nodemon:
