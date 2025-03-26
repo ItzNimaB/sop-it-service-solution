@@ -1,18 +1,18 @@
 import { Suspense, createContext, useState } from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
 
-import Error404 from "@components/Error404";
-import Loading from "@components/Loading";
-import Nav from "@components/Nav";
-import Breadcrumbs from "@components/breadcrumbs";
-import { Toaster } from "@components/ui/sonner";
+import Loading from "@/components/Loading";
+import Nav from "@/components/Nav";
+import Breadcrumbs from "@/components/breadcrumbs";
+import { Toaster } from "@/components/ui/sonner";
 
-import Home from "@pages/Home";
-import Login from "@pages/Login";
-import loanReturn from "@pages/udlaan/return";
+import Error404 from "@/pages/Error404";
+import Home from "@/pages/Home";
+import Login from "@/pages/Login";
+import loanReturn from "@/pages/udlaan/return";
 
-import { getPages } from "@helpers/routeHelpers";
-import useRealtimeLogout from "@hooks/useRealtimeLogout";
+import { getPages } from "@/helpers/routeHelpers";
+import useRealtimeLogout from "@/hooks/useRealtimeLogout";
 
 import "./axios.config";
 
@@ -34,8 +34,8 @@ function Layout() {
     >
       <Toaster theme="dark" closeButton position="bottom-center" />
       {currentUser ? (
-        <div className="grid h-screen grid-cols-[auto_1fr] bg-base-100">
-          <header className="h-screen w-nav bg-nav">
+        <div className="bg-base-100 grid h-screen grid-cols-[auto_1fr]">
+          <header className="w-nav bg-nav h-screen">
             <Nav />
           </header>
           <main className="relative grid h-screen grid-rows-[50px_1fr] overflow-y-auto">

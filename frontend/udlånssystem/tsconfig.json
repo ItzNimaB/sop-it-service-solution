@@ -17,19 +17,10 @@
     "jsx": "react-jsx",
     "baseUrl": "./src",
     "paths": {
-      "@components/*": ["./components/*"],
-      "@data/*": ["./data/*"],
-      "@layouts/*": ["./layouts/*"],
-      "@helpers/*": ["./helpers/*"],
-      "@hooks/*": ["./hooks/*"],
-      "@pages/*": ["./pages/*"],
-      "@services/*": ["./services/*"],
-      "@stores/*": ["./stores/*"],
-      "@styles/*": ["./styles/*"],
       "@/*": ["./*"]
     },
     "verbatimModuleSyntax": true,
     "ignoreDeprecations": "5.0"
   },
-  "include": ["src"]
+  "include": ["src", "../types"]
 }

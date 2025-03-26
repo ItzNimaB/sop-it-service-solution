@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 
-import { loginViaCredentials, useLoginViaSession } from "@services/login";
+import { loginViaCredentials, useLoginViaSession } from "@/services/login";
 
 import { CurrentUserContext } from "@/App";
 
-import "@styles/loginPage.css";
+import "@/styles/loginPage.css";
 
 export default function LoginPage() {
   const { setCurrentUser } = useContext(CurrentUserContext);

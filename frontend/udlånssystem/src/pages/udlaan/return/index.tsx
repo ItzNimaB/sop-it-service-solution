@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
-import Table, { type ExcludeList } from "@components/table";
+import Table, { type ExcludeList } from "@/components/table";
 
-import getData from "@data/getData";
-import { columnsFormatter } from "@helpers/tableHelpers";
-import useBarcode from "@hooks/useBarcode";
-import useData from "@hooks/useData";
-
-import axios from "axios";
-import { toast } from "sonner";
+import getData from "@/data/getData";
+import { columnsFormatter } from "@/helpers/tableHelpers";
+import useBarcode from "@/hooks/useBarcode";
+import useData from "@/hooks/useData";
 
 import "@styles/return.css";
+import axios from "axios";
+import { toast } from "sonner";
 
 const exclude: ExcludeList<itemsFromLoan> = [
   "loan_id",

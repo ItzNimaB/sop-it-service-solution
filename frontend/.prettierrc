@@ -11,15 +11,15 @@
   ],
   "importOrder": [
     "^react.*",
-    "^@components/(.*)$",
-    "^@pages/(.*)(?<!index|new|edit)$",
-    "^@pages/(.*)/index$",
-    "^@pages/(.*)/edit$",
-    "^@pages/(.*)/new$",
-    "^@(services|features|utils|helpers|redux|hooks|helpers|data)/(.*)$",
+    "^@/components/(.*)$",
+    "^@/pages/(.*)(?<!index|new|edit)$",
+    "^@/pages/(.*)/index$",
+    "^@/pages/(.*)/edit$",
+    "^@/pages/(.*)/new$",
+    "^@/(services|features|utils|helpers|redux|hooks|helpers|data)/(.*)$",
     "<THIRD_PARTY_MODULES>",
     "^[./]",
-    "^@styles/(.*)$"
+    "^@/styles/(.*)$"
   ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true

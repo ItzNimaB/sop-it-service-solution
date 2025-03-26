@@ -1,6 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 
 import { Input } from "@/components/ui/input";
+
 import type { Column, Table } from "@tanstack/react-table";
 
 export default function Filter({

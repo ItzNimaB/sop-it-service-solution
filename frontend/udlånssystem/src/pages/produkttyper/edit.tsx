@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { Button } from "@components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -10,13 +10,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@components/ui/dialog";
-import { Input } from "@components/ui/input";
-import { Label } from "@components/ui/label";
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
-import createItem from "@data/create";
+import createItem from "@/data/create";
 
-import EditLayout from "@layouts/edit";
+import EditLayout from "@/layouts/edit";
 
 import { fields, zodSchema } from "./util";
 
@@ -41,7 +41,7 @@ export default function Edit() {
       formSlot={
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <button className="h-8 w-full min-w-8 rounded-[10px] border-[1px] border-solid bg-transparent text-foreground">
+            <button className="text-foreground h-8 w-full min-w-8 rounded-[10px] border-[1px] border-solid bg-transparent">
               Tilføj nyt produkt ud fra produkttype
             </button>
           </DialogTrigger>

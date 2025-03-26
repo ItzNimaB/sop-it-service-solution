@@ -1,15 +1,14 @@
 import { Link, useParams } from "react-router-dom";
 
-import { Button } from "@components/ui/button";
-
-import useData from "@hooks/useData";
-
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+
+import useData from "@/hooks/useData";
 
 export default function LoanProducts() {
   const { id } = useParams() as any;

@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useState } from "react";
 
-import getData from "@data/getData";
+import getData from "@/data/getData";
 
 import "@styles/pdf.css";
 
@@ -103,7 +103,7 @@ export default forwardRef<HTMLDivElement, LoansPdfProps>(({ loan }, ref) => {
               <div key={i} className="flex w-full justify-between">
                 <h3>{item.Produkt}</h3>
                 <div className="flex flex-col items-center text-nowrap">
-                  <p className="-mt-4 !font-barcode text-4xl">
+                  <p className="!font-barcode -mt-4 text-4xl">
                     {item.Stregkode}
                   </p>
                   <p className="text-sm">{item.Stregkode}</p>

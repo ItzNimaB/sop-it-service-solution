@@ -1,7 +1,7 @@
-import LocationSelector from "@components/LocationSelector";
-import DatePicker from "@components/datePicker";
-import { Checkbox } from "@components/ui/checkbox";
-import { Separator } from "@components/ui/separator";
+import LocationSelector from "@/components/LocationSelector";
+import DatePicker from "@/components/datePicker";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Separator } from "@/components/ui/separator";
 
 import { loanTypes } from "..";
 
@@ -54,7 +54,7 @@ export default function NewLoanInfo({
             dateFormat={"dd-MM-yyy"}
             minDate={minDate}
             disabled={returnDate === null}
-            className="bg-base-200 p-[4px_6px] text-foreground"
+            className="bg-base-200 text-foreground p-[4px_6px]"
           />
           <button
             onClick={() => {

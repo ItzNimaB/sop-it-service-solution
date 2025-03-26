@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import FormEditPanel from "@components/form-edit-panel";
+import FormEditPanel from "@/components/form-edit-panel";
 
-import { deleteItem, getData, updateItem } from "@data/index";
-import { autoGenZodSchema } from "@services/autoGen";
-import doesObjectsMatch from "@services/doesObjectsMatch.js";
-import { getPrevPage } from "@services/pathFormatter";
+import { deleteItem, getData, updateItem } from "@/data/index";
+import { autoGenZodSchema } from "@/services/autoGen";
+import doesObjectsMatch from "@/services/doesObjectsMatch.js";
+import { getPrevPage } from "@/services/pathFormatter";
 
 import { toast } from "sonner";
 import type { z } from "zod";

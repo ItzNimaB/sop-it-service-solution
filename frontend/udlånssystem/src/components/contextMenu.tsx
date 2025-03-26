@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import "@styles/contextMenu.css";
+import "@/styles/contextMenu.css";
 
 interface ContextMenuProps {
   menuItems: any[];

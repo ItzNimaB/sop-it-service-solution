@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
 
-import { formatPathToBreadcrumbs } from "@services/pathFormatter";
+import { formatPathToBreadcrumbs } from "@/services/pathFormatter";
 
 export default function Breadcrumbs() {
   const location = useLocation();
@@ -15,7 +15,7 @@ export default function Breadcrumbs() {
 
   return (
     <div className="p-2">
-      <div className="box-border flex w-full items-center gap-2 rounded-[10px] bg-base-200 p-[3px]">
+      <div className="bg-base-200 box-border flex w-full items-center gap-2 rounded-[10px] p-[3px]">
         {formatPathToBreadcrumbs(location.pathname).map((path, i: number) => (
           <Fragment key={i}>
             <button

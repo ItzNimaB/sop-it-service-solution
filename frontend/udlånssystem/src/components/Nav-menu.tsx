@@ -52,7 +52,7 @@ export default function NavMenu({
         <div className="flex items-center justify-between gap-2 p-[0.7rem_1rem]">
           <div className="flex items-center justify-start gap-2">
             <i className={icon} />
-            <p className="text-[1.2rem] text-foreground3">{text}</p>
+            <p className="text-foreground3 text-[1.2rem]">{text}</p>
           </div>
 
           <i className={"fa-solid fa-angle-up " + isClosed()} />
@@ -70,7 +70,7 @@ export default function NavMenu({
             >
               <div className="flex items-center justify-start gap-2 p-[0.5rem_1rem]">
                 {button.icon && <i className={button.icon} />}
-                <p className="text-[1.2rem] text-foreground3">{button.text}</p>
+                <p className="text-foreground3 text-[1.2rem]">{button.text}</p>
               </div>
             </NavLink>
           ))}

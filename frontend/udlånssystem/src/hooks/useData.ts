@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import getData from "@data/getData";
+import getData from "@/data/getData";
 
 export default function useData<T>(
   url: string,

@@ -1,4 +1,4 @@
-import { autoGenZodSchema } from "@services/autoGen";
+import { autoGenZodSchema } from "@/services/autoGen";
 
 export const fields: Field<itemModel>[] = [
   {

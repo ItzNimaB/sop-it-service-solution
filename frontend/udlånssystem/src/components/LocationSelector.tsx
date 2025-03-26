@@ -1,4 +1,4 @@
-import useData from "@hooks/useData";
+import useData from "@/hooks/useData";
 
 import { Combobox } from "./Combobox";
 

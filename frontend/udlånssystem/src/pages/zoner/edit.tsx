@@ -1,4 +1,4 @@
-import EditLayout from "@layouts/edit";
+import EditLayout from "@/layouts/edit";
 
 import { fields } from "./util";
 

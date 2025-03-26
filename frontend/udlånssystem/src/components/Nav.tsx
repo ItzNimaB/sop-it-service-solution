@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 
-import "@/styles/navMenu.css";
-
 import NavBtn from "./Nav-btn.tsx";
 import NavMenu from "./Nav-menu.tsx";
 import Toggle from "./toggle.tsx";
 import UserWidget from "./user-widget.tsx";
+
+import "@/styles/navMenu.css";
 
 export default function Nav() {
   return (
@@ -18,17 +18,17 @@ export default function Nav() {
             className="max-w-[50px] object-contain"
           />
           <div className="text">
-            <h3 className="text-[1rem] font-light text-foreground2 no-underline">
+            <h3 className="text-foreground2 text-[1rem] font-light no-underline">
               v1.1.0-beta
             </h3>
 
             <h1 className="text-[1.75rem] font-medium">Udlånssystem</h1>
-            <h2 className="flex gap-1 text-[1rem] font-normal text-foreground2 no-underline">
+            <h2 className="text-foreground2 flex gap-1 text-[1rem] font-normal no-underline">
               By
               <a
                 target="_blank"
                 href="https://github.com/kenn7575"
-                className="text-[1rem] font-normal text-foreground2 no-underline"
+                className="text-foreground2 text-[1rem] font-normal no-underline"
               >
                 Kenni
               </a>
@@ -36,7 +36,7 @@ export default function Nav() {
               <a
                 target="_blank"
                 href="https://github.com/ItzNimaB"
-                className="text-[1rem] font-normal text-foreground2 no-underline"
+                className="text-foreground2 text-[1rem] font-normal no-underline"
               >
                 Nima
               </a>
@@ -103,7 +103,7 @@ export default function Nav() {
         />
       </section>
       <section className="mt-auto">
-        <hr className="w-full border-[1px] border-solid border-foreground2" />
+        <hr className="border-foreground2 w-full border-[1px] border-solid" />
 
         <Link
           to="https://signup.itskp-odense.dk/Home/Signup"
@@ -112,12 +112,12 @@ export default function Nav() {
         >
           <div className="flex items-center justify-start gap-2">
             <i className="fa-solid fa-user" />
-            <p className="text-[1.2rem] text-foreground3">Opret bruger</p>
+            <p className="text-foreground3 text-[1.2rem]">Opret bruger</p>
             <i className="fa-solid fa-external-link-alt" />
           </div>
         </Link>
 
-        <hr className="w-full border-[1px] border-solid border-foreground2" />
+        <hr className="border-foreground2 w-full border-[1px] border-solid" />
         <NavBtn
           destination="/notifikationer"
           text="Notifikationer"
@@ -130,8 +130,8 @@ export default function Nav() {
         />
         <div className="flex w-full items-center justify-between p-[0.5rem_0_0_1rem]">
           <div className="flex items-center gap-2">
-            <i className="fa-solid fa-moon w-8 text-center text-xl text-foreground3" />
-            <p className="text-[1.2rem] text-foreground3">Dark mode</p>
+            <i className="fa-solid fa-moon text-foreground3 w-8 text-center text-xl" />
+            <p className="text-foreground3 text-[1.2rem]">Dark mode</p>
           </div>
           <Toggle />
         </div>

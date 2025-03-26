@@ -1,10 +1,10 @@
 import { useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { dateToReadable } from "@helpers/dateHelpers";
-import useData from "@hooks/useData";
+import { dateToReadable } from "@/helpers/dateHelpers";
+import useData from "@/hooks/useData";
 
-import EditLayout from "@layouts/edit";
+import EditLayout from "@/layouts/edit";
 import html2pdf from "html2pdf.js";
 
 import { fields, handleReturn } from "../util";

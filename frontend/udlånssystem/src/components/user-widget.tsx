@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import { logout } from "@services/login";
+import { logout } from "@/services/login";
 
 import { CurrentUserContext } from "@/App";
 
@@ -10,13 +10,13 @@ export default function UserWidget() {
   if (!user) return null;
 
   return (
-    <div className="flex h-20 w-full items-center justify-between rounded-2xl border-[1px] border-solid border-foreground bg-base-200 px-4 py-[0.8rem]">
+    <div className="border-foreground bg-base-200 flex h-20 w-full items-center justify-between rounded-2xl border-[1px] border-solid px-4 py-[0.8rem]">
       <div className="flex gap-4">
         <div className="flex flex-col justify-evenly">
-          <h3 className="text-[1.1rem] font-medium text-foreground">
+          <h3 className="text-foreground text-[1.1rem] font-medium">
             {user.firstName} {user.lastName}
           </h3>
-          <p className="text-[0.9rem] text-foreground2">{user.username}</p>
+          <p className="text-foreground2 text-[0.9rem]">{user.username}</p>
         </div>
       </div>
 

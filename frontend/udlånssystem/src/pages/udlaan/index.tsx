@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-import { Label } from "@components/ui/label";
-import { Switch } from "@components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 
-import useData from "@hooks/useData";
+import useData from "@/hooks/useData";
 
-import Layout from "@layouts/index";
+import Layout from "@/layouts/index";
 
 export default function Index() {
   const [onlyReturned, setOnlyReturned] = useState(false);

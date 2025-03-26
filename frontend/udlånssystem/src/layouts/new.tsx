@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import FormNewPanel from "@components/form-new-panel";
+import FormNewPanel from "@/components/form-new-panel";
 
-import { createItem, getData } from "@data/index";
-import { autoGenZodSchema } from "@services/autoGen";
-import { getPrevPage } from "@services/pathFormatter";
+import { createItem, getData } from "@/data/index";
+import { autoGenZodSchema } from "@/services/autoGen";
+import { getPrevPage } from "@/services/pathFormatter";
 
 import { toast } from "sonner";
 import type { z } from "zod";

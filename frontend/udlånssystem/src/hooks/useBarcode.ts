@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { handleBarcodeScan } from "@helpers/barcode";
+import { handleBarcodeScan } from "@/helpers/barcode";
 
 export default function useBarcode(callback: (barcode: string) => void) {
   const [barcode, setBarcode] = useState<string>("");

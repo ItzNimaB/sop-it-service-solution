@@ -1,6 +1,6 @@
-import Table from "@components/table";
+import Table from "@/components/table";
 
-import { columnsFormatter } from "@helpers/tableHelpers";
+import { columnsFormatter } from "@/helpers/tableHelpers";
 
 interface ProductsProps {
   products: productModel[];

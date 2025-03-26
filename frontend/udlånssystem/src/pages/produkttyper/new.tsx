@@ -1,4 +1,4 @@
-import NewLayout from "@layouts/new";
+import NewLayout from "@/layouts/new";
 
 import { fields, zodSchema } from "./util";
 

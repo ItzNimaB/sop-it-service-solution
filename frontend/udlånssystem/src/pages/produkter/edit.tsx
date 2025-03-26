@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import { Button } from "@components/ui/button";
+import { Button } from "@/components/ui/button";
 
-import { findActiveLoan } from "@helpers/loanHelpers";
-import useData from "@hooks/useData";
+import { findActiveLoan } from "@/helpers/loanHelpers";
+import useData from "@/hooks/useData";
 
-import EditLayout from "@layouts/edit";
+import EditLayout from "@/layouts/edit";
+import "@styles/productsEdit.css";
 
 import { LoanHistory, fields, zodSchema } from "./util";
-
-import "@styles/productsEdit.css";
 
 interface itemModelWithItemsInLoan extends itemModel {
   items_in_loan: itemInLoanModel[];
@@ -65,7 +64,7 @@ export default function Edit() {
           </div>
 
           <Link
-            className="mt-auto flex h-8 w-full min-w-8 items-center justify-center rounded-[10px] border-[1px] border-foreground bg-none text-foreground"
+            className="border-foreground text-foreground mt-auto flex h-8 w-full min-w-8 items-center justify-center rounded-[10px] border-[1px] bg-none"
             to={
               activeLoan
                 ? "/udlaan/" + activeLoan.loan_id

@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 
-import DataTable, { type ExcludeList } from "@components/table";
+import DataTable, { type ExcludeList } from "@/components/table";
 
-import { columnsFormatter } from "@helpers/tableHelpers";
-import useData from "@hooks/useData";
+import { columnsFormatter } from "@/helpers/tableHelpers";
+import useData from "@/hooks/useData";
 
 export default function Edit() {
   const { id } = useParams();

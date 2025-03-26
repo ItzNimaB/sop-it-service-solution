@@ -1,5 +1,5 @@
-import { Combobox } from "@components/Combobox";
-import TextQuestion from "@components/textQuestion";
+import { Combobox } from "@/components/Combobox";
+import TextQuestion from "@/components/textQuestion";
 
 interface FormPageProps {
   fields: Field[];

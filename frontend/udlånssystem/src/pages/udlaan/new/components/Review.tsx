@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 
-import Table from "@components/table";
-import TextQuestion from "@components/textQuestion";
+import Table from "@/components/table";
+import TextQuestion from "@/components/textQuestion";
 
-import { columnsFormatter } from "@helpers/tableHelpers";
-import translateMonth from "@services/translateMonth.json";
+import { columnsFormatter } from "@/helpers/tableHelpers";
+import translateMonth from "@/services/translateMonth.json";
 
 import { CurrentUserContext } from "@/App";
 

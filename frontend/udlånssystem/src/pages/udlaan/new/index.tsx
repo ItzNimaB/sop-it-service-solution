@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import getData from "@data/getData";
-import useBarcode from "@hooks/useBarcode";
-import useData from "@hooks/useData";
+import getData from "@/data/getData";
+import useBarcode from "@/hooks/useBarcode";
+import useData from "@/hooks/useData";
 
 import axios from "axios";
 import { toast } from "sonner";
@@ -14,7 +14,7 @@ import NewLoanProducts from "./components/Products";
 import NewLoanReview from "./components/Review";
 import UserSelect from "./components/UserSelect";
 
-import "@styles/newLoan.css";
+import "@/styles/newLoan.css";
 
 export const loanTypes = [
   { name: "Til person", id: 2 },

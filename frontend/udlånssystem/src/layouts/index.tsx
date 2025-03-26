@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import Table from "@components/table";
-import { Button } from "@components/ui/button";
+import Table from "@/components/table";
+import { Button } from "@/components/ui/button";
 
-import getData from "@data/getData";
-import { columnsFormatter } from "@helpers/tableHelpers";
+import getData from "@/data/getData";
+import { columnsFormatter } from "@/helpers/tableHelpers";
 
 interface LayoutProps {
   table: string | DataWithHeaders<unknown> | null;

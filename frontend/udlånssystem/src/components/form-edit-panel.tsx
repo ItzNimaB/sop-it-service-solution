@@ -1,4 +1,4 @@
-import "@styles/controlPanel.css";
+import "@/styles/controlPanel.css";
 
 interface FormEditPanelProps {
   editMode?: boolean;

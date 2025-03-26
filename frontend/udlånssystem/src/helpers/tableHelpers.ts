@@ -45,9 +45,3 @@ export function columnsFormatter<T>(headers?: string[]) {
 
   return columns;
 }
-
-export function getLongestWordLength(words: string[]) {
-  return words.reduce((longest, word) => {
-    return word.length > longest ? word.length : longest;
-  }, 0);
-}

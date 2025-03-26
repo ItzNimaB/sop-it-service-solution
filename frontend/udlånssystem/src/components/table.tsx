@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { Button } from "@components/ui/button";
-
-import { getLongestWordLength } from "@helpers/tableHelpers";
-
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -13,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -32,8 +30,8 @@ import Filter from "./tableFilter";
 import ToolTip from "./tooltip";
 import { Slider } from "./ui/slider";
 
-import "@styles/table.css";
-import "@styles/tablePagination.css";
+import "@/styles/table.css";
+import "@/styles/tablePagination.css";
 
 export type ExcludeList<T> = (keyof T)[];
 

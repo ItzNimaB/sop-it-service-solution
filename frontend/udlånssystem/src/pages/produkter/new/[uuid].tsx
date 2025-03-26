@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
 
-import useData from "@hooks/useData";
+import useData from "@/hooks/useData";
 
-import NewLayout from "@layouts/new";
+import NewLayout from "@/layouts/new";
 
 import { fields, zodSchema } from "../util";
 
