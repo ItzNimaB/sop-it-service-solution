@@ -6,8 +6,6 @@ services:
       context: ./frontend/udlånssystem
       dockerfile: Dockerfile.dev
       target: dev
-    env_file:
-      - frontend/udlånssystem/.env
     depends_on:
       - backend
     volumes:
