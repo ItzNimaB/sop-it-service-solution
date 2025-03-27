@@ -32,21 +32,13 @@ jobs:
       - name: Save Docker image as tar
         run: docker save sop-backend:latest -o backend.tar
 
-      - name: Test SSH connection
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.SERVER_HOST_NAME }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-          script: echo "✅ SSH connection successful"
-        if: steps.is_act.outputs.act == 'false'
-
       - name: Copy image to server
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.SERVER_HOST_NAME }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           source: "backend.tar"
           target: "~/"
         if: steps.is_act.outputs.act == 'false'
@@ -57,8 +49,9 @@ jobs:
           host: ${{ secrets.SERVER_HOST_NAME }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
             docker load -i ~/backend.tar
             docker stop sop-backend || true && docker rm sop-backend || true
-            docker run -d --name sop-backend -p 3000:3000 sop-backend:latest
+            docker run -d --name sop-backend sop-backend:latest
         if: steps.is_act.outputs.act == 'false'

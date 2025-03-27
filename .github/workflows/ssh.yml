@@ -12,20 +12,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Debug SSH key format
-        run: |
-          echo "${{ secrets.SERVER_SSH_PRIVATE_KEY }}" > temp_key
-          chmod 600 temp_key
-          ssh-keygen -lf temp_key || echo "❌ Couldn't read private key"
-
-      - name: Echo SERVER_HOST_NAME
-        run: echo ${{ secrets.SERVER_HOST_NAME }}
-
       - name: test ssh connection
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST_NAME }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-          script: |
-            echo ${{ secrets.SERVER_SSH_PRIVATE_KEY }} 
+          port: ${{ secrets.SSH_PORT }}
