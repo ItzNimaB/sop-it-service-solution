@@ -18,7 +18,7 @@ jobs:
           command: |
             cd /tmp
             ls -a
-          host: ${{ secrets.SERVER_HOST_NAME }}
+          host: ${{ secrets.HOST }}
           user: ${{ secrets.SERVER_USERNAME }}
           pass: ${{ secrets.PASSWORD }}
           # key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
