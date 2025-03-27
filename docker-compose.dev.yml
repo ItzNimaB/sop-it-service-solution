@@ -1,7 +1,7 @@
 name: sop-udlaanssystem-dev
 services:
-  frontend:
-    container_name: frontend
+  admin-frontend:
+    container_name: admin-frontend
     build:
       context: ./frontend/udlånssystem
       dockerfile: Dockerfile.dev
@@ -13,6 +13,23 @@ services:
       - /app/node_modules
     networks:
       - internal
+
+  student-frontend:
+    container_name: student-frontend
+    build:
+      context: ./frontend/student-view
+      dockerfile: Dockerfile.dev
+      target: dev
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend/student-view:/app
+      - /app/node_modules
+    ports:
+      - "5173:5174"
+    networks:
+      - internal
+      - public
 
   backend:
     container_name: backend
@@ -61,7 +78,7 @@ services:
       - source: nginx
         target: /etc/nginx/nginx.conf
     depends_on:
-      - frontend
+      - admin-frontend
       - backend
     networks:
       - public
