@@ -23,5 +23,5 @@ jobs:
         with:
           host: ${{ secrets.SERVER_HOST_NAME }}
           username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-          debug: true
+          # key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          password: ${{ secrets.PASSWORD }}
