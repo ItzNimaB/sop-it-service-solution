@@ -53,5 +53,5 @@ jobs:
           script: |
             docker load -i ~/backend.tar
             docker stop sop-backend || true && docker rm sop-backend || true
-            docker run -d --name sop-backend -p 3000:3000 sop-backend:latest
+            docker run -d --name sop-backend sop-backend:latest
         if: steps.is_act.outputs.act == 'false'
