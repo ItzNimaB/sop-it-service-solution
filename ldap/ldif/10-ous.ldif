@@ -1,0 +1,19 @@
+dn: OU=OU_Main,DC=ITSKP-ODENSE,DC=DK
+objectClass: organizationalUnit
+ou: OU_Main
+
+dn: OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=DK
+objectClass: organizationalUnit
+ou: OU_IT-SKP
+
+dn: OU=OU_Zone9,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=DK
+objectClass: organizationalUnit
+ou: OU_Zone9
+
+dn: OU=OU_Zone9_Elever,OU=OU_Zone9,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=DK
+objectClass: organizationalUnit
+ou: OU_Zone9_Elever
+
+dn: OU=OU_MU8_HelpDesk,OU=OU_Zone9_Elever,OU=OU_Zone9,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=DK
+objectClass: organizationalUnit
+ou: OU_MU8_HelpDesk
