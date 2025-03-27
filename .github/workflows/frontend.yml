@@ -52,6 +52,7 @@ jobs:
           source: "frontend/udlånssystem/dist/*"
           target: "/var/www/lager/"
           rm: true
+          strip_components: 3 #remove frontend/udlånssystem/dist when copying to /var/www/lager/
 
       - name: Reload Nginx
         if: steps.is_act.outputs.act == 'false'
