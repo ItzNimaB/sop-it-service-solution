@@ -52,6 +52,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST_NAME }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: echo "✅ SSH connection successful"
         if: steps.is_act.outputs.act == 'false'
 
@@ -62,6 +63,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST_NAME }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           source: "frontend/udlånssystem/dist/*"
           target: "/var/www/lager"
           rm: true
@@ -73,4 +75,5 @@ jobs:
           host: ${{ secrets.SERVER_HOST_NAME }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: sudo systemctl reload nginx
