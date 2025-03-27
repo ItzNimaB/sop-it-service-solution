@@ -52,6 +52,6 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             docker load -i ~/backend.tar
-            docker stop sop-backend || true && docker rm sop-backend || true
-            docker run -d --name sop-backend sop-backend:latest
+            docker rm sop-backend -f || true
+            docker run -d --name sop-backend --env-file ~/.env --network="host" sop-backend:latest
         if: steps.is_act.outputs.act == 'false'
