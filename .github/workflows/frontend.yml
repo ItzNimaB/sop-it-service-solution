@@ -50,7 +50,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: "frontend/udlånssystem/dist/*"
-          target: "/var/www/lager"
+          target: "/var/www/lager/"
           rm: true
 
       - name: Reload Nginx
