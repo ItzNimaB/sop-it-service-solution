@@ -12,6 +12,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: ls -a via ssh
+        uses: fifsky/ssh-action@master
+        with:
+          command: |
+            cd /tmp
+            ls -a
+          host: ${{ secrets.SERVER_HOST_NAME }}
+          user: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+
+
       - name: test ssh connection
         uses: appleboy/ssh-action@master
         with:
