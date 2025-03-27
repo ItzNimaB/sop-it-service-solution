@@ -12,15 +12,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Test Password Auth Raw
-        run: |
-          sshpass -p "${{ secrets.SERVER_PASSWORD }}" \
-            ssh -vvv -o StrictHostKeyChecking=no \
-            ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST_NAME }} \
-            "echo 'Success!'"
-        env:
-          DEBIAN_FRONTEND: noninteractive
-
       - name: test ssh connection
         uses: appleboy/ssh-action@master
         with:
