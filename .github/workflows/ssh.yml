@@ -12,11 +12,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Debug SSH key format
+      - name: Test Password Auth Raw
         run: |
-          echo "${{ secrets.SERVER_SSH_PRIVATE_KEY }}" > temp_key
-          chmod 600 temp_key
-          ssh-keygen -lf temp_key || echo "❌ Couldn't read private key"
+          sshpass -p "${{ secrets.SERVER_PASSWORD }}" \
+            ssh -vvv -o StrictHostKeyChecking=no \
+            ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST_NAME }} \
+            "echo 'Success!'"
+        env:
+          DEBIAN_FRONTEND: noninteractive
 
       - name: test ssh connection
         uses: appleboy/ssh-action@master
