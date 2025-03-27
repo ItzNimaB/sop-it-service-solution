@@ -1,0 +1,11 @@
+attribute,value
+objectClass,top
+objectClass,person
+objectClass,organizationalPerson
+objectClass,inetOrgPerson
+objectClass,sambaSamAccount
+userAccountControl,66048
+codePage,0
+countryCode,0
+accountExpires,9223372036854775807
+sAMAccountType,805306368
