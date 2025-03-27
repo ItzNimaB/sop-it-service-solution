@@ -38,6 +38,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST_NAME }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: echo "✅ SSH connection successful"
         if: steps.is_act.outputs.act == 'false'
 
@@ -47,6 +48,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST_NAME }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           source: "backend.tar"
           target: "~/"
         if: steps.is_act.outputs.act == 'false'
@@ -57,6 +59,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST_NAME }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
             docker load -i ~/backend.tar
             docker stop sop-backend || true && docker rm sop-backend || true
