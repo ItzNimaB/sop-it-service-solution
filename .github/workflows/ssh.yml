@@ -21,7 +21,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST_NAME }}
           user: ${{ secrets.SERVER_USERNAME }}
           pass: ${{ secrets.PASSWORD }}
-          key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+          # key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
 
 
       - name: test ssh connection
