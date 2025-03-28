@@ -6,8 +6,12 @@ import { verifyLDAP } from "@middleware/auth";
 
 const router = Router();
 
-router.post("/login", authController.Login());
-// router.post("/login", passport.authenticate("ldapauth", {session: false}), (req, res) => res.send(req.user));
+// router.post("/login", authController.Login());
+router.post(
+  "/login",
+  passport.authenticate("ldapauth", { session: false }, console.log),
+  (req, res) => res.send(req.user)
+);
 router.post("/validate", authController.Validate());
 
 router.get("/cookies", (req, res) => {

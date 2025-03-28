@@ -96,7 +96,10 @@ services:
       - "636:636"
     env_file:
       - backend/.docker.env
-    command: --copy-service
+    command: --copy-service --loglevel debug
+    networks:
+      - public
+      - internal
     volumes:
       - ldap_data:/var/lib/ldap
       - ldap_config:/etc/ldap/slapd.d

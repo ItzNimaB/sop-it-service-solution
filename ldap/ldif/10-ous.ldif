@@ -17,3 +17,11 @@ ou: OU_Zone9_Elever
 dn: OU=OU_MU8_HelpDesk,OU=OU_Zone9_Elever,OU=OU_Zone9,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=DK
 objectClass: organizationalUnit
 ou: OU_MU8_HelpDesk
+
+dn: OU=OU_MU7_HelpDesk,OU=OU_Zone9_Elever,OU=OU_Zone9,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=dk
+objectClass: organizationalUnit
+ou: OU_MU7_HelpDesk
+
+dn: OU=OU_ServerAccounts,OU=OU_Zone9,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=dk
+objectClass: organizationalUnit
+ou: OU_ServerAccounts
