@@ -1,0 +1,9 @@
+.sliderRoot:hover {
+  & .sliderRange {
+    background-color: var(--p);
+  }
+
+  & .sliderThumb {
+    opacity: 1;
+  }
+}

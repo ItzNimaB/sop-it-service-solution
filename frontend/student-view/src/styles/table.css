@@ -1,0 +1,43 @@
+.defaultTable {
+  tbody {
+    & tr:nth-child(odd) {
+      background: var(--bg3);
+    }
+
+    & tr:nth-child(even) {
+      background: var(--bg2);
+    }
+  }
+
+  & tbody tr:hover {
+    background-color: var(--p);
+    color: var(--primary-foreground);
+    cursor: pointer;
+  }
+
+  td {
+    max-width: fit-content;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    & button:focus {
+      outline: none !important;
+    }
+  }
+
+  td.UUID {
+    width: 5.5rem;
+  }
+
+  td.Navn {
+    width: 20rem;
+    max-width: 20rem;
+    /* min-width: 20rem; */
+  }
+
+  td.Stregkode {
+    width: 25rem;
+    max-width: 25rem;
+  }
+}
