@@ -8,6 +8,7 @@ sn: Badiei
 givenName: Nima
 displayName: Nima Badiei
 cn: Nima Badiei
+mail: nima0100@edu.sde.dk
 memberOf: CN=Udlaan Admin,OU=OU_Zone9,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=dk
 memberOf: CN=SG_Programmoer,OU=OU_Programmoer,OU=OU_Elever,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=dk
 sAMAccountName: nima0100

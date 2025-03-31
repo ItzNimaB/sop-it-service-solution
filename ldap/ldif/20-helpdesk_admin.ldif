@@ -1,0 +1,14 @@
+dn: CN=Test,OU=OU_Zone9_Instruktoer,OU=OU_Zone9,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=dk
+objectClass: top
+objectClass: inetOrgPerson
+objectClass: sambaSamAccount
+objectClass: person
+objectClass: organizationalPerson
+cn: Test Test
+displayName: Test Test
+givenName: Test
+sAMAccountName: Test
+mail: test@mail.com
+sn: Test
+sambaSID: S-1-5-21-3623811015-3361044348-30300820-1013
+userPassword: {SSHA}hashedpasswordhere

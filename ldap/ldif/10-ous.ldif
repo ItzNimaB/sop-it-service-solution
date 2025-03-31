@@ -25,3 +25,7 @@ ou: OU_MU7_HelpDesk
 dn: OU=OU_ServerAccounts,OU=OU_Zone9,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=dk
 objectClass: organizationalUnit
 ou: OU_ServerAccounts
+
+dn: OU=OU_Zone9_Instruktoer,OU=OU_Zone9,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=dk
+objectClass: organizationalUnit
+ou: OU_Zone9_Instruktoer

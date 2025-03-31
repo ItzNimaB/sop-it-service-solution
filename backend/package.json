@@ -13,7 +13,8 @@
     "db:pull": "npx prisma db pull && npx prisma generate",
     "db:push": "npx prisma db push && node prisma/addViews.js",
     "db:seed": "npx prisma db seed",
-    "db:deploy": "npx prisma migrate deploy && npx prisma generate"
+    "db:deploy": "npx prisma migrate deploy && npx prisma generate",
+    "postinstall": "patch-package"
   },
   "prisma": {
     "seed": "ts-node -r tsconfig-paths/register prisma/seed.ts"
@@ -31,6 +32,7 @@
     "node-mailjet": "^6.0.5",
     "passport": "^0.7.0",
     "passport-ldapauth": "^3.0.1",
+    "patch-package": "^8.0.0",
     "pdfkit": "^0.15.0",
     "resend": "^4.0.1",
     "vite-tsconfig-paths": "^5.1.4",

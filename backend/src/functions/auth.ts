@@ -94,7 +94,7 @@ export async function ldapAuthenticate(
         return promise;
       }
 
-      if (!user?.distinguishedName) {
+      if (!user?.dn) {
         if (searchBase == LDAP_ADMINS)
           ldapAuthenticate(username, password, LDAP_USERS).catch(reject);
         client.unbind();
@@ -102,7 +102,7 @@ export async function ldapAuthenticate(
         return promise;
       }
 
-      client.bind(user.distinguishedName, password, (err) => {
+      client.bind(user.dn, password, (err) => {
         client.unbind();
         if (err) reject("User bind failed: " + username);
         if (!password) reject("No password provided");

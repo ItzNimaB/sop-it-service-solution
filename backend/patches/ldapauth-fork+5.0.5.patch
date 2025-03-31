@@ -1,0 +1,21 @@
+diff --git a/node_modules/ldapauth-fork/lib/ldapauth.js b/node_modules/ldapauth-fork/lib/ldapauth.js
+index 88398ed..3338831 100644
+--- a/node_modules/ldapauth-fork/lib/ldapauth.js
++++ b/node_modules/ldapauth-fork/lib/ldapauth.js
+@@ -279,7 +279,15 @@ LdapAuth.prototype._search = function (searchBase, options, callback) {
+ 
+       var items = [];
+       searchResult.on('searchEntry', function (entry) {
+-        items.push(entry.object);
++        let ldapUser = {};
++
++        entry.pojo.attributes.map(({ type, values }) => {
++          if (type === "memberOf") ldapUser[type] = values;
++          else ldapUser[type] = values[0];
++        });
++
++        ldapUser.dn = entry.pojo.objectName
++        items.push(ldapUser);
+         if (self.opts.includeRaw === true) {
+           items[items.length - 1]._raw = entry.raw;
+         }
