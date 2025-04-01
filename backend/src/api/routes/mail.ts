@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { sendMail } from "@/functions";
+import { nodemailerSendMail } from "@/functions";
 
 const router = Router();
 
@@ -10,7 +10,7 @@ router.post("/", async (req, res) => {
 
   const { to, subject, text } = req.body;
 
-  const response = await sendMail(to, subject, text);
+  const response = await nodemailerSendMail(to, subject, text);
 
   res.send(response);
 });
