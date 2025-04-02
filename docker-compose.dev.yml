@@ -106,19 +106,6 @@ services:
       - ./ldap/ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom
       - ./ldap/schemas:/container/service/slapd/assets/config/bootstrap/schema/custom
 
-  phpldapadmin:
-    image: osixia/phpldapadmin:0.9.0
-    container_name: phpldapadmin
-    environment:
-      PHPLDAPADMIN_LDAP_HOSTS: ldap
-    ports:
-      - "6443:443"
-    depends_on:
-      - ldap
-    networks:
-      - public
-      - internal
-
 networks:
   public:
     driver: bridge
