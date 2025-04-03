@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 
 import { getLongestWordLength } from "@/helpers/tableHelpers";
+
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -44,6 +45,7 @@ interface DataTableProps<TData, TValue> {
   pageSize?: number;
   withFilters?: boolean;
   withPagination?: boolean;
+  noResultsText?: string;
 }
 
 export default function DataTable<TData, TValue>({
@@ -54,6 +56,7 @@ export default function DataTable<TData, TValue>({
   pageSize = 20,
   withFilters = true,
   withPagination = true,
+  noResultsText = "Ingen resultater",
 }: DataTableProps<TData, TValue>) {
   const [searchParams] = useSearchParams();
 
@@ -209,7 +212,7 @@ export default function DataTable<TData, TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length}>No results.</TableCell>
+                <TableCell colSpan={columns.length}>{noResultsText}.</TableCell>
               </TableRow>
             )}
           </TableBody>

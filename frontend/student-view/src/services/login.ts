@@ -47,21 +47,24 @@ export function useLoginViaSession() {
   return { loginViaSession };
 }
 
-export async function loginViaCredentials(username: string, password: string) {
-  let output = { status: 500, message: "Server error", user: undefined };
-  await axios
-    .post("auth/login", { username, password })
-    .then((res) => {
-      output.message = res.data;
-      if (res.data?.username) {
-        output.user = res.data;
-        output.status = 200;
-      }
-    })
-    .catch((err) => {
-      toast.error(`Ukendt fejl! Kunne ikke kontakte serveren. ${err}`);
-    });
-  return output;
+export async function loginViaCredentials(
+  username: string,
+  password: string,
+  callback: (user: any) => void = () => {},
+) {
+  const loginPromise = axios.post("auth/login", { username, password });
+
+  toast.promise(loginPromise, {
+    loading: "Logger ind...",
+    success: (res) => `Logget ind som ${res.data.username}`,
+    error: (err) => err.response.statusText,
+  });
+
+  const { data } = await loginPromise;
+
+  callback(data);
+
+  return data;
 }
 export function logout(
   setCurrentUser: React.Dispatch<React.SetStateAction<userState>>,

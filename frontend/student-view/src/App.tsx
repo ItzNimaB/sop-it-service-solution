@@ -39,8 +39,8 @@ function Layout() {
             <header className="w-nav bg-nav h-screen">
               <Nav />
             </header>
-            <main className="relative grid h-screen grid-rows-[50px_1fr] overflow-y-auto">
-              <div className="h-full overflow-y-hidden">
+            <main className="relative h-screen overflow-y-auto">
+              <div className="pt-12 h-full overflow-y-hidden">
                 <Suspense fallback={<Loading />}>
                   <Outlet />
                 </Suspense>

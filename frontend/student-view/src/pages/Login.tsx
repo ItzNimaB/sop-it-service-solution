@@ -14,25 +14,21 @@ export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const [errorMessages, setErrorMessages] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   async function login(e: React.FormEvent) {
     e.preventDefault();
 
-    loginViaCredentials(username, password).then((res) => {
-      if (res.status == 200 && res.user) setCurrentUser(res.user);
-      if (res.status === 401)
-        setErrorMessages("Forkert unilogin eller adgangskode");
-      if (res.status === 403) setErrorMessages("Adgang nægtet");
-      if (res.status === 500) setErrorMessages("Server problemer");
+    loginViaCredentials(username, password, setCurrentUser).catch((err) => {
+      setErrorMessage(err.response.statusText);
     });
   }
   function resetError() {
-    setErrorMessages("");
+    setErrorMessage("");
   }
 
   function isErrClass() {
-    return errorMessages ? " error " : " ";
+    return errorMessage ? " error " : " ";
   }
 
   return (
@@ -44,7 +40,7 @@ export default function LoginPage() {
               Velkommen tilbage
             </h1>
 
-            {errorMessages && <p className="errorMessage">{errorMessages}</p>}
+            {errorMessage && <p className="errorMessage">{errorMessage}</p>}
           </div>
 
           <div className="question mt-[20px]">
