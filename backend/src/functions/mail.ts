@@ -112,7 +112,7 @@ export async function nodemailerSendMail(
   return response;
 }
 
-const sendMail = nodemailerSendMail;
+export const sendMail = nodemailerSendMail;
 
 interface LoansWithUserMail extends loans {
   user_mail: string;
