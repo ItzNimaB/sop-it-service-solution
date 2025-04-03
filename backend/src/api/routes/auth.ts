@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { sign } from "jsonwebtoken";
 
+import prisma from "@/configs/prisma.config";
 import passport from "@/passport";
 import * as authController from "@controllers/auth";
 import { verifyLDAP } from "@middleware/auth";
@@ -14,10 +15,22 @@ const router = Router();
 router.post(
   "/login",
   passport.authenticate("ldapauth", { session: false }),
-  (req, res) => {
+  async (req, res) => {
     if (!req.user) return res.status(401);
 
     const token = sign(req.user, JWT_SECRET, { expiresIn: "1d" });
+
+    let user = await prisma.users.findFirst({
+      where: { username: req.user.username },
+    });
+
+    if (!user) {
+      user = await prisma.users.create({
+        data: { username: req.user.username },
+      });
+    }
+
+    req.user.UUID = user.UUID;
 
     res.cookie("token", token, {
       httpOnly: true,

@@ -5,6 +5,10 @@ declare global {
     (req: Request, res: Response): void;
   }
 
+  interface IMiddleware {
+    (req: Request, res: Response, next: () => void): void;
+  }
+
   interface IResponse<T = any> {
     status: number;
     data?: T;

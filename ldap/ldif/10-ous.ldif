@@ -10,6 +10,14 @@ dn: OU=OU_Zone9,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=DK
 objectClass: organizationalUnit
 ou: OU_Zone9
 
+dn: OU=OU_Elever,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=DK
+objectClass: organizationalUnit
+ou: OU_Elever
+
+dn: OU=OU_Programmoer,OU=OU_Elever,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=dk
+objectClass: organizationalUnit
+ou: OU_Programmoer
+
 dn: OU=OU_Zone9_Elever,OU=OU_Zone9,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=DK
 objectClass: organizationalUnit
 ou: OU_Zone9_Elever

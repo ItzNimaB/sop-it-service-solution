@@ -124,13 +124,8 @@ export async function updateOne(
 
 export async function deleteOne(
   table: Prisma.ModelName,
-  UUID: string | number,
-  user?: user
+  UUID: string | number
 ): Promise<IResponse> {
-  if (user && user.moderatorLevel < 2) {
-    return { status: 403, data: { error: "Forbidden" } };
-  }
-
   try {
     const result = await (prisma[table] as any).delete({
       where: { UUID: Number(UUID) },
