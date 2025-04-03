@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 
 declare global {
   interface IController {
@@ -6,7 +6,7 @@ declare global {
   }
 
   interface IMiddleware {
-    (req: Request, res: Response, next: () => void): void;
+    (req: Request, res: Response, next: NextFunction): void;
   }
 
   interface IResponse<T = any> {
