@@ -1,11 +1,11 @@
-name: Deploy Frontend
+name: Deploy Frontend (Admin View)
 
 on:
   push:
     branches:
       - main
     paths:
-      - "frontend/**"
+      - "frontend/udlånssystem"
   workflow_dispatch:
 
 jobs:
@@ -50,6 +50,6 @@ jobs:
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: "frontend/udlånssystem/dist/*"
-          target: "/var/www/lager/"
+          target: "/var/www/lager/admin/"
           rm: true
           strip_components: 3 #remove frontend/udlånssystem/dist when copying to /var/www/lager/
