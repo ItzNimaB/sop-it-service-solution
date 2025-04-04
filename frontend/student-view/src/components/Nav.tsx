@@ -43,7 +43,16 @@ export default function Nav() {
       </section>
 
       <section className="mb-4 overflow-y-auto">
-        <NavBtn destination="/" text="Hjem" icon="fa-solid fa-house" />
+        <NavBtn
+          destination="/udlaan"
+          text="Lån"
+          icon="fa-solid fa-file-signature"
+        />
+        <NavBtn
+          destination="/laante-produkter"
+          text="Lånte produkter"
+          icon="fa-solid fa-basket-shopping"
+        />
       </section>
       <section className="mt-auto">
         <div className="flex w-full items-center justify-between p-[0.5rem_0_0_1rem]">

@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Table from "@/components/table";
-import { Button } from "@/components/ui/button";
 
 import getData from "@/data/getData";
 import { columnsFormatter } from "@/helpers/tableHelpers";
@@ -10,19 +9,23 @@ import { columnsFormatter } from "@/helpers/tableHelpers";
 interface LayoutProps {
   table: string | DataWithHeaders<unknown> | null;
   exclude?: string[];
+  noResultsText?: string;
+  onRowClick?: (id: number) => void;
 }
 
-export default function Layout({ table, exclude }: LayoutProps) {
-  const location = useLocation();
+export default function Layout({
+  table,
+  exclude,
+  noResultsText,
+  onRowClick,
+}: LayoutProps) {
   const navigate = useNavigate();
 
   const [inputData, setInputData] = useState<any>(table);
 
   async function fetchData() {
     if (typeof table === "string") {
-      const data = await getData(table, {
-        withHeaders: true,
-      });
+      const data = await getData(table, { withHeaders: true });
 
       if (data) setInputData(data);
     }
@@ -35,8 +38,9 @@ export default function Layout({ table, exclude }: LayoutProps) {
   }, [table]);
 
   function handleRowClick(id: number) {
-    
-    navigate(`/${id}`);
+    if (onRowClick) return onRowClick(id);
+
+    navigate(id.toString());
   }
 
   if (!inputData) return <p>Loading data</p>;
@@ -52,7 +56,7 @@ export default function Layout({ table, exclude }: LayoutProps) {
         data={inputData.data}
         onRowClick={(original) => handleRowClick(original.UUID)}
         exclude={exclude}
-        noResultsText="Ingen lån"
+        noResultsText={noResultsText}
       />
     </div>
   );
