@@ -3,12 +3,14 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express, { Router } from "express";
 import cron from "node-cron";
+import swaggerUi from "swagger-ui-express";
 
 import * as Routes from "@/api/routes";
 import prisma from "@/configs/prisma.config";
 import { authenticateUser, sendMailToExpiredLoans } from "@/functions";
 
 import passport from "./passport";
+import { swaggerSpec } from "./swagger";
 
 dotenv.config();
 
@@ -41,6 +43,8 @@ router.use("/items_view", Routes.Items_view);
 router.use("/users", Routes.Users);
 router.use("/users_view", Routes.Users_view);
 router.use("/locations", Routes.Locations);
+
+router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 router.use("", Routes.tables);
 
