@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "lib": ["es6"],
     "allowJs": true,
@@ -16,7 +16,10 @@
       "@*": ["./src/api/*"],
       "@/*": ["./src/*"]
     },
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "useDefineForClassFields": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["./**/*"],
   "exclude": ["node_modules", "dist"]

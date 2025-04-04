@@ -20,6 +20,7 @@
     "seed": "ts-node -r tsconfig-paths/register prisma/seed.ts"
   },
   "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^7.3.0",
     "@prisma/client": "^5.19.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -29,6 +30,7 @@
     "jsonwebtoken": "^9.0.2",
     "ldapjs": "^3.0.7",
     "lru-cache": "^7.18.3",
+    "merge-anything": "^5.0.1",
     "node-cron": "^3.0.3",
     "node-mailjet": "^6.0.5",
     "nodemailer": "^6.10.0",
@@ -39,6 +41,7 @@
     "resend": "^4.0.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
+    "tsoa": "^6.6.0",
     "vite-tsconfig-paths": "^5.1.4",
     "yaml": "^1.10.2",
     "zod": "^3.24.1"

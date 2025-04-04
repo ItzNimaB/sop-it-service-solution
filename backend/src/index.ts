@@ -2,15 +2,19 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { Router } from "express";
+import { readFileSync } from "fs";
 import cron from "node-cron";
+import path from "path";
 import swaggerUi from "swagger-ui-express";
 
 import * as Routes from "@/api/routes";
+import { RegisterRoutes } from "@/api/routes/routes";
 import prisma from "@/configs/prisma.config";
 import { authenticateUser, sendMailToExpiredLoans } from "@/functions";
 
 import passport from "./passport";
 import { swaggerSpec } from "./swagger";
+import "./zod";
 
 dotenv.config();
 
@@ -27,9 +31,15 @@ app.set("json spaces", 4);
 app.use(cookieParser());
 app.use(passport.initialize());
 
+RegisterRoutes(app);
+
 const router = Router();
 
-router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+const swaggerDocument = JSON.parse(
+  readFileSync(path.join(__dirname, "../dist/swagger.json"), "utf8")
+);
+
+router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 router.use("/auth", Routes.Auth);
 
