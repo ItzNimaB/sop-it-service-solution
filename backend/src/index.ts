@@ -50,9 +50,9 @@ const port = process.env.BACKEND_PORT || 5000;
 
 const cronShedule = "0 8 * * 1-5";
 
-cron.schedule(cronShedule, sendMailToExpiredLoans, {
-  // runOnInit: false
-});
+// cron.schedule(cronShedule, sendMailToExpiredLoans, {
+//   // runOnInit: false
+// });
 
 app.listen(port, async () => {
   await prisma.$connect();

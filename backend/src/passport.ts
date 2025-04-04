@@ -2,6 +2,8 @@ import dotenv from "dotenv";
 import passport from "passport";
 import LdapStrategy from "passport-ldapauth";
 
+import { getModeratorLevel } from "./functions";
+
 dotenv.config();
 
 const {
@@ -15,16 +17,7 @@ const {
   LDAP_SUPERIORS = "",
 } = process.env;
 
-export const attributes = [
-  "distinguishedName",
-  "cn",
-  "sAMAccountName",
-  "mail",
-  "whenCreated",
-  "whenChanged",
-  "lastLogon",
-  "memberOf",
-];
+export const attributes = ["cn", "sAMAccountName", "mail", "memberOf"];
 
 const opts: LdapStrategy.Options = {
   server: {
@@ -40,9 +33,20 @@ const opts: LdapStrategy.Options = {
 
 passport.use(
   new LdapStrategy(opts, (req, user, done) => {
-    console.log(user);
+    if (!user) return done(null, false);
 
-    done(null, user);
+    const ldapUser: user = {
+      dn: user.dn,
+      firstName: user.cn.split(" ")[0],
+      lastName: user.cn.split(" ")[1],
+      fullName: user.cn,
+      username: user.sAMAccountName,
+      mail: user.mail,
+      memberOf: user.memberOf,
+      moderatorLevel: getModeratorLevel(user),
+    };
+
+    return done(null, ldapUser);
   })
 );
 

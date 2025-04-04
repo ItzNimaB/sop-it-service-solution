@@ -27,3 +27,15 @@ export function verifyLDAP(
     }
   )(req, res, next);
 }
+
+export function minModLevel(level: number): IMiddleware {
+  return (req, res, next) => {
+    const { moderatorLevel } = req.user || {};
+
+    if (!moderatorLevel || moderatorLevel < level) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
+    next();
+  };
+}

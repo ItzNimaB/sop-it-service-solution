@@ -18,7 +18,7 @@ export async function addFullname(
   loans: { Navn: string; [usernameKey: string]: string | any }[],
   usernameKey: string
 ) {
-  if (["development", "test"].includes(process.env.NODE_ENV || "")) return;
+  // if (["development", "test"].includes(process.env.NODE_ENV || "")) return;
 
   const { data } = await getLdapUsers();
 
@@ -30,19 +30,19 @@ export async function addFullname(
 }
 
 export async function getLdapUsers(res?: any): Promise<any> {
-  if (["development", "test"].includes(process.env.NODE_ENV || "")) {
-    return {
-      headers,
-      data: [
-        {
-          UUID: 1,
-          username: "johndoe0000",
-          date_created: new Date(),
-          date_updated: new Date(),
-        },
-      ],
-    };
-  }
+  // if (["development", "test"].includes(process.env.NODE_ENV || "")) {
+  //   return {
+  //     headers,
+  //     data: [
+  //       {
+  //         UUID: 1,
+  //         username: "johndoe0000",
+  //         date_created: new Date(),
+  //         date_updated: new Date(),
+  //       },
+  //     ],
+  //   };
+  // }
 
   try {
     const searchOptions = {

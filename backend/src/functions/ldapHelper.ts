@@ -15,35 +15,18 @@ const {
   LDAP_SUPERIORS = "",
 } = process.env;
 
-export const attributes = [
-  "distinguishedName",
-  "cn",
-  "sAMAccountName",
-  "mail",
-  "whenCreated",
-  "whenChanged",
-  "lastLogon",
-  "memberOf",
-];
+export const attributes = ["cn", "sAMAccountName", "mail", "memberOf"];
 
-export function convertADDatetime(ldapTime: string) {
-  let year = parseInt(ldapTime.slice(0, 4), 10);
-  let month = parseInt(ldapTime.slice(4, 6), 10) - 1;
-  let day = parseInt(ldapTime.slice(6, 8), 10);
-  let hour = parseInt(ldapTime.slice(8, 10), 10);
-  let minute = parseInt(ldapTime.slice(10, 12), 10);
-  let second = parseInt(ldapTime.slice(12, 14), 10);
-
-  let date = new Date(Date.UTC(year, month, day, hour, minute, second));
-
-  return date;
+interface getModeratorLevelProps {
+  memberOf?: string[];
+  dn: string;
 }
 
-function getModeratorLevel(user: ldapUser) {
-  if (user.memberOf?.includes(LDAP_SUPERIORS)) return 2;
+export function getModeratorLevel({ memberOf, dn }: getModeratorLevelProps) {
+  if (memberOf?.includes(LDAP_SUPERIORS)) return 2;
 
-  if (user.memberOf?.includes(LDAP_ADMINS)) return 1;
-  if (user.distinguishedName.includes("Zone9")) return 1;
+  if (memberOf?.includes(LDAP_ADMINS)) return 1;
+  if (dn.includes("Zone9")) return 1;
 
   return 0;
 }
@@ -54,18 +37,18 @@ export function formatEntryResult(entry: SearchEntry): user {
   entry.pojo.attributes.map(({ type, values }) => {
     if (type === "memberOf") ldapUser[type] = values;
     else ldapUser[type] = values[0];
+
+    ldapUser.dn = entry.pojo.objectName;
   });
 
   const user: user = {
-    distinguishedName: ldapUser.distinguishedName,
+    dn: ldapUser.dn,
     firstName: ldapUser.cn.split(" ")[0],
     lastName: ldapUser.cn.split(" ")[1],
     fullName: ldapUser.cn,
     username: ldapUser.sAMAccountName,
     mail: ldapUser.mail,
     memberOf: ldapUser.memberOf,
-    date_created: convertADDatetime(ldapUser.whenCreated),
-    date_updated: convertADDatetime(ldapUser.whenChanged),
     moderatorLevel: getModeratorLevel(ldapUser),
   };
 

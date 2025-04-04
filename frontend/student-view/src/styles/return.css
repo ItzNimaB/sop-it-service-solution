@@ -1,0 +1,78 @@
+/* .max-h-half {
+    max-height: 50vh;
+  } */
+.returnLoan {
+  & button#add-all,
+  & button#return {
+    width: 100%;
+    max-width: 400px;
+    min-height: 2rem;
+    height: 2rem;
+    color: var(--text1);
+    border: 1px solid var(--text1);
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
+
+    &#return {
+      background: var(--text1);
+      color: var(--bg1);
+
+      &:hover {
+        color: var(--s);
+        border-color: var(--s);
+        outline: none;
+      }
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:disabled {
+      color: var(--text1);
+      border-color: var(--text1);
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+
+  & .seperation {
+    border-color: var(--text1);
+  }
+
+  & .seperation-1::after {
+    content: "Til Returnering";
+    position: absolute;
+    width: max-content;
+    top: 0;
+    left: 20px;
+    z-index: 2;
+  }
+
+  & .seperation-1::before {
+    content: "Udlånte produkter";
+    position: absolute;
+    top: 0;
+    width: max-content;
+    right: 20px;
+    z-index: 2;
+  }
+
+  & .seperation-2::before {
+    content: "Udlånte kabler";
+    position: absolute;
+    top: 0;
+    width: max-content;
+    right: 20px;
+    z-index: 2;
+  }
+
+  & .seperation-2::after {
+    content: "Til retunering";
+    position: absolute;
+    width: max-content;
+    top: 0;
+    left: 20px;
+    z-index: 2;
+  }
+}

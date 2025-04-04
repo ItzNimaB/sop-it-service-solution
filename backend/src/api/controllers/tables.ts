@@ -63,9 +63,8 @@ export function UpdateOne(): IController {
 export function DeleteOne(): IController {
   return async (req, res) => {
     const { table, UUID } = req.params as unknown as GetOneParams;
-    const user = req.user;
 
-    const response = await tablesService.deleteOne(table, UUID, user);
+    const response = await tablesService.deleteOne(table, UUID);
 
     res.status(response.status).json(response.data);
   };

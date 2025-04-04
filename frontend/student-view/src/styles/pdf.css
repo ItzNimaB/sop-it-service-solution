@@ -1,0 +1,42 @@
+@import url("https://fonts.googleapis.com/css?family=Inter");
+
+#pdf {
+  height: calc(100vh - 6rem);
+  aspect-ratio: 595 / 842;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white;
+
+  * {
+    color: black;
+
+    :not(i) {
+      font-family: "Inter";
+    }
+  }
+
+  .line {
+    margin: 1rem auto;
+    height: 1px;
+    border-radius: 100px;
+
+    @apply bg-neutral-600;
+  }
+
+  img {
+    width: auto;
+    height: 6rem;
+  }
+
+  span {
+    font-size: small;
+  }
+
+  h2 {
+    font-size: x-large;
+  }
+
+  h3 {
+    font-size: large;
+  }
+}

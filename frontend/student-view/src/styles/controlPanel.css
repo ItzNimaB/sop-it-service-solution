@@ -1,0 +1,22 @@
+.control-panel {
+  background-color: var(--bg2);
+
+  & button {
+    width: 100%;
+    min-height: 2rem;
+    height: 2rem;
+    background: transparent;
+    border-radius: 10px;
+    color: var(--text1);
+    border: 1px solid var(--text1);
+
+    &:hover {
+      background-color: #5b596e;
+      scale: 0.98;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+}

@@ -48,21 +48,21 @@ export async function ldapAuthenticate(
     reject = rej;
   });
 
-  if (["development", "test"].includes(process.env.NODE_ENV || "")) {
-    resolve({
-      date_created: new Date(),
-      distiguishedName: "John Doe",
-      firstName: "John",
-      fullName: "John Doe",
-      lastName: "Doe",
-      mail: "johndoe@mail.com",
-      moderatorLevel: 1,
-      username: "jdoe",
-      UUID: 792,
-    }) as user;
+  // if (["development", "test"].includes(process.env.NODE_ENV || "")) {
+  //   resolve({
+  //     date_created: new Date(),
+  //     distiguishedName: "John Doe",
+  //     firstName: "John",
+  //     fullName: "John Doe",
+  //     lastName: "Doe",
+  //     mail: "johndoe@mail.com",
+  //     moderatorLevel: 1,
+  //     username: "jdoe",
+  //     UUID: 792,
+  //   }) as user;
 
-    return promise;
-  }
+  //   return promise;
+  // }
 
   if (!searchBase) return reject(promise);
 
@@ -94,7 +94,7 @@ export async function ldapAuthenticate(
         return promise;
       }
 
-      if (!user?.distinguishedName) {
+      if (!user?.dn) {
         if (searchBase == LDAP_ADMINS)
           ldapAuthenticate(username, password, LDAP_USERS).catch(reject);
         client.unbind();
@@ -102,7 +102,7 @@ export async function ldapAuthenticate(
         return promise;
       }
 
-      client.bind(user.distinguishedName, password, (err) => {
+      client.bind(user.dn, password, (err) => {
         client.unbind();
         if (err) reject("User bind failed: " + username);
         if (!password) reject("No password provided");

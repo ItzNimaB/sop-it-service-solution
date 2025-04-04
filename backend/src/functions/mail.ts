@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import Mailjet from "node-mailjet";
+import nodemailer from "nodemailer";
 import { Resend } from "resend";
 
 import prisma from "@/configs/prisma.config";
@@ -8,14 +9,23 @@ import { loans } from "@prisma/client";
 dotenv.config();
 
 const {
+  MAIL_MAILER: mailer,
+  MAIL_HOST: host,
+  MAIL_PORT: port,
   MAIL_USERNAME: username,
   MAIL_PASSWORD: password,
-  MAIL_FROM_NAME: from_name,
+  MAIL_ENCRYPTION: encryption,
   MAIL_FROM_ADDRESS: from_addr,
+  MAIL_FROM_NAME: from_name,
   MAIL_RESEND_API_KEY: resend_api_key,
 } = process.env;
 
-export async function sendMail(to: string, subject: string, text: string) {
+// not used
+export async function resendSendMail(
+  to: string,
+  subject: string,
+  text: string
+) {
   if (!resend_api_key) {
     console.error("Missing MAIL_RESEND_API_KEY");
     return { success: false };
@@ -73,6 +83,36 @@ export async function mailjetSendMail(
 
   return body;
 }
+
+export async function nodemailerSendMail(
+  to: string,
+  subject: string,
+  text: string
+) {
+  if (!username || !password || !from_addr || !from_name) return;
+
+  const transporter = nodemailer.createTransport(
+    {
+      host,
+      port: Number(port),
+      auth: { user: username, pass: password },
+      secure: encryption === "ssl",
+      tls: { rejectUnauthorized: false },
+    },
+    { from: `${from_name} <${from_addr}>` }
+  );
+
+  const mailOptions = { to, subject, text };
+
+  // const { response } = await transporter.sendMail(mailOptions);
+  transporter.verify(console.log);
+
+  const response = {};
+
+  return response;
+}
+
+export const sendMail = nodemailerSendMail;
 
 interface LoansWithUserMail extends loans {
   user_mail: string;

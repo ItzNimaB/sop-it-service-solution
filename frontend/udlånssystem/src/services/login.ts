@@ -31,7 +31,7 @@ export function useLoginViaSession() {
 
     let res = await validateSession();
 
-    if (res && !res.error) {
+    if (res && !res.error && res.user.moderatorLevel > 0) {
       setCurrentUser(res.user);
       return true;
     } else {
@@ -53,6 +53,11 @@ export async function loginViaCredentials(username: string, password: string) {
     .post("auth/login", { username, password })
     .then((res) => {
       output.message = res.data;
+      if (res.data.moderatorLevel == 0) {
+        output.status = 403;
+        return output;
+      }
+
       if (res.data?.username) {
         output.user = res.data;
         output.status = 200;
