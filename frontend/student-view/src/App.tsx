@@ -40,7 +40,7 @@ function Layout() {
               <Nav />
             </header>
             <main className="relative h-screen overflow-y-auto">
-              <div className="pt-12 h-full overflow-y-hidden">
+              <div className="h-full overflow-y-hidden">
                 <Suspense fallback={<Loading />}>
                   <Outlet />
                 </Suspense>

@@ -57,11 +57,13 @@ export default function LoansPage() {
         <Label htmlFor="toggleItems">Vis afleverede lån</Label>
         <Switch id="toggleItems" onCheckedChange={handleChange} />
       </div>
-      <Layout
-        table={onlyReturned ? filterReturned() : filterNotReturned()}
-        noResultsText="Ingen lån"
-        onRowClick={() => {}}
-      />
+      <div className="h-full overflow-y-hidden pt-12">
+        <Layout
+          table={onlyReturned ? filterReturned() : filterNotReturned()}
+          noResultsText="Ingen lån"
+          onRowClick={() => {}}
+        />
+      </div>
     </>
   );
 }
