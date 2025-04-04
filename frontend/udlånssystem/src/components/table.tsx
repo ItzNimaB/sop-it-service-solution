@@ -191,6 +191,7 @@ export default function DataTable<TData, TValue>({
                           return false;
                         }}
                         onMouseLeave={() => clearTimeout(pressDownDuration)}
+                        onContextMenu={() => clearTimeout(pressDownDuration)}
                       >
                         <ToolTip
                           display={cell.getValue() as string}
