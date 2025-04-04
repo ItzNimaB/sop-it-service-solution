@@ -13,8 +13,7 @@ export async function getAll(): Promise<IResponse> {
       ({ item_id }) => item_id === itemView.UUID
     );
 
-    if (itemInLoan) itemView.Status = "Lånt ud";
-    else itemView.Status = "Tilgængelig";
+    itemView.Status = itemInLoan ? "Lånt ud" : "Tilgængelig";
   }
 
   const headers = Object.keys(prisma.items_view.fields);

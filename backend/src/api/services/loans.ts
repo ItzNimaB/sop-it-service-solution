@@ -19,7 +19,7 @@ export async function createOne(values: ILoanCreateInput): Promise<IResponse> {
   const authenticate = await ldapAuthenticate(
     personel_username,
     personel_password
-  ).catch((e) => console.log(e));
+  )
 
   if (!authenticate) return { status: 401 };
 
