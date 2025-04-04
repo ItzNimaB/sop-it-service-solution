@@ -29,6 +29,8 @@ app.use(passport.initialize());
 
 const router = Router();
 
+router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 router.use("/auth", Routes.Auth);
 
 router.use(async (req, res, next) => {
@@ -43,8 +45,6 @@ router.use("/items_view", Routes.Items_view);
 router.use("/users", Routes.Users);
 router.use("/users_view", Routes.Users_view);
 router.use("/locations", Routes.Locations);
-
-router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 router.use("", Routes.tables);
 
