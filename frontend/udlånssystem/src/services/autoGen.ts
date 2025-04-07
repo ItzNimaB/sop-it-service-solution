@@ -14,12 +14,14 @@ export function autoGenZodSchema(fields: Field[]): z.ZodObject<any> {
     if (!field?.type) field.type = "text";
     if (field.required === undefined) field.required = true;
 
+    const min = field.required ? 1 : 0;
+
     switch (field.type) {
       case "text":
         zodType = z
           .string(defaultOptions)
           .trim()
-          .min(1, defaultOptions.message);
+          .min(min, defaultOptions.message);
         break;
       case "number":
         zodType = z
