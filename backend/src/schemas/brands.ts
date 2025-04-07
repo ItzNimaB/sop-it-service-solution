@@ -1,27 +1,10 @@
 import { z } from "zod";
 
-import {
-  OpenAPIRegistry,
-  OpenApiGeneratorV3,
-} from "@asteasolutions/zod-to-openapi/dist";
-
-const registry = new OpenAPIRegistry();
+import { registry } from "@/zod";
 
 export const createSchema = z
   .object({ name: z.string().openapi({ example: "Example brand" }) })
-  .openapi("Brands");
-
-const brandIdSchema = registry.registerParameter(
-  "BrandId",
-  z.string().openapi({
-    param: { name: "id", in: "path" },
-    example: "1212121",
-  })
-);
-
-const generator = new OpenApiGeneratorV3([createSchema]);
-
-console.log(generator.generateComponents());
+  .openapi("Create Brand");
 
 const bearerAuth = registry.registerComponent("securitySchemes", "bearerAuth", {
   type: "http",
@@ -30,15 +13,22 @@ const bearerAuth = registry.registerComponent("securitySchemes", "bearerAuth", {
 });
 
 registry.registerPath({
-  method: "get",
-  path: "/users/{id}",
-  description: "Get user data by its id",
-  summary: "Get a single user",
+  operationId: "createBrand",
+  method: "post",
+  path: "/brands",
+  summary: "Create a brand",
   security: [{ [bearerAuth.name]: [] }],
-  request: { params: z.object({ id: brandIdSchema }) },
+  tags: ["Brands"],
+  request: {
+    body: {
+      content: { "application/json": { schema: createSchema } },
+      required: true,
+      description: "Brand data",
+    },
+  },
   responses: {
     200: {
-      description: "Object with user data.",
+      description: "Object with brand data.",
       content: { "application/json": { schema: createSchema } },
     },
     204: { description: "No content - successful operation" },

@@ -11,10 +11,13 @@ import * as Routes from "@/api/routes";
 import { RegisterRoutes } from "@/api/routes/routes";
 import prisma from "@/configs/prisma.config";
 import { authenticateUser, sendMailToExpiredLoans } from "@/functions";
+import { OpenApiGeneratorV3 } from "@asteasolutions/zod-to-openapi";
+import { OpenAPIObjectConfig } from "@asteasolutions/zod-to-openapi/dist/v3.0/openapi-generator";
 
 import passport from "./passport";
-import { swaggerSpec } from "./swagger";
-import "./zod";
+import { options, swaggerSpec } from "./swagger";
+import { registry } from "./zod";
+import "./schemas/brands";
 
 dotenv.config();
 
@@ -39,7 +42,13 @@ const swaggerDocument = JSON.parse(
   readFileSync(path.join(__dirname, "../dist/swagger.json"), "utf8")
 );
 
-router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+const generator = new OpenApiGeneratorV3(registry.definitions);
+
+const docs = generator.generateDocument(
+  options.definition as OpenAPIObjectConfig
+);
+
+router.use("/docs", swaggerUi.serve, swaggerUi.setup(docs));
 
 router.use("/auth", Routes.Auth);
 

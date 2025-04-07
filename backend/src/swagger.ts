@@ -2,7 +2,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 
 import pkg from "../package.json";
 
-const options: swaggerJSDoc.Options = {
+export const options: swaggerJSDoc.Options = {
   definition: {
     openapi: "3.0.0",
     info: {
