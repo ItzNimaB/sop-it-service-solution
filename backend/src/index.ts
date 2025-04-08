@@ -3,14 +3,12 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express, { Router } from "express";
 import cron from "node-cron";
-import swaggerUi from "swagger-ui-express";
 
 import * as Routes from "@/api/routes";
 import prisma from "@/configs/prisma.config";
 import { authenticateUser, sendMailToExpiredLoans } from "@/functions";
 
 import passport from "./passport";
-import { swaggerSpec } from "./swagger";
 
 dotenv.config();
 
@@ -28,8 +26,6 @@ app.use(cookieParser());
 app.use(passport.initialize());
 
 const router = Router();
-
-router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 router.use("/auth", Routes.Auth);
 

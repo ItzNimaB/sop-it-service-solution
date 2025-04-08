@@ -28,7 +28,6 @@
     "handlebars": "^4.7.8",
     "jsonwebtoken": "^9.0.2",
     "ldapjs": "^3.0.7",
-    "lru-cache": "^7.18.3",
     "node-cron": "^3.0.3",
     "node-mailjet": "^6.0.5",
     "nodemailer": "^6.10.0",
@@ -37,10 +36,7 @@
     "patch-package": "^8.0.0",
     "pdfkit": "^0.15.0",
     "resend": "^4.0.1",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1",
     "vite-tsconfig-paths": "^5.1.4",
-    "yaml": "^1.10.2",
     "zod": "^3.24.1"
   },
   "devDependencies": {
@@ -56,8 +52,6 @@
     "@types/passport": "^1.0.17",
     "@types/pdfkit": "^0.13.4",
     "@types/react": "^19.0.8",
-    "@types/swagger-jsdoc": "^6.0.4",
-    "@types/swagger-ui-express": "^4.1.8",
     "nodemon": "^3.1.3",
     "prettier": "^3.3.3",
     "prisma": "^5.19.0",
