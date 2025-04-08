@@ -206,6 +206,7 @@ view items_view {
   Navn      String?   @db.VarChar(255)
   Stregkode String?   @db.VarChar(54)
   Status    String?   @db.VarChar(255)
+  Kommentar String?   @db.LongText
   Oprettet  DateTime  @default(now()) @db.DateTime(0)
   Opdateret DateTime? @default(now()) @db.DateTime(0)
 }
@@ -293,8 +294,11 @@ view buildings_view {
 view user_loans {
   UUID             Int       @id @default(0) @db.UnsignedInt
   Produkt          String    @db.VarChar(255)
+  Oprettet         DateTime  @default(now()) @db.DateTime(0)
   Returneret       DateTime? @db.DateTime(0)
   Returneringsdato DateTime? @db.DateTime(0)
+  Produkt_status   String?   @db.VarChar(255)
+  Kommentar        String?   @db.LongText
   item_id          Int       @db.UnsignedInt
   user_id          Int       @default(0) @db.UnsignedInt
 }
