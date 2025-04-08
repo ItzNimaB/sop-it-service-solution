@@ -59,3 +59,8 @@ export function findReferencing(table: Prisma.ModelName) {
     TABLE_NAME = '${table}' AND
     REFERENCED_TABLE_NAME IS NOT NULL;`;
 }
+
+export function isProd(): boolean {
+  const { NODE_ENV = "" } = process.env;
+  return NODE_ENV === "production";
+}
