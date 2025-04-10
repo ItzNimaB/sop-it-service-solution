@@ -1,16 +1,21 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 
 import useData from "@/hooks/useData";
 
+import { CurrentUserContext } from "@/App";
 import Layout from "@/layouts/index";
 
 export default function LoansPage() {
+  const { currentUser } = useContext(CurrentUserContext);
+  if (!currentUser) return;
+  const { UUID: id } = currentUser;
+
   const [onlyReturned, setOnlyReturned] = useState(false);
 
-  const [loansView] = useData<loansView[]>("loans_view", {
+  const [loansView] = useData<loansView[]>("loans_view?user_id=" + id, {
     withHeaders: true,
   });
 
