@@ -222,6 +222,7 @@ view loans_view {
   Recipent         String?   @db.VarChar(255)
   Laanetid         String?   @db.VarChar(16)
   Returneringsdato DateTime? @db.DateTime(0)
+  user_id          Int?      @default(0) @db.UnsignedInt
 }
 
 view loans_view_extended {
