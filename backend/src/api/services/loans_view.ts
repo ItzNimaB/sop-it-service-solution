@@ -3,7 +3,8 @@ import { addFullname } from "@/functions";
 
 export async function getAll(
   moderatorLevel?: number,
-  username?: string
+  username?: string,
+  user_id?: number
 ): Promise<IResponse> {
   let user = await prisma.users.findFirst({
     where: { username },
@@ -11,7 +12,7 @@ export async function getAll(
 
   if (!user && !moderatorLevel) return { status: 401, data: "User not found" };
 
-  let user_id = moderatorLevel ? undefined : user?.UUID;
+  user_id = moderatorLevel ? user_id : user?.UUID;
 
   let loans = await prisma.loans.findMany({
     where: { user_id },

@@ -8,7 +8,8 @@ SELECT
   `l`.`date_of_return` AS `Returneret`,
   `rt`.`name` AS `Recipent`,
   concat(`l`.`loan_length`, ' dage') AS `Laanetid`,
-  `l`.`date_created` + INTERVAL `l`.`loan_length` DAY AS `Returneringsdato`
+  `l`.`date_created` + INTERVAL `l`.`loan_length` DAY AS `Returneringsdato`,
+  `loaner`.`UUID` AS `user_id`
 FROM
   (
     (
