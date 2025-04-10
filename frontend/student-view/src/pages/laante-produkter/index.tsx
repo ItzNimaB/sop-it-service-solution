@@ -34,7 +34,7 @@ export default function Edit() {
           columns={columns}
           data={userLoans.data.filter((row) => !row.Returneret)}
           exclude={[...exclude, "Returneret"]}
-          onRowClick={(row) => navigate(`/produkter/${row.item_id}`)}
+          onRowClick={() => {}}
         />
       </div>
 
@@ -44,7 +44,7 @@ export default function Edit() {
           columns={columns}
           data={userLoans.data.filter((row) => row.Returneret)}
           exclude={[...exclude, "Returneringsdato"]}
-          onRowClick={(row) => navigate(`/produkter/${row.item_id}`)}
+          onRowClick={() => {}}
         />
       </div>
     </div>
