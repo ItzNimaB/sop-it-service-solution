@@ -6,10 +6,11 @@ import { Resend } from "resend";
 import prisma from "@/configs/prisma.config";
 import { loans } from "@prisma/client";
 
+import { isProd } from "./general";
+
 dotenv.config();
 
 const {
-  MAIL_MAILER: mailer,
   MAIL_HOST: host,
   MAIL_PORT: port,
   MAIL_USERNAME: username,
@@ -89,13 +90,23 @@ export async function nodemailerSendMail(
   subject: string,
   text: string
 ) {
+  let user = username;
+  let pass = password;
+
+  if (!isProd()) {
+    const testAccount = await nodemailer.createTestAccount();
+
+    user = testAccount.user;
+    pass = testAccount.pass;
+  }
+
   if (!username || !password || !from_addr || !from_name) return;
 
   const transporter = nodemailer.createTransport(
     {
       host,
       port: Number(port),
-      auth: { user: username, pass: password },
+      auth: { user, pass },
       secure: encryption === "ssl",
       tls: { rejectUnauthorized: false },
     },
@@ -104,10 +115,7 @@ export async function nodemailerSendMail(
 
   const mailOptions = { to, subject, text };
 
-  // const { response } = await transporter.sendMail(mailOptions);
-  transporter.verify(console.log);
-
-  const response = {};
+  const { response } = await transporter.sendMail(mailOptions);
 
   return response;
 }

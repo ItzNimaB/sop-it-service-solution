@@ -20,6 +20,12 @@ export const fields: Field<itemModel>[] = [
     type: "number",
     required: false,
   },
+  {
+    label: "Kommentar",
+    binding: "description",
+    type: "text",
+    required: false,
+  },
   // {
   //   label: 'Lokation',
   //   binding: 'storage_location_id',

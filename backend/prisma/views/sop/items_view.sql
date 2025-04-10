@@ -6,6 +6,7 @@ SELECT
     lpad(`i`.`barcode_number`, 4, '0')
   ) AS `Stregkode`,
   `ps`.`name` AS `Status`,
+  `i`.`description` AS `Kommentar`,
   `i`.`date_created` AS `Oprettet`,
   `i`.`date_updated` AS `Opdateret`
 FROM
