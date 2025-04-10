@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "frontend/student-view"
+      - "frontend/student-view/**"
   workflow_dispatch:
 
 jobs:
