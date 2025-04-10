@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "frontend/udlånssystem"
+      - "frontend/udlånssystem/**"
   workflow_dispatch:
 
 jobs:
