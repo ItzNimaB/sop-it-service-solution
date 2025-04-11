@@ -55,7 +55,10 @@ export default function Index() {
         <Label htmlFor="toggleItems">Vis afleverede lån</Label>
         <Switch id="toggleItems" onCheckedChange={handleChange} />
       </div>
-      <Layout table={onlyReturned ? filterReturned() : filterNotReturned()} />
+      <Layout
+        table={onlyReturned ? filterReturned() : filterNotReturned()}
+        exclude={["user_id"]}
+      />
     </>
   );
 }

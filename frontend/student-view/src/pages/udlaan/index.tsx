@@ -67,6 +67,7 @@ export default function LoansPage() {
           table={onlyReturned ? filterReturned() : filterNotReturned()}
           noResultsText="Ingen lån"
           onRowClick={() => {}}
+          exclude={["Laaner", "Udlaaner", "user_id"]}
         />
       </div>
     </>
