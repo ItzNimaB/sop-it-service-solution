@@ -41,6 +41,7 @@ router.use("/items_view", Routes.Items_view);
 router.use("/users", Routes.Users);
 router.use("/users_view", Routes.Users_view);
 router.use("/locations", Routes.Locations);
+router.use("/user_loans", Routes.User_loans);
 
 router.use("", Routes.tables);
 

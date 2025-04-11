@@ -1,7 +1,5 @@
 import dotenv from "dotenv";
-import Mailjet from "node-mailjet";
 import nodemailer from "nodemailer";
-import { Resend } from "resend";
 
 import prisma from "@/configs/prisma.config";
 import { loans } from "@prisma/client";
@@ -11,116 +9,47 @@ import { isProd } from "./general";
 dotenv.config();
 
 const {
-  MAIL_HOST: host,
-  MAIL_PORT: port,
+  MAIL_HOST: mailhost,
   MAIL_USERNAME: username,
   MAIL_PASSWORD: password,
-  MAIL_ENCRYPTION: encryption,
-  MAIL_FROM_ADDRESS: from_addr,
-  MAIL_FROM_NAME: from_name,
-  MAIL_RESEND_API_KEY: resend_api_key,
+  MAIL_FROM_ADDRESS: address,
+  MAIL_FROM_NAME: name,
 } = process.env;
 
-// not used
-export async function resendSendMail(
-  to: string,
-  subject: string,
-  text: string
-) {
-  if (!resend_api_key) {
-    console.error("Missing MAIL_RESEND_API_KEY");
-    return { success: false };
-  }
-
-  const resend = new Resend(resend_api_key);
-
-  if (!username || !password || !from_addr || !from_name) return;
-
-  if (["test", "development"].includes(process.env.NODE_ENV || "")) {
-    console.log(`Mail to: ${to}\nSubject: ${subject}\n`);
-    return { success: true };
-  }
-
-  const from = `${from_name} <${from_addr}>`;
-
-  const { data, error } = await resend.emails.send({
-    from,
-    to,
-    subject,
-    html: text,
-    react: null,
-  });
-
-  if (error) {
-    console.error(error);
-    return { success: false };
-  }
-
-  return data;
-}
-
-// not used
-export async function mailjetSendMail(
-  to: string,
-  subject: string,
-  text: string
-) {
-  if (!username || !password || !from_addr || !from_name) return;
-
-  const mailjet = Mailjet.apiConnect(username, password);
-
-  const request = mailjet.post("send", { version: "v3.1" }).request({
-    Messages: [
-      {
-        From: { Email: from_addr, Name: from_name },
-        To: [{ Email: to }],
-        Subject: subject,
-        TextPart: text,
-      },
-    ],
-  });
-
-  const { body } = await request;
-
-  return body;
-}
-
-export async function nodemailerSendMail(
-  to: string,
-  subject: string,
-  text: string
-) {
+export async function sendMail(to: string, subject: string, text: string) {
   let user = username;
   let pass = password;
+  let host = mailhost;
 
   if (!isProd()) {
     const testAccount = await nodemailer.createTestAccount();
 
     user = testAccount.user;
     pass = testAccount.pass;
+    host = testAccount.smtp.host;
   }
 
-  if (!username || !password || !from_addr || !from_name) return;
+  if (!address || !name) return;
 
   const transporter = nodemailer.createTransport(
     {
       host,
-      port: Number(port),
       auth: { user, pass },
-      secure: encryption === "ssl",
       tls: { rejectUnauthorized: false },
     },
-    { from: `${from_name} <${from_addr}>` }
+    { from: { address, name } }
   );
 
   const mailOptions = { to, subject, text };
 
-  const { response } = await transporter.sendMail(mailOptions);
+  const mail = await transporter.sendMail(mailOptions);
 
-  return response;
+  const getMessageSent = nodemailer.getTestMessageUrl(mail);
+
+  console.log(getMessageSent);
+
+  return mail.response;
 }
-
-export const sendMail = nodemailerSendMail;
 
 interface LoansWithUserMail extends loans {
   user_mail: string;
@@ -177,4 +106,4 @@ Aflever det venligst hurtigst muligt.\n\nMvh.\nSDE's udlånssystem`;
   });
 }
 
-sendMailToExpiredLoans();
+// sendMailToExpiredLoans();

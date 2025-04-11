@@ -1,16 +1,15 @@
 import { Router } from "express";
 
-import { nodemailerSendMail } from "@/functions";
+import { isProd, sendMail } from "@/functions";
 
 const router = Router();
 
 router.post("/", async (req, res) => {
-  const { NODE_ENV = "" } = process.env;
-  if (!["development", "test"].includes(NODE_ENV)) return;
+  if (isProd()) return;
 
   const { to, subject, text } = req.body;
 
-  const response = await nodemailerSendMail(to, subject, text);
+  const response = await sendMail(to, subject, text);
 
   res.send(response);
 });

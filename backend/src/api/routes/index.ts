@@ -7,4 +7,5 @@ export { default as Locations } from "./locations";
 export { default as Mail } from "./mail";
 export { default as tables } from "./tables";
 export { default as Users } from "./users";
+export { default as User_loans } from "./user_loans";
 export { default as Users_view } from "./users_view";
