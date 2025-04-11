@@ -4,7 +4,6 @@ SELECT
   `iil`.`date_created` AS `Oprettet`,
   `iil`.`date_returned` AS `Returneret`,
   `iil`.`date_created` + INTERVAL `l`.`loan_length` DAY AS `Returneringsdato`,
-  `ps`.`name` AS `Produkt_status`,
   `i`.`description` AS `Kommentar`,
   `iil`.`item_id` AS `item_id`,
   `u`.`UUID` AS `user_id`

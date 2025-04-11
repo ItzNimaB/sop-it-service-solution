@@ -298,7 +298,6 @@ view user_loans {
   Oprettet         DateTime  @default(now()) @db.DateTime(0)
   Returneret       DateTime? @db.DateTime(0)
   Returneringsdato DateTime? @db.DateTime(0)
-  Produkt_status   String?   @db.VarChar(255)
   Kommentar        String?   @db.LongText
   item_id          Int       @db.UnsignedInt
   user_id          Int       @default(0) @db.UnsignedInt
