@@ -29,13 +29,11 @@
     "jsonwebtoken": "^9.0.2",
     "ldapjs": "^3.0.7",
     "node-cron": "^3.0.3",
-    "node-mailjet": "^6.0.5",
     "nodemailer": "^6.10.0",
     "passport": "^0.7.0",
     "passport-ldapauth": "^3.0.1",
     "patch-package": "^8.0.0",
     "pdfkit": "^0.15.0",
-    "resend": "^4.0.1",
     "vite-tsconfig-paths": "^5.1.4",
     "zod": "^3.24.1"
   },
