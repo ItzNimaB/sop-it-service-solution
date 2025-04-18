@@ -1,7 +1,10 @@
 import dotenv from "dotenv";
 import { NextFunction, Request, Response } from "express";
 import { verify } from "jsonwebtoken";
+import LdapAuth from "ldapauth-fork";
 import { SearchOptions } from "ldapjs";
+
+import { opts } from "@/passport";
 
 import { attributes, createLdapClient, formatEntryResult } from "./ldapHelper";
 
@@ -113,4 +116,19 @@ export async function ldapAuthenticate(
   });
 
   return promise;
+}
+
+export async function ldapAuthenticate2(
+  username: string,
+  password: string
+): Promise<user | null> {
+  const ldap = new LdapAuth(opts.server);
+
+  return new Promise((resolve) => {
+    ldap.authenticate(username, password, (err, user: user) => {
+      if (err) return resolve(null);
+
+      resolve(user);
+    });
+  });
 }

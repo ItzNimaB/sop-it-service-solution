@@ -2,6 +2,7 @@ import prisma from "@/configs/prisma.config";
 import {
   convertToPrismaTypes,
   ldapAuthenticate,
+  ldapAuthenticate2,
   returnLoan as returnLoanHelper,
   sendMail,
 } from "@/functions";
@@ -16,10 +17,10 @@ export async function createOne(values: ILoanCreateInput): Promise<IResponse> {
 
   let { loan, products, personel_username, personel_password } = data;
 
-  const authenticate = await ldapAuthenticate(
+  const authenticate = await ldapAuthenticate2(
     personel_username,
     personel_password
-  )
+  );
 
   if (!authenticate) return { status: 401 };
 
