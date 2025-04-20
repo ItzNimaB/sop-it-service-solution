@@ -22,17 +22,23 @@ export async function generateLoanHTML(loan_id: number, email = false) {
 
   if (!loan) return "";
 
+  const dayInMilliseconds = 24 * 60 * 60 * 1000;
+
   const date_to_be_returned =
     new Date(loan.date_created).getTime() +
-    (loan.loan_length || 0) * 24 * 60 * 60 * 1000;
+    (loan.loan_length || 0) * dayInMilliseconds;
+
+  function formatDate(date: Date | string | number) {
+    return new Date(date).toLocaleDateString("da-DK", { dateStyle: "full" });
+  }
 
   const html = template({
     ...loan,
     date_to_be_returned,
     loaner: loan.users_loans_user_idTousers,
     helpdesk_personel: loan.users_loans_helpdesk_personel_idTousers,
-    date_created: new Date(loan.date_created).toLocaleDateString(),
-    return_date: new Date(date_to_be_returned).toLocaleDateString(),
+    date_created: formatDate(loan.date_created),
+    return_date: formatDate(date_to_be_returned),
     itemsInLoan: itemsInLoan,
     email,
   });
