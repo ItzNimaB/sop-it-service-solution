@@ -53,7 +53,7 @@ export async function createOne(values: ILoanCreateInput): Promise<IResponse> {
 
   const loanReceipt = await generateLoanHTML(newLoan.UUID, true);
 
-  sendMail(userEmail, "Lånekontrakt", loanReceipt);
+  sendMail({ to: userEmail, subject: "Lånekontrakt", html: loanReceipt });
 
   return { status: 201, data: newLoan };
 }
