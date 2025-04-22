@@ -19,7 +19,7 @@ const {
 
 export const attributes = ["cn", "sAMAccountName", "mail", "memberOf"];
 
-const opts: LdapStrategy.Options = {
+export const opts: LdapStrategy.Options = {
   server: {
     url: `ldap://${LDAP_HOST}:${LDAP_PORT}`,
     bindDN: LDAP_USERNAME,

@@ -2,5 +2,6 @@
   "watch": ["./"],
   "ext": ".ts,.js",
   "ignore": [],
-  "exec": "ts-node -T -r tsconfig-paths/register src/index.ts"
+  "exec": "ts-node -T -r tsconfig-paths/register src/index.ts",
+  "legacyWatch": true
 }

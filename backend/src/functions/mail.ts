@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import nodemailer from "nodemailer";
+import { MailOptions } from "nodemailer/lib/json-transport";
 
 import prisma from "@/configs/prisma.config";
 import { loans } from "@prisma/client";
@@ -8,7 +9,7 @@ import { isProd } from "./general";
 
 dotenv.config();
 
-const {
+let {
   MAIL_HOST: mailhost,
   MAIL_USERNAME: username,
   MAIL_PASSWORD: password,
@@ -16,7 +17,7 @@ const {
   MAIL_FROM_NAME: name,
 } = process.env;
 
-export async function sendMail(to: string, subject: string, text: string) {
+export async function sendMail(mailOptions: MailOptions) {
   let user = username;
   let pass = password;
   let host = mailhost;
@@ -27,6 +28,8 @@ export async function sendMail(to: string, subject: string, text: string) {
     user = testAccount.user;
     pass = testAccount.pass;
     host = testAccount.smtp.host;
+    address = "test@localhost";
+    name = "Test Account";
   }
 
   if (!address || !name) return;
@@ -39,8 +42,6 @@ export async function sendMail(to: string, subject: string, text: string) {
     },
     { from: { address, name } }
   );
-
-  const mailOptions = { to, subject, text };
 
   const mail = await transporter.sendMail(mailOptions);
 
@@ -97,7 +98,7 @@ ${items_in_loan
 
 Aflever det venligst hurtigst muligt.\n\nMvh.\nSDE's udlånssystem`;
 
-    await sendMail(user_mail, subject, text);
+    await sendMail({ to: user_mail, subject, text });
   }
 
   await prisma.loans.updateMany({
