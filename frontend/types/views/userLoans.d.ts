@@ -5,4 +5,5 @@ interface userLoans {
   Returneringsdato: string | Date | null;
   item_id: number;
   user_id: number;
+  Kommentar: string | null;
 }

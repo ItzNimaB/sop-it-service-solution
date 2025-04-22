@@ -21,8 +21,8 @@ export default function Edit() {
 
   return (
     <div className="flex h-full gap-5 p-5">
-      <div className="flex w-1/2 flex-col gap-3">
-        <h1 className="text-lg font-semibold">Aktive produkter i lån</h1>
+      <div className="flex w-1/2 flex-col items-center gap-3">
+        <h1 className="text-2xl font-extrabold">Aktive produkter i lån</h1>
         <DataTable
           columns={columns}
           data={userLoans.data.filter((row) => !row.Returneret)}
@@ -31,8 +31,8 @@ export default function Edit() {
         />
       </div>
 
-      <div className="flex w-1/2 flex-col gap-3">
-        <h1 className="text-lg font-semibold">Returnerede produkter</h1>
+      <div className="flex w-1/2 flex-col items-center gap-3">
+        <h1 className="text-2xl font-extrabold">Returnerede produkter</h1>
         <DataTable
           columns={columns}
           data={userLoans.data.filter((row) => row.Returneret)}
