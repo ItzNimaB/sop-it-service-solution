@@ -4,4 +4,4 @@ cn: samba
 olcAttributeTypes: ( 1.3.6.1.4.1.7165.2.2.1 NAME 'sambaSID' DESC 'Samba SID' EQUALITY caseIgnoreIA5Match SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 olcAttributeTypes: ( 1.3.6.1.4.1.7165.2.2.2 NAME 'sambaDomainName' DESC 'Samba Domain Name' EQUALITY caseIgnoreIA5Match SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
 olcAttributeTypes: ( 1.3.6.1.4.1.7165.2.2.14 NAME 'sAMAccountName' DESC 'Samba Account Name' EQUALITY caseIgnoreIA5Match SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
-olcObjectClasses: ( 1.3.6.1.4.1.7165.2.2.3 NAME 'sambaSamAccount' DESC 'Samba Account' SUP top AUXILIARY MUST ( sambaSID $ sAMAccountName ) )
+olcObjectClasses: ( 1.3.6.1.4.1.7165.2.2.3 NAME 'sambaSamAccount' DESC 'Samba Account' SUP top AUXILIARY MUST ( sAMAccountName ) MAY ( sambaSID $ sambaDomainName ) )

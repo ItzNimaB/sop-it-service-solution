@@ -37,3 +37,15 @@ ou: OU_ServerAccounts
 dn: OU=OU_Zone9_Instruktoer,OU=OU_Zone9,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=dk
 objectClass: organizationalUnit
 ou: OU_Zone9_Instruktoer
+
+dn: OU=OU_Outsiders,OU=OU_Main,DC=ITSKP-ODENSE,DC=dk
+objectClass: organizationalUnit
+
+dn: OU=OU_WebHotelExtern,OU=OU_Outsiders,OU=OU_Main,DC=ITSKP-ODENSE,DC=dk
+objectClass: organizationalUnit
+
+dn: OU=OU_Programmoer,OU=OU_Outsiders,OU=OU_Main,DC=ITSKP-ODENSE,DC=dk
+objectClass: organizationalUnit
+
+dn: OU=OU_Infrastruktur,OU=OU_Outsiders,OU=OU_Main,DC=ITSKP-ODENSE,DC=dk
+objectClass: organizationalUnit

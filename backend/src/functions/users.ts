@@ -2,7 +2,7 @@ import { SearchOptions } from "ldapjs";
 
 import { attributes, getUsers } from ".";
 
-const { LDAP_USERS, LDAP_ADMINS } = process.env;
+const { LDAP_USERS } = process.env;
 
 const headers = [
   "firstName",
@@ -51,16 +51,15 @@ export async function getLdapUsers(res?: any): Promise<any> {
       attributes,
     } as SearchOptions;
 
-    if (!LDAP_USERS || !LDAP_ADMINS) {
+    if (!LDAP_USERS) {
       if (res) res.status(500).json({ error: "LDAP credentials missing" });
       return [];
     }
 
     const users = await getUsers(LDAP_USERS, searchOptions);
-    const admins = await getUsers(LDAP_ADMINS, searchOptions);
 
-    if (res) res.json({ headers, data: [...users, ...admins] });
-    return { headers, data: [...users, ...admins] };
+    if (res) res.json({ headers, data: users });
+    return { headers, data: users };
   } catch (error) {
     console.error("Error in LDAP client creation or binding:", error);
     if (res) res.status(500).json({ error: "Internal server error" });
