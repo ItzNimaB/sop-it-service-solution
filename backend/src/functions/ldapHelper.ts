@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 import { Client, SearchEntry, SearchOptions, createClient } from "ldapjs";
-
-import { users } from "@prisma/client";
+import { promisify } from "util";
 
 dotenv.config();
 
@@ -11,11 +10,24 @@ const {
   LDAP_USERNAME,
   LDAP_PASSWORD,
   NODE_ENV,
+  LDAP_USERS = "",
   LDAP_ADMINS = "",
   LDAP_SUPERIORS = "",
 } = process.env;
 
 export const attributes = ["cn", "sAMAccountName", "mail", "memberOf"];
+
+interface GetLdapUsersFilter {
+  username?: string;
+}
+
+function searchOptions(filter: GetLdapUsersFilter = { username: "*" }) {
+  return {
+    filter: `(&(objectClass=person)(sAMAccountName=${filter.username || ""}))`,
+    scope: "sub",
+    attributes,
+  } satisfies SearchOptions;
+}
 
 interface getModeratorLevelProps {
   memberOf?: string[];
@@ -55,44 +67,27 @@ export function formatEntryResult(entry: SearchEntry): user {
   return user;
 }
 
-export function createLdapClient(): Promise<Client> {
-  let resolve: any, reject: any;
-
-  const promise = new Promise<Client>((res, rej) => {
-    resolve = res;
-    reject = rej;
-  });
-
+export async function createLdapClient(): Promise<Client> {
   const client = createClient({ url: `ldap://${LDAP_HOST}:${LDAP_PORT}` });
 
-  if (!LDAP_USERNAME || !LDAP_PASSWORD)
-    return reject("LDAP credentials missing");
+  if (!LDAP_USERNAME || !LDAP_PASSWORD) {
+    throw new Error("LDAP credentials missing");
+  }
 
-  client.bind(LDAP_USERNAME, LDAP_PASSWORD, (err) => {
-    if (err) reject(err);
-    else resolve(client);
-  });
+  const clientAsynct = promisify(client.bind).bind(client);
+  await clientAsynct(LDAP_USERNAME, LDAP_PASSWORD);
 
-  return promise;
+  return client;
 }
 
-export async function getUsers(search: string, options: SearchOptions) {
-  // let resolve: any, reject: any;
-
-  // const promise = new Promise<users[] | any[]>((res, rej) => {
-  //   resolve = res;
-  //   reject = rej;
-  // });
-
-  // if (NODE_ENV === "development") return [];
-
+export async function getUsers(filter?: GetLdapUsersFilter): Promise<user[]> {
   const client = await createLdapClient();
 
-  return new Promise<users[] | any[]>((resolve, reject) => {
-    client.search(search, options, (err, searchRes) => {
+  return new Promise<user[]>((resolve, reject) => {
+    client.search(LDAP_USERS, searchOptions(filter), (err, searchRes) => {
       if (err) reject("Search error");
 
-      const users: user[] = [] as any[];
+      const users: user[] = [];
 
       searchRes.on("searchEntry", (entry) => {
         const user = formatEntryResult(entry);

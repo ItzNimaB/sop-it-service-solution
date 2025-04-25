@@ -47,7 +47,7 @@ export async function sendMail(mailOptions: MailOptions) {
 
   const getMessageSent = nodemailer.getTestMessageUrl(mail);
 
-  console.log(getMessageSent);
+  if (!isProd()) console.log(getMessageSent);
 
   return mail.response;
 }

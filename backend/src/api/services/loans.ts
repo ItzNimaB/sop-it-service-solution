@@ -1,6 +1,7 @@
 import prisma from "@/configs/prisma.config";
 import {
   convertToPrismaTypes,
+  getUsers,
   ldapAuthenticate,
   ldapAuthenticate2,
   returnLoan as returnLoanHelper,
@@ -49,11 +50,15 @@ export async function createOne(values: ILoanCreateInput): Promise<IResponse> {
   });
 
   const user = await prisma.users.findFirst({ where: { UUID: loan.user_id } });
-  const userEmail = user?.username + "@edu.sde.dk";
+  const [ldapUser] = await getUsers({ username: user?.username });
+
+  if (!ldapUser) return { status: 404, data: { success: false } };
+
+  const userEmail = ldapUser?.mail || user?.username + "@edu.sde.dk";
 
   const loanReceipt = await generateLoanHTML(newLoan.UUID, true);
 
-  sendMail({ to: userEmail, subject: "Lånekontrakt", html: loanReceipt });
+  await sendMail({ to: userEmail, subject: "Lånekontrakt", html: loanReceipt });
 
   return { status: 201, data: newLoan };
 }
