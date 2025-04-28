@@ -117,6 +117,14 @@ export default function DataTable<TData, TValue>({
     setColumnFilters(newFilters);
   }, [searchParams]);
 
+  useEffect(() => {
+    const pageCount = table.getPageCount() - 1;
+
+    if (pagination.pageIndex > pageCount) {
+      setPagination((prev) => ({ ...prev, pageIndex: pageCount }));
+    }
+  }, [columnFilters]);
+
   let pressDownDuration: ReturnType<typeof setTimeout>;
 
   return (
