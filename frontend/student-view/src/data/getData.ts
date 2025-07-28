@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "sonner";
 
 const defaultConfig: Config = {
-  UUID: undefined,
+  id: undefined,
   withHeaders: false,
 };
 
@@ -20,10 +20,10 @@ export default async function getData<T>(
   table: string,
   config = defaultConfig,
 ): Promise<T | DataWithHeaders<T> | null> {
-  if (config.UUID === null) return null;
+  if (config.id === null) return null;
 
   const { data }: { data: DataWithHeaders } = await axios
-    .get(table + (config.UUID ? "/" + config.UUID : ""))
+    .get(table + (config.id ? "/" + config.id : ""))
     .catch(handleError);
 
   if (config.withHeaders) return data as DataWithHeaders<T>;

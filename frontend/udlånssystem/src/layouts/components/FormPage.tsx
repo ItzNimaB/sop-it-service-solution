@@ -1,5 +1,5 @@
-import { Combobox } from "@/components/Combobox";
-import TextQuestion from "@/components/textQuestion";
+import { Combobox } from "@/components/combobox";
+import TextQuestion from "@/components/text-question";
 
 interface FormPageProps {
   fields: Field[];
@@ -20,11 +20,13 @@ export default function FormPage({
     <div className="form">
       <form>
         {fields.map((field, i) => {
+          field.type ??= "text"; // Default to text if type is not defined
+
           if (field.type == "text" || field.type == "number")
             return (
               <TextQuestion
                 key={i}
-                value={exportData[field.binding] || undefined}
+                value={exportData[field.binding] || ""}
                 setValue={(value) =>
                   setExportData((prev: any) => {
                     prev[field.binding] = value;
@@ -41,7 +43,7 @@ export default function FormPage({
 
             if (field.options && typeof field.options != "string") {
               option = field.options.find(
-                (opt) => opt.UUID == exportData[field.binding],
+                (opt) => opt.id == exportData[field.binding],
               );
             }
 
@@ -50,7 +52,7 @@ export default function FormPage({
                 key={i}
                 setValue={(value) =>
                   setExportData((prev: any) => {
-                    prev[field.binding] = value.UUID;
+                    prev[field.binding] = value.id;
                     return prev;
                   })
                 }

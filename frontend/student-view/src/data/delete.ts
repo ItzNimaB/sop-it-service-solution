@@ -3,14 +3,14 @@ import { toast } from "sonner";
 
 export default function deleteItem<T = any>(
   table: string,
-  UUID: number,
+  id: number,
   config = { withToast: true },
 ): Promise<T> {
-  const promise = axios.delete<any, T>(`${table}/${UUID}`);
+  const promise = axios.delete<any, T>(`${table}/${id}`);
 
   if (config?.withToast) {
     toast.promise(promise, {
-      id: "deleteItem" + UUID,
+      id: "deleteItem" + id,
       loading: "Sletter...",
       success: "Slettet!",
     });

@@ -1,26 +1,25 @@
-import prisma from "@/configs/prisma.config";
-import { addFullname, getLdapUsers } from "@/functions";
-import { users_view } from "@prisma/client";
+import prisma from "@/config/prisma";
+import { addFullname, getUsers } from "@/functions";
+import { Prisma, User } from "@prisma/client";
 
+Prisma;
 export async function getAll(): Promise<IResponse> {
-  const ldapUsers = await getLdapUsers();
+  const ldapUsers = await getUsers();
 
-  const dbUsers = await prisma.users_view.findMany();
+  const dbUsers = await prisma.user.findMany();
 
-  const users: users_view[] = [];
+  const users: User[] = [];
 
-  for (let ldapUser of ldapUsers.data) {
-    let dbUser = dbUsers.find(
-      ({ Brugernavn }) => Brugernavn == ldapUser.username
-    );
+  for (let ldapUser of ldapUsers) {
+    let dbUser = dbUsers.find(({ username }) => username == ldapUser.username);
 
     if (!dbUser) {
-      const newUser = await prisma.users.create({
+      const newUser = await prisma.user.create({
         data: { username: ldapUser.username },
       });
 
       dbUser = {
-        UUID: newUser.UUID,
+        id: newUser.id,
         Brugernavn: newUser.username,
         Navn: ldapUser.fullName,
         Oprettet: new Date(),
@@ -33,8 +32,5 @@ export async function getAll(): Promise<IResponse> {
 
   await addFullname(users, "Brugernavn");
 
-  return {
-    status: 200,
-    data: { headers: Object.keys(prisma.users_view.fields), data: users },
-  };
+  return { status: 200, data: users };
 }

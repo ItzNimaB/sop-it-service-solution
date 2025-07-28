@@ -1,18 +1,16 @@
-import { prismaGetRefs as prisma } from "@/configs/prisma.config";
+import prisma from "@/config/prisma";
 import { createItemSchema, getItemSchema } from "@/schemas/item";
-import { Prisma, items } from "@prisma/client";
+import { Item, Prisma } from "@prisma/client";
 
-export async function getOne(UUID?: string | number): Promise<IResponse> {
-  const { data, error } = getItemSchema.safeParse({ UUID });
+export async function getOne(id?: string | number): Promise<IResponse> {
+  const { data, error } = getItemSchema.safeParse({ id });
 
   if (error) return { status: 400, data: error };
 
-  const item = await prisma.items.findUnique({
-    where: { UUID: data.UUID || undefined },
+  const item = await prisma.item.findUnique({
+    where: { id: data.id || undefined },
     include: {
-      items_in_loan: {
-        include: { loans: { include: { users_loans_user_idTousers: true } } },
-      },
+      item_in_loans: { include: { loan: { include: { loaner: true } } } },
     },
   });
 
@@ -28,10 +26,10 @@ export async function createMultiple(
 
   if (validated.error) return { status: 400, data: validated.error };
 
-  const transactions: Prisma.Prisma__itemsClient<items>[] = [];
+  const transactions: Prisma.Prisma__ItemClient<Item>[] = [];
 
   for (let i = 0; i < validated.data.amount; i++) {
-    const itemTransaction = prisma.items.create({
+    const itemTransaction = prisma.item.create({
       data: { product_id: validated.data.product_id },
     });
 

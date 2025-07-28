@@ -1,41 +1,33 @@
 import { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-export default function NavMenu({
-  text = "Home",
-  icon = "fa-solid fa-house",
-  buttons = [
-    {
-      text: "",
-      icon: "",
-      destination: "/",
-    },
-  ],
-}) {
-  const location = useLocation();
+interface NavMenuProps {
+  text: string;
+  icon?: string;
+  buttons: {
+    text: string;
+    icon?: string;
+    destination: string;
+  }[];
+}
 
+export default function NavMenu({ text, icon = "", buttons }: NavMenuProps) {
   const [open, setOpen] = useState(false);
 
-  //toggle menu
   function handleMenuClick() {
     setOpen(!open);
   }
 
   useEffect(() => {
-    if (open) {
-      scrollIntoView2(buttons[buttons.length - 1].text);
-    }
+    if (open) scrollIntoView2(buttons[buttons.length - 1].text);
   }, [open]);
 
-  //scroll to element when menu is opened
   function scrollIntoView2(classname: string) {
     setTimeout(() => {
       const el = document.getElementById(classname);
       if (!el) return;
 
-      el.scrollIntoView({
-        behavior: "smooth",
-      });
+      el.scrollIntoView({ behavior: "smooth" });
     }, 10);
   }
 

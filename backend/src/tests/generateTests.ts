@@ -72,7 +72,7 @@ export default function createTestCases<T extends IService>(
         expect(response.status).toBe(201);
         expect(response.data).toBeInstanceOf(Object);
 
-        if (response.data) cleanupList.push(response.data.UUID);
+        if (response.data) cleanupList.push(response.data.id);
       };
     }) as FunctionWithArgs<T["createOne"]>;
   }
@@ -86,7 +86,7 @@ export default function createTestCases<T extends IService>(
         expect(response.data).toBeInstanceOf(Array);
 
         if (response.data) {
-          cleanupList.push(...response.data.map((d) => d.UUID));
+          cleanupList.push(...response.data.map((d) => d.id));
         }
       };
     }) as FunctionWithArgs<T["createMultiple"]>;

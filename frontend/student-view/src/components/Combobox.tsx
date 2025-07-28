@@ -16,6 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 
@@ -76,7 +77,7 @@ export function Combobox({
                 className="fas fa-xmark hover:opacity-80"
                 onClick={(e) => {
                   setSelected(undefined);
-                  setValue({ UUID: null, name: "" });
+                  setValue({ id: null, name: "" });
                   e.preventDefault();
                 }}
               />
@@ -92,15 +93,15 @@ export function Combobox({
               <CommandGroup>
                 {options.map((option) => (
                   <CommandItem
-                    key={option.UUID}
+                    key={option.id}
                     value={option.name}
                     onSelect={() => {
                       setValue(option);
                       setSelected(option);
 
-                      if (selected?.UUID === option.UUID) {
+                      if (selected?.id === option.id) {
                         setSelected(undefined);
-                        setValue({ UUID: null, name: "" });
+                        setValue({ id: null, name: "" });
                       }
 
                       setOpen(false);

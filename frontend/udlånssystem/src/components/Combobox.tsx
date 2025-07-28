@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,14 +21,19 @@ import {
 import { cn } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 
+interface DefaultModel {
+  id: string | number | null;
+  name: string;
+}
+
 interface ComboboxProps {
   editMode?: boolean;
   label: string;
   showLabel?: boolean;
   setValue?: (value: any) => void;
   resetValue?: () => void;
-  match?: defaultModel | undefined;
-  options?: defaultModel[];
+  match?: DefaultModel | undefined;
+  options?: DefaultModel[];
   popoverWidth?: string;
   required?: boolean;
   disabled?: boolean;
@@ -44,6 +50,8 @@ export function Combobox({
   required = true,
   disabled = false,
 }: ComboboxProps) {
+  const { t } = useTranslation();
+
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(match);
 
@@ -77,7 +85,7 @@ export function Combobox({
                 className="fas fa-xmark hover:opacity-80"
                 onClick={(e) => {
                   setSelected(undefined);
-                  setValue({ UUID: null, name: "" });
+                  setValue({ id: null, name: "" });
                   e.preventDefault();
                 }}
               />
@@ -87,21 +95,21 @@ export function Combobox({
         </PopoverTrigger>
         <PopoverContent className={`w-[${popoverWidth}] p-0 backdrop-blur-lg`}>
           <Command>
-            <CommandInput placeholder={`Søg efter ${label}...`} />
+            <CommandInput placeholder={`${t("Search for")} ${label}...`} />
             <CommandList>
-              <CommandEmpty>Ingen data fundet.</CommandEmpty>
+              <CommandEmpty>{t("No data found")}</CommandEmpty>
               <CommandGroup>
                 {options.map((option) => (
                   <CommandItem
-                    key={option.UUID}
+                    key={option.id}
                     value={option.name}
                     onSelect={() => {
                       setValue(option);
                       setSelected(option);
 
-                      if (selected?.UUID === option.UUID) {
+                      if (selected?.id === option.id) {
                         setSelected(undefined);
-                        setValue({ UUID: null, name: "" });
+                        setValue({ id: null, name: "" });
                       }
 
                       setOpen(false);
@@ -110,7 +118,7 @@ export function Combobox({
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        selected?.name.trim() == option.name.trim()
+                        selected?.id == option.id
                           ? "opacity-100"
                           : "opacity-0",
                       )}

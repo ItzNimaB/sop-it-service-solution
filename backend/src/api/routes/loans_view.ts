@@ -4,6 +4,6 @@ import * as loansViewController from "@controllers/loans_view";
 
 const router = Router();
 
-router.get(["/", "/:UUID"], loansViewController.GetAll());
+router.get(["/", "/:id"], loansViewController.GetAll());
 
 export default router;

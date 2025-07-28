@@ -1,9 +1,10 @@
 import { sign, verify } from "jsonwebtoken";
 
-import prisma from "@/configs/prisma.config";
-import { ldapAuthenticate } from "@/functions";
+import env from "@/config/env";
+import prisma from "@/config/prisma";
+import { ldapAuthenticate } from "@/functions/auth";
 
-const { JWT_SECRET } = process.env;
+const { JWT_SECRET } = env;
 
 export async function login(
   username: string,
@@ -14,22 +15,20 @@ export async function login(
 
     if (!user) return { status: 400, data: "Invalid credentials" };
 
-    if (!JWT_SECRET) throw new Error("JWT_SECRET not set");
-
-    const dbUser = await prisma.users.findFirst({
+    const dbUser = await prisma.user.findFirst({
       where: { username: user.username },
-      select: { UUID: true },
+      select: { id: true },
     });
 
-    let newUser = { UUID: 0 };
+    let newUser = { id: 0 };
 
     if (!dbUser) {
-      newUser = await prisma.users.create({
+      newUser = await prisma.user.create({
         data: { username: user.username },
       });
     }
 
-    user.UUID = dbUser?.UUID || newUser.UUID;
+    user.id = dbUser?.id || newUser.id;
 
     const token = sign(user, JWT_SECRET, { expiresIn: "1d" });
 
@@ -38,17 +37,5 @@ export async function login(
     console.log(err);
 
     return { status: 400, data: "Something went wrong" };
-  }
-}
-
-export async function validate(token: string): Promise<IResponse> {
-  if (!JWT_SECRET) throw new Error("JWT_SECRET not set");
-
-  try {
-    const verified = verify(token, JWT_SECRET);
-
-    return { status: 200, data: verified };
-  } catch (err) {
-    return { status: 400, data: "Invalid token" };
   }
 }

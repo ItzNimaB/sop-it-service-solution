@@ -2,9 +2,9 @@ import { useContext, useEffect } from "react";
 
 import { CurrentUserContext } from "@/App";
 import axios from "axios";
+import { t } from "i18next";
 import { toast } from "sonner";
 
-//validate session token
 export const validateSession = async () => {
   let { data } = await axios.post("auth/validate").catch((err) => {
     err.response.data.user = null;
@@ -15,7 +15,6 @@ export const validateSession = async () => {
   return data;
 };
 
-//login user
 export function useLoginViaSession() {
   const { setCurrentUser } = useContext(CurrentUserContext);
 
@@ -28,6 +27,8 @@ export function useLoginViaSession() {
       setCurrentUser(null);
       return false;
     }
+
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     let res = await validateSession();
 
@@ -64,7 +65,7 @@ export async function loginViaCredentials(username: string, password: string) {
       }
     })
     .catch((err) => {
-      toast.error(`Ukendt fejl! Kunne ikke kontakte serveren. ${err}`);
+      toast.error(t("Unknown error") + " " + err);
     });
   return output;
 }
@@ -72,6 +73,8 @@ export function logout(
   setCurrentUser: React.Dispatch<React.SetStateAction<userState>>,
 ) {
   axios.post("auth/logout");
+
+  axios.defaults.headers.common["Authorization"] = "";
 
   setCurrentUser(null);
 }

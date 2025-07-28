@@ -1,11 +1,12 @@
 import { Router } from "express";
 
-import { isProd, sendMail } from "@/functions";
+import { isProd } from "@/config/env";
+import { sendMail } from "@/functions";
 
 const router = Router();
 
 router.post("/", async (req, res) => {
-  if (isProd()) return;
+  if (isProd) return;
 
   const { to, subject, text } = req.body;
 

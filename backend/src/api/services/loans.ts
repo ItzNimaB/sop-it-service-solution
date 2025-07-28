@@ -1,47 +1,41 @@
-import prisma from "@/configs/prisma.config";
+import prisma from "@/config/prisma";
 import {
-  convertToPrismaTypes,
   getUsers,
   ldapAuthenticate,
-  ldapAuthenticate2,
   returnLoan as returnLoanHelper,
   sendMail,
 } from "@/functions";
 import { generateLoanHTML } from "@/functions/generateLoanHTML";
 import { createLoanSchema } from "@/schemas/loans";
-import { Prisma, items_in_loan } from "@prisma/client";
+import { ItemInLoan, Prisma } from "@prisma/client";
 
 export async function createOne(values: ILoanCreateInput): Promise<IResponse> {
   const { data, error } = createLoanSchema.safeParse(values);
-
   if (error) return { status: 400, data: error };
 
   let { loan, products, personel_username, personel_password } = data;
 
-  const authenticate = await ldapAuthenticate2(
+  const authenticate = await ldapAuthenticate(
     personel_username,
     personel_password
   );
 
   if (!authenticate) return { status: 401 };
 
-  const helpdesk_personel = await prisma.users.findFirst({
+  const helpdesk_personel = await prisma.user.findFirst({
     where: { username: personel_username },
   });
 
   if (!helpdesk_personel) return { status: 401 };
 
-  loan.helpdesk_personel_id = helpdesk_personel.UUID;
+  loan.helpdesk_personel_id = helpdesk_personel.id;
 
-  loan = convertToPrismaTypes(loan, "loans");
-  products = products.map((product) => convertToPrismaTypes(product, "items"));
-
-  const newLoan = await prisma.loans.create({
+  const newLoan = await prisma.loan.create({
     data: {
       ...loan,
       items_in_loan: {
-        create: products.map(({ UUID, withBag, withLock }) => ({
-          item_id: UUID,
+        create: products.map(({ id, withBag, withLock }) => ({
+          item_id: id,
           withBag: Boolean(withBag),
           withLock: Boolean(withLock),
         })),
@@ -49,14 +43,14 @@ export async function createOne(values: ILoanCreateInput): Promise<IResponse> {
     },
   });
 
-  const user = await prisma.users.findFirst({ where: { UUID: loan.user_id } });
+  const user = await prisma.user.findFirst({ where: { id: loan.user_id } });
   const [ldapUser] = await getUsers({ username: user?.username });
 
   if (!ldapUser) return { status: 404, data: { success: false } };
 
   const userEmail = ldapUser?.mail || user?.username + "@edu.sde.dk";
 
-  const loanReceipt = await generateLoanHTML(newLoan.UUID, true);
+  const loanReceipt = await generateLoanHTML(newLoan.id, true);
 
   await sendMail({ to: userEmail, subject: "Lånekontrakt", html: loanReceipt });
 
@@ -64,27 +58,27 @@ export async function createOne(values: ILoanCreateInput): Promise<IResponse> {
 }
 
 interface Item {
-  UUID: number;
+  id: number;
   loan_id: number;
 }
 
 export async function returnLoan(items: Item[]): Promise<IResponse> {
   if (!items) return { status: 400, data: { success: false } };
 
-  var itemsInLoan: Prisma.Prisma__items_in_loanClient<items_in_loan>[] = [];
+  var itemsInLoan: Prisma.Prisma__ItemInLoanClient<ItemInLoan>[] = [];
 
   for (const item of items) {
-    const findItemInLoan = await prisma.items_in_loan.findFirst({
-      where: { item_id: item.UUID, loan_id: item.loan_id },
+    const findItemInLoan = await prisma.itemInLoan.findFirst({
+      where: { item_id: item.id, loan_id: item.loan_id },
     });
 
     if (!findItemInLoan) return { status: 404, data: { success: false } };
 
-    const itemInLoanUUID = findItemInLoan.UUID;
+    const itemInLoanid = findItemInLoan.id;
 
-    const itemInLoan = prisma.items_in_loan.update({
-      where: { UUID: itemInLoanUUID },
-      data: { date_returned: new Date() },
+    const itemInLoan = prisma.itemInLoan.update({
+      where: { id: itemInLoanid },
+      data: { returned_at: new Date() },
     });
 
     itemsInLoan.push(itemInLoan);
@@ -97,8 +91,8 @@ export async function returnLoan(items: Item[]): Promise<IResponse> {
   return { status: 200, data: { success: true } };
 }
 
-export async function getPdf(UUID: string): Promise<IResponse> {
-  const html = await generateLoanHTML(Number(UUID));
+export async function getPdf(id: string): Promise<IResponse> {
+  const html = await generateLoanHTML(Number(id));
 
   return { status: 200, data: html };
 }

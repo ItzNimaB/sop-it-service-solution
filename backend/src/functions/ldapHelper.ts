@@ -2,6 +2,8 @@ import dotenv from "dotenv";
 import { Client, SearchEntry, SearchOptions, createClient } from "ldapjs";
 import { promisify } from "util";
 
+import env from "@/config/env";
+
 dotenv.config();
 
 const {
@@ -9,11 +11,10 @@ const {
   LDAP_PORT,
   LDAP_USERNAME,
   LDAP_PASSWORD,
-  NODE_ENV,
   LDAP_USERS = "",
   LDAP_ADMINS = "",
   LDAP_SUPERIORS = "",
-} = process.env;
+} = env;
 
 export const attributes = ["cn", "sAMAccountName", "mail", "memberOf"];
 
@@ -30,7 +31,7 @@ function searchOptions(filter: GetLdapUsersFilter = { username: "*" }) {
 }
 
 interface getModeratorLevelProps {
-  memberOf?: string[];
+  memberOf: string[];
   dn: string;
 }
 
@@ -60,7 +61,7 @@ export function formatEntryResult(entry: SearchEntry): user {
     fullName: ldapUser.cn,
     username: ldapUser.sAMAccountName,
     mail: ldapUser.mail,
-    memberOf: ldapUser.memberOf,
+    memberOf: ldapUser.memberOf || [],
     moderatorLevel: getModeratorLevel(ldapUser),
   };
 
@@ -69,10 +70,6 @@ export function formatEntryResult(entry: SearchEntry): user {
 
 export async function createLdapClient(): Promise<Client> {
   const client = createClient({ url: `ldap://${LDAP_HOST}:${LDAP_PORT}` });
-
-  if (!LDAP_USERNAME || !LDAP_PASSWORD) {
-    throw new Error("LDAP credentials missing");
-  }
 
   const clientAsynct = promisify(client.bind).bind(client);
   await clientAsynct(LDAP_USERNAME, LDAP_PASSWORD);

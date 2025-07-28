@@ -11,7 +11,7 @@ import Layout from "@/layouts/index";
 export default function LoansPage() {
   const { currentUser } = useContext(CurrentUserContext);
   if (!currentUser) return;
-  const { UUID: id } = currentUser;
+  const { id: id } = currentUser;
 
   const [onlyReturned, setOnlyReturned] = useState(false);
 

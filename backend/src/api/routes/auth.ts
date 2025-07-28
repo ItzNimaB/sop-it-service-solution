@@ -1,32 +1,32 @@
 import { Router } from "express";
 import { sign } from "jsonwebtoken";
 
-import prisma from "@/configs/prisma.config";
-import passport from "@/passport";
+import env from "@/config/env";
+import passport, { authenticateJWT } from "@/config/passport";
+import prisma from "@/config/prisma";
 import * as authController from "@controllers/auth";
-import { verifyLDAP } from "@middleware/auth";
 
-const { JWT_SECRET } = process.env;
-if (!JWT_SECRET) throw new Error("JWT_SECRET not set");
+export const isPublic = true;
+
+const { JWT_SECRET } = env;
 
 const router = Router();
 
-// router.post("/login", authController.Login());
 router.post(
   "/login",
   passport.authenticate("ldapauth", { session: false }),
   async (req, res) => {
     if (!req.user) return res.status(401);
 
-    let user = await prisma.users.findFirst({
+    let user = await prisma.user.findFirst({
       where: { username: req.user.username },
     });
 
-    user ??= await prisma.users.create({
+    user ??= await prisma.user.create({
       data: { username: req.user.username },
     });
 
-    req.user.UUID = user.UUID;
+    req.user.id = user.id;
 
     const token = sign(req.user, JWT_SECRET, { expiresIn: "1d" });
 
@@ -39,15 +39,9 @@ router.post(
     res.status(200).json(req.user);
   }
 );
-router.post("/validate", authController.Validate());
 
-router.get("/cookies", (req, res) => {
-  res.json(req.cookies);
-});
-
-router.post("/logout", (req, res) => {
-  res.clearCookie("token");
-  res.json({ message: "Logged out" });
-});
+router.post("/validate", authenticateJWT, (req, res) => res.json(req.user));
+router.get("/cookies", (req, res) => res.json(req.cookies));
+router.post("/logout", (req, res) => res.clearCookie("token").sendStatus(200));
 
 export default router;

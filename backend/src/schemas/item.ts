@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const getItemSchema = z.object({
-  UUID: z.coerce.number(),
+  id: z.coerce.number(),
 });
 
 export const createItemSchema = z.object({

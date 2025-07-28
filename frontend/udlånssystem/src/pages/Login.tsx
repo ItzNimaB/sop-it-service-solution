@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { loginViaCredentials, useLoginViaSession } from "@/services/login";
 
@@ -7,6 +8,7 @@ import { CurrentUserContext } from "@/App";
 import "@/styles/loginPage.css";
 
 export default function LoginPage() {
+  const { t } = useTranslation();
   const { setCurrentUser } = useContext(CurrentUserContext);
 
   useLoginViaSession();
@@ -41,7 +43,7 @@ export default function LoginPage() {
         <form onSubmit={login} className="loginPage">
           <div className="flex w-full flex-col items-center justify-center">
             <h1 className="mb-[10px] font-normal tracking-[0.01em] text-[#303033]">
-              Velkommen tilbage
+              {t("Welcome back")}
             </h1>
 
             {errorMessages && <p className="errorMessage">{errorMessages}</p>}
@@ -69,10 +71,10 @@ export default function LoginPage() {
               name="password"
               required
             />
-            <label className={isErrClass()}>Adgangskode</label>
+            <label className={isErrClass()}>{t("Password")}</label>
           </div>
           <div className="flex w-full justify-center">
-            <button>Login</button>
+            <button>{t("Login")}</button>
           </div>
         </form>
       </div>

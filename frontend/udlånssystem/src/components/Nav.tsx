@@ -1,13 +1,16 @@
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-import NavBtn from "./Nav-btn.tsx";
-import NavMenu from "./Nav-menu.tsx";
+import NavBtn from "./nav-btn.tsx";
+import NavMenu from "./nav-menu.tsx";
 import Toggle from "./toggle.tsx";
 import UserWidget from "./user-widget.tsx";
 
 import "@/styles/navMenu.css";
 
 export default function Nav() {
+  const { t } = useTranslation();
+
   return (
     <nav className="relative flex h-full flex-col items-center overflow-y-auto [&>section]:p-[0.8rem]">
       <section>
@@ -22,13 +25,13 @@ export default function Nav() {
               v1.1.0-beta
             </h3>
 
-            <h1 className="text-[1.75rem] font-medium">Udlånssystem</h1>
+            <h1 className="text-[1.75rem] font-medium">{t("Udlånsystem")}</h1>
             <h2 className="text-foreground2 flex gap-1 text-[1rem] font-normal no-underline">
-              By
+              {t("Made by")}
               <a
                 target="_blank"
                 href="https://github.com/kenn7575"
-                className="text-foreground2 text-[1rem] font-normal no-underline"
+                className="text-foreground text-[1rem] font-normal no-underline"
               >
                 Kenni
               </a>
@@ -36,7 +39,7 @@ export default function Nav() {
               <a
                 target="_blank"
                 href="https://github.com/ItzNimaB"
-                className="text-foreground2 text-[1rem] font-normal no-underline"
+                className="text-foreground text-[1rem] font-normal no-underline"
               >
                 Nima
               </a>
@@ -46,60 +49,64 @@ export default function Nav() {
       </section>
 
       <section className="mb-4 overflow-y-auto">
-        <NavBtn destination="/" text="Hjem" icon="fa-solid fa-house" />
+        <NavBtn destination="/" text={t("Home")} icon="fa-solid fa-house" />
         <NavBtn
-          destination="/udlaan"
-          text="Udlån"
+          destination="/loans"
+          text={t("Loans")}
           icon="fa-solid fa-file-signature"
         />
 
         <NavBtn
-          destination="/produkter"
-          text="Produkter"
+          destination="/products"
+          text={t("Products")}
           icon="fa-solid fa-bag-shopping"
         />
         <NavBtn
-          destination="/produkttyper"
-          text="Produkttyper"
+          destination="/producttypes"
+          text={t("Product types")}
           icon="fa-solid fa-barcode"
         />
-        <NavBtn destination="/brugere" text="Brugere" icon="fa-solid fa-user" />
+        <NavBtn
+          destination="/users"
+          text={t("Users")}
+          icon="fa-solid fa-user"
+        />
 
         <NavMenu
           buttons={[
             {
-              text: "Kategorier",
+              text: t("Categories"),
               icon: "fa-solid fa-tag",
-              destination: "/kategorier",
+              destination: "/categories",
             },
             {
-              text: "Brands",
+              text: t("Brands"),
               destination: "/brands",
               icon: "fa-regular fa-copyright",
             },
             {
-              text: "Produkt Statusser",
+              text: t("Product status"),
               icon: "fa-solid fa-clipboard-question",
-              destination: "/produktstatusser",
+              destination: "/productstatus",
             },
             {
-              text: "Bygninger",
+              text: t("Buildings"),
               icon: "fa-solid fa-building",
-              destination: "/bygninger",
+              destination: "/buildings",
             },
             {
-              text: "Zoner",
+              text: t("Zones"),
               icon: "fa-solid fa-map-marker-alt",
-              destination: "/zoner",
+              destination: "/zones",
             },
-            {
-              text: "Dashboard",
-              icon: "fa-solid fa-chart-line",
-              destination: "/dashboard",
-            },
+            // {
+            //   text: t("Dashboard"),
+            //   icon: "fa-solid fa-chart-line",
+            //   destination: "/dashboard",
+            // },
           ]}
           icon="fa-solid fa-ellipsis"
-          text="Mere"
+          text={t("More")}
         />
       </section>
       <section className="mt-auto">
@@ -112,17 +119,19 @@ export default function Nav() {
         >
           <div className="flex items-center justify-start gap-2">
             <i className="fa-solid fa-user" />
-            <p className="text-foreground3 text-[1.2rem]">Opret bruger</p>
+            <p className="text-foreground3 text-[1.2rem]">
+              {t("Create new user")}
+            </p>
             <i className="fa-solid fa-external-link-alt" />
           </div>
         </Link>
 
         <hr className="border-foreground2 w-full border-[1px] border-solid" />
-        <NavBtn
-          destination="/notifikationer"
-          text="Notifikationer"
+        {/* <NavBtn
+          destination="/notidications"
+          text={t("Notifications")}
           icon="fa-solid fa-bell"
-        />
+        /> */}
         <NavBtn
           destination="/feedback"
           text="Feedback"
@@ -131,7 +140,7 @@ export default function Nav() {
         <div className="flex w-full items-center justify-between p-[0.5rem_0_0_1rem]">
           <div className="flex items-center gap-2">
             <i className="fa-solid fa-moon text-foreground3 w-8 text-center text-xl" />
-            <p className="text-foreground3 text-[1.2rem]">Dark mode</p>
+            <p className="text-foreground3 text-[1.2rem]">{t("Dark mode")}</p>
           </div>
           <Toggle />
         </div>

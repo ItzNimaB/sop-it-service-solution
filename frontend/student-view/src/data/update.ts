@@ -3,15 +3,15 @@ import { toast } from "sonner";
 
 export default function updateItem<T = any>(
   table: string,
-  UUID: number,
+  id: number,
   data: T,
   config = { withToast: true },
 ): Promise<T> {
-  const promise = axios.patch<any, T>(`${table}/${UUID}`, { data });
+  const promise = axios.patch<any, T>(`${table}/${id}`, { data });
 
   if (config?.withToast) {
     toast.promise(promise, {
-      id: "updateItem" + UUID,
+      id: "updateItem" + id,
       loading: "Gemmer...",
       success: "Gemt!",
     });

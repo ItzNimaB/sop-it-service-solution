@@ -1,4 +1,4 @@
-import prisma from "@/configs/prisma.config";
+import prisma from "@/config/prisma";
 
 export async function getAll(): Promise<IResponse> {
   const itemsView = await prisma.items_view.findMany();
@@ -10,7 +10,7 @@ export async function getAll(): Promise<IResponse> {
     if (itemView.Status) continue;
 
     const itemInLoan = itemsInLoan.find(
-      ({ item_id }) => item_id === itemView.UUID
+      ({ item_id }) => item_id === itemView.id
     );
 
     itemView.Status = itemInLoan ? "Lånt ud" : "Tilgængelig";

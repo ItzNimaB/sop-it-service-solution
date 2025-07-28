@@ -9,7 +9,7 @@ export const createLoanSchema = z.object({
   }),
   products: z.array(
     z.object({
-      UUID: z.coerce.number(),
+      id: z.coerce.number(),
       withBag: z.boolean().optional(),
       withLock: z.boolean().optional(),
     })

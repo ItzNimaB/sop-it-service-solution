@@ -1,14 +1,14 @@
 import { afterEach, describe, it } from "vitest";
 
-import prisma from "@/configs/prisma.config";
+import prisma from "@/config/prisma";
 import * as itemsService from "@services/items";
 import * as tableService from "@services/tables";
 
 import createTestCases from "./generateTests";
 
 describe("Items", () => {
-  const deleteFunction = async (UUID: string) => {
-    await prisma.items.delete({ where: { UUID: Number(UUID) } });
+  const deleteFunction = async (id: string) => {
+    await prisma.items.delete({ where: { id: Number(id) } });
   };
 
   const specificTestCases = createTestCases(itemsService, deleteFunction);
@@ -19,15 +19,15 @@ describe("Items", () => {
   });
 
   describe("Get cases", async () => {
-    const { UUID } = await prisma.items.findFirstOrThrow();
+    const { id } = await prisma.items.findFirstOrThrow();
 
     it("should get all items", tableTestCases.getAllTest("items"));
-    it("should get one item", specificTestCases.getOneTest(UUID));
+    it("should get one item", specificTestCases.getOneTest(id));
   });
 
   describe("Create cases", async () => {
-    const { UUID } = await prisma.products.findFirstOrThrow();
+    const { id } = await prisma.products.findFirstOrThrow();
 
-    it("should create an item", specificTestCases.createMultipleTest(UUID));
+    it("should create an item", specificTestCases.createMultipleTest(id));
   });
 });

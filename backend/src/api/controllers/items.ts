@@ -2,9 +2,9 @@ import * as ItemsService from "@services/items";
 
 export function GetOne(): IController {
   return async (req, res) => {
-    const { UUID } = req.params;
+    const { id } = req.params;
 
-    const response = await ItemsService.getOne(UUID);
+    const response = await ItemsService.getOne(id);
 
     res.status(response.status).json(response.data);
   };

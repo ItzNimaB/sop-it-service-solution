@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import prisma from "@/configs/prisma.config";
+import prisma from "@/config/prisma";
 
 export async function Validate(
   req: Request,
@@ -19,7 +19,7 @@ export async function Validate(
 
   if (!user || !moderator) return res.sendStatus(401);
 
-  let user_id = user.UUID;
+  let user_id = user.id;
 
   req.query.user_id = user_id.toString();
 

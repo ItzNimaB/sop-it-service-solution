@@ -1,4 +1,4 @@
-import { type ComponentType, lazy } from "react";
+import { type ComponentType } from "react";
 
 const exclude = ["components", "Login", "Home"];
 

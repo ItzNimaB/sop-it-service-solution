@@ -1,1 +1,0 @@
-interface categoryModel extends defaultModel {}

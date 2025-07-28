@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import FormNewPanel from "@/components/form-new-panel";
 
-import { createItem, getData } from "@/data/index";
+import { createItem } from "@/data/index";
 import { autoGenZodSchema } from "@/services/autoGen";
 import { getPrevPage } from "@/services/pathFormatter";
 
@@ -11,8 +11,8 @@ import { toast } from "sonner";
 import type { z } from "zod";
 
 import FormPage from "./components/FormPage";
-
-const defaultFields: Field[] = [{ label: "Navn", binding: "name" }];
+import { getSelectOptions } from "./helpers/getSelectOptions";
+import { getDefaultFields } from "./util";
 
 interface NewLayoutProps {
   table: string;
@@ -26,7 +26,7 @@ interface NewLayoutProps {
 
 export default function NewLayout({
   table,
-  fields = defaultFields,
+  fields = getDefaultFields(),
   zodSchema = autoGenZodSchema(fields),
   formSlot = <></>,
   redirectOnCreate = true,
@@ -38,32 +38,19 @@ export default function NewLayout({
 
   const [fields2, setFields] = useState(fields);
 
-  async function fetchSelectOptions() {
-    for (const field of fields) {
-      if (field.type == "select") {
-        if (typeof field.options != "string") continue;
-
-        field.options = await getData<any>(field.options);
-        setFields((prev) => [...prev]);
-      }
-    }
-
-    setFields(fields);
-  }
-
   useEffect(() => {
-    fetchSelectOptions();
+    getSelectOptions(fields, setFields);
   }, [fields2]);
 
   async function handleCreate() {
     const { data, error } = zodSchema.safeParse(exportData);
 
     if (error) {
-      error.errors.reverse().map((e) =>
-        toast.warning(e.message, {
-          id: e.code + "-" + e.path.join("-"),
-        }),
-      );
+      error.errors
+        .reverse()
+        .map((e) =>
+          toast.warning(e.message, { id: e.code + "-" + e.path.join("-") }),
+        );
       return;
     }
 

@@ -19,15 +19,3 @@ export function Login(): IController {
     res.status(response.status).json(response.data.user);
   };
 }
-
-export function Validate(): IController {
-  return async (req, res) => {
-    const { token } = req.cookies;
-
-    if (!token) return res.status(401).json({ error: "Validation failed" });
-
-    const response = await AuthService.validate(token);
-
-    res.status(response.status).json(response.data);
-  };
-}

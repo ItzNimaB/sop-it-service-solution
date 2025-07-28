@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import "@/styles/toggle.css";
 
 export default function Toggle() {
+  const { t } = useTranslation();
+
   const [darkmode, setDarkmode] = useState(
     localStorage.getItem("theme") == "dark",
   );
@@ -31,7 +34,7 @@ export default function Toggle() {
         onChange={(e) => toggleTheme(e.target.checked)}
       />
       <label className="toggle" htmlFor="switch">
-        Toggle
+        {t("Toggle")}
       </label>
     </>
   );

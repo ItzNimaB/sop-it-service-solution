@@ -5,6 +5,10 @@ declare global {
     (req: Request, res: Response): void;
   }
 
+  interface IService<T = any> {
+    (...args: any[]): Promise<IResponse<T>>;
+  }
+
   interface IMiddleware {
     (req: Request, res: Response, next: NextFunction): void;
   }

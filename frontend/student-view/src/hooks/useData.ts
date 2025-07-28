@@ -27,7 +27,7 @@ export default function useData<T>(
   const [isLoading, setIsLoading] = useState(true);
 
   async function fetchData() {
-    if (id) config.UUID = id;
+    if (id) config.id = id;
 
     if (Object.keys(config).length === 0) config = undefined as any;
 

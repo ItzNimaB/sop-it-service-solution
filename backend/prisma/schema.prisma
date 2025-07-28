@@ -1,7 +1,11 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["views"]
-  binaryTargets   = ["native", "darwin-arm64", "linux-arm64-openssl-3.0.x", "linux-musl-arm64-openssl-3.0.x"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "darwin-arm64", "linux-arm64-openssl-3.0.x", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+generator typescriptInterfaces {
+  provider = "prisma-generator-typescript-interfaces"
+  output   = "../src/types/prisma.d.ts"
 }
 
 datasource db {
@@ -9,76 +13,88 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model brands {
-  UUID     Int        @id @default(autoincrement()) @db.UnsignedInt
-  name     String     @db.VarChar(255)
-  products products[]
+model Brand {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now()) @db.DateTime(0)
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime? @db.DateTime(0)
+  name       String    @db.VarChar(255)
+  products   Product[]
 }
 
-model buildings {
-  UUID  Int     @id @default(autoincrement())
-  name  String? @db.VarChar(255)
-  zones zones[]
+model Building {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now()) @db.DateTime(0)
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime? @db.DateTime(0)
+  name       String    @db.VarChar(255)
+  zones      Zone[]
 }
 
-model categories {
-  UUID     Int        @id @default(autoincrement()) @db.UnsignedInt
-  name     String     @db.VarChar(255)
-  products products[]
+model Category {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now()) @db.DateTime(0)
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime? @db.DateTime(0)
+  name       String    @db.VarChar(255)
+  products   Product[]
 }
 
-model items {
-  UUID                Int                @id @default(autoincrement()) @db.UnsignedInt
-  date_created        DateTime           @default(now()) @db.DateTime(0)
-  date_updated        DateTime?          @default(now()) @db.DateTime(0)
-  storage_location_id Int?               @db.UnsignedInt
-  product_status_id   Int?               @db.UnsignedInt
-  product_id          Int                @db.UnsignedInt
-  description         String?            @db.LongText
+model Item {
+  id                  Int              @id @default(autoincrement())
+  created_at          DateTime         @default(now()) @db.DateTime(0)
+  updated_at          DateTime         @updatedAt
+  deleted_at          DateTime?        @db.DateTime(0)
+  storage_location_id Int?
+  product_status_id   Int?
+  product_id          Int
+  description         String?          @db.LongText
   barcode_number      Int?
-  products            products           @relation(fields: [product_id], references: [UUID], onDelete: NoAction, onUpdate: NoAction, map: "product_id_fk")
-  product_status      product_status?    @relation(fields: [product_status_id], references: [UUID], onDelete: NoAction, onUpdate: NoAction, map: "product_status_id_fk")
-  storage_locations   storage_locations? @relation(fields: [storage_location_id], references: [UUID], onDelete: NoAction, onUpdate: NoAction, map: "storage_location_id_fk")
-  items_in_loan       items_in_loan[]
+  product             Product          @relation(fields: [product_id], references: [id], map: "product_id_fk")
+  product_status      ProductStatus?   @relation(fields: [product_status_id], references: [id], map: "product_status_id_fk")
+  storage_location    StorageLocation? @relation(fields: [storage_location_id], references: [id], map: "storage_location_id_fk")
+  item_in_loans       ItemInLoan[]
 
   @@index([storage_location_id], map: "items_ibfk_1")
   @@index([product_id], map: "product_id")
   @@index([product_status_id], map: "product_status_id")
 }
 
-model items_in_loan {
-  UUID          Int       @id @default(autoincrement()) @db.UnsignedInt
-  loan_id       Int       @db.UnsignedInt
-  item_id       Int       @db.UnsignedInt
-  date_created  DateTime  @default(now()) @db.DateTime(0)
-  date_returned DateTime? @db.DateTime(0)
-  withBag       Boolean   @default(false)
-  withLock      Boolean   @default(false)
-  items         items     @relation(fields: [item_id], references: [UUID], onDelete: NoAction, onUpdate: NoAction, map: "item_id_fk")
-  loans         loans     @relation(fields: [loan_id], references: [UUID], onDelete: NoAction, onUpdate: NoAction, map: "loan_id_fk")
+model ItemInLoan {
+  id          Int       @id @default(autoincrement())
+  created_at  DateTime  @default(now()) @db.DateTime(0)
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime? @db.DateTime(0)
+  returned_at DateTime? @db.DateTime(0)
+  loan_id     Int
+  item_id     Int
+  with_bag    Boolean   @default(false)
+  with_lock   Boolean   @default(false)
+  item        Item      @relation(fields: [item_id], references: [id], map: "item_id_fk")
+  loan        Loan      @relation(fields: [loan_id], references: [id], map: "loan_id_fk")
 
   @@index([item_id], map: "item_id")
   @@index([loan_id], map: "item_loan_id_fk_idx")
 }
 
-model loans {
-  UUID                                    Int               @id @default(autoincrement()) @db.UnsignedInt
-  date_created                            DateTime          @default(now()) @db.DateTime(0)
-  date_updated                            DateTime          @default(now()) @db.DateTime(0)
-  date_of_return                          DateTime?         @db.DateTime(0)
-  location_of_use_id                      Int?              @db.UnsignedInt
-  user_id                                 Int               @db.UnsignedInt
-  helpdesk_personel_id                    Int?              @db.UnsignedInt
-  selfservice_case_id                     Int?              @db.UnsignedInt
-  recipient_type_id                       Int?              @db.UnsignedInt
-  loan_length                             Int?
-  mail_sent                               Boolean           @default(false)
-  items_in_loan                           items_in_loan[]
-  users_loans_helpdesk_personel_idTousers users?            @relation("loans_helpdesk_personel_idTousers", fields: [helpdesk_personel_id], references: [UUID], onDelete: NoAction, onUpdate: NoAction, map: "helpdesk_personel_id_fk")
-  zones                                   zones?            @relation(fields: [location_of_use_id], references: [UUID], onDelete: NoAction, onUpdate: NoAction, map: "location_of_use_id_fk")
-  recipient_type                          recipient_type?   @relation(fields: [recipient_type_id], references: [UUID], onDelete: NoAction, onUpdate: NoAction, map: "recipient_type_id_fk")
-  selfservice_case                        selfservice_case? @relation(fields: [selfservice_case_id], references: [UUID], onDelete: NoAction, onUpdate: NoAction, map: "selfservice_case_id_fk")
-  users_loans_user_idTousers              users             @relation("loans_user_idTousers", fields: [user_id], references: [UUID], onDelete: NoAction, onUpdate: NoAction, map: "user_id_fk")
+model Loan {
+  id                   Int            @id @default(autoincrement())
+  created_at           DateTime       @default(now()) @db.DateTime(0)
+  updated_at           DateTime       @updatedAt
+  deleted_at           DateTime?      @db.DateTime(0)
+  date_of_return       DateTime?      @db.DateTime(0)
+  location_of_use_id   Int?
+  user_id              Int
+  helpdesk_personel_id Int?
+  selfservice_case_id  Int?
+  recipient_type_id    Int?
+  loan_length          Int?
+  mail_sent            Boolean        @default(false)
+  items_in_loan        ItemInLoan[]
+  personnel            User?          @relation("loans_helpdesk_personel_idTousers", fields: [helpdesk_personel_id], references: [id], map: "helpdesk_personel_id_fk")
+  zone                 Zone?          @relation(fields: [location_of_use_id], references: [id], map: "location_of_use_id_fk")
+  recipient_type       RecipientType? @relation(fields: [recipient_type_id], references: [id], map: "recipient_type_id_fk")
+  loaner               User           @relation("loans_user_idTousers", fields: [user_id], references: [id], map: "user_id_fk")
 
   @@index([helpdesk_personel_id], map: "helpdesk_personel_id")
   @@index([location_of_use_id], map: "location_of_use_id")
@@ -87,218 +103,94 @@ model loans {
   @@index([user_id], map: "user_id")
 }
 
-model pickup_locations {
-  UUID Int    @id @default(autoincrement()) @db.UnsignedInt
-  name String @db.VarChar(255)
+model PickupLocation {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now()) @db.DateTime(0)
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime? @db.DateTime(0)
+  name       String    @db.VarChar(255)
 }
 
-model product_status {
-  UUID  Int     @id @default(autoincrement()) @db.UnsignedInt
-  name  String  @db.VarChar(255)
-  items items[]
+model ProductStatus {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now()) @db.DateTime(0)
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime? @db.DateTime(0)
+  name       String    @db.VarChar(255)
+  items      Item[]
 }
 
-model products {
-  UUID              Int        @id @default(autoincrement()) @db.UnsignedInt
-  name              String     @db.VarChar(255)
-  brand_id          Int        @db.UnsignedInt
-  category_id       Int        @db.UnsignedInt
-  date_created      DateTime   @default(now()) @db.DateTime(0)
-  date_updated      DateTime   @default(now()) @db.DateTime(0)
-  product_id_prefix String?    @db.VarChar(50)
-  image_name        String?    @db.VarChar(50)
-  items             items[]
-  categories        categories @relation(fields: [category_id], references: [UUID], onDelete: NoAction, onUpdate: NoAction, map: "product_category_fk")
-  brands            brands     @relation(fields: [brand_id], references: [UUID], onDelete: NoAction, onUpdate: NoAction, map: "products_brands_fk")
+model Product {
+  id                Int       @id @default(autoincrement())
+  created_at        DateTime  @default(now()) @db.DateTime(0)
+  updated_at        DateTime  @updatedAt
+  deleted_at        DateTime? @db.DateTime(0)
+  name              String    @db.VarChar(255)
+  brand_id          Int
+  category_id       Int
+  product_id_prefix String?   @db.VarChar(50)
+  image_name        String?   @db.VarChar(50)
+  items             Item[]
+  category          Category  @relation(fields: [category_id], references: [id], map: "product_category_fk")
+  brand             Brand     @relation(fields: [brand_id], references: [id], map: "products_brands_fk")
 
   @@index([brand_id], map: "brand_id")
   @@index([category_id], map: "products_ibfk_2")
 }
 
-model recipient_type {
-  UUID  Int     @id @default(autoincrement()) @db.UnsignedInt
-  name  String  @db.VarChar(255)
-  loans loans[]
+model RecipientType {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now()) @db.DateTime(0)
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime? @db.DateTime(0)
+  name       String    @db.VarChar(255)
+  loans      Loan[]
 }
 
-model selfservice_case {
-  UUID                       Int       @id @default(autoincrement()) @db.UnsignedInt
-  delivery_location_id       Int?      @db.UnsignedInt
-  pickup_location_id         Int?      @db.UnsignedInt
-  distribution_date          DateTime  @db.DateTime(0)
-  estimated_time_consumption DateTime? @db.DateTime(0)
-  loans                      loans[]
-
-  @@index([delivery_location_id], map: "delivery_location_id")
-  @@index([pickup_location_id], map: "pickup_location_id")
-}
-
-model storage_locations {
-  UUID         Int       @id @default(autoincrement()) @db.UnsignedInt
-  zone_id      Int
-  kabinet      String?   @db.VarChar(255)
-  shelf        String?   @db.VarChar(255)
-  idle_since   DateTime? @default(now()) @db.DateTime(0)
-  img_name     String?   @db.VarChar(255)
-  date_updated DateTime  @default(now()) @db.DateTime(0)
-  items        items[]
+model StorageLocation {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now()) @db.DateTime(0)
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime? @db.DateTime(0)
+  zone_id    Int
+  kabinet    String?   @db.VarChar(255)
+  shelf      String?   @db.VarChar(255)
+  idle_since DateTime? @default(now()) @db.DateTime(0)
+  img_name   String?   @db.VarChar(255)
+  items      Item[]
 
   @@index([zone_id], map: "zone_id")
 }
 
-model users {
-  UUID                                    Int      @id @default(autoincrement()) @db.UnsignedInt
-  username                                String   @db.VarChar(255)
-  date_created                            DateTime @default(now()) @db.DateTime(0)
-  date_updated                            DateTime @default(now()) @db.DateTime(0)
-  loans_loans_helpdesk_personel_idTousers loans[]  @relation("loans_helpdesk_personel_idTousers")
-  loans_loans_user_idTousers              loans[]  @relation("loans_user_idTousers")
+model User {
+  id            Int       @id @default(autoincrement())
+  created_at    DateTime  @default(now()) @db.DateTime(0)
+  updated_at    DateTime  @updatedAt
+  deleted_at    DateTime? @db.DateTime(0)
+  username      String    @db.VarChar(255)
+  loans_managed Loan[]    @relation("loans_helpdesk_personel_idTousers")
+  loans         Loan[]    @relation("loans_user_idTousers")
 }
 
-model zones {
-  UUID        Int       @id @default(autoincrement()) @db.UnsignedInt
+model Zone {
+  id          Int       @id @default(autoincrement())
+  created_at  DateTime  @default(now()) @db.DateTime(0)
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime? @db.DateTime(0)
   name        String    @db.VarChar(255)
   building_id Int
   floor_level Int
-  loans       loans[]
-  buildings   buildings @relation(fields: [building_id], references: [UUID], onDelete: NoAction, onUpdate: NoAction, map: "buildings_fk")
+  loans       Loan[]
+  building    Building  @relation(fields: [building_id], references: [id], map: "buildings_fk")
 
   @@index([building_id], map: "building_id")
 }
 
-model feedback {
-  UUID         Int      @id @default(autoincrement())
-  title        String   @db.VarChar(127)
-  description  String   @db.Text
-  date_created DateTime @default(now()) @db.DateTime(0)
-}
-
-view available_products_view {
-  UUID      Int     @id @default(0) @db.UnsignedInt
-  Navn      String? @db.VarChar(255)
-  Brand     String? @db.VarChar(255)
-  Stregkode String? @db.VarChar(54)
-}
-
-view brands_view {
-  UUID Int    @id @default(0) @db.UnsignedInt
-  Navn String @db.VarChar(255)
-}
-
-view categories_view {
-  UUID Int    @id @default(0) @db.UnsignedInt
-  Navn String @db.VarChar(255)
-}
-
-view items_from_loans {
-  UUID       Int       @id @default(0) @db.UnsignedInt
-  Oprettet   DateTime  @default(now()) @db.DateTime(0)
-  Produkt    String    @db.VarChar(255)
-  Med_taske  Boolean   @default(false)
-  Med_Laas   Boolean   @default(false)
-  Stregkode  String?   @db.VarChar(54)
-  loan_id    Int       @db.UnsignedInt
-  Returneret DateTime? @db.DateTime(0)
-}
-
-view items_view {
-  UUID      Int       @id @default(0) @db.UnsignedInt
-  Navn      String?   @db.VarChar(255)
-  Stregkode String?   @db.VarChar(54)
-  Status    String?   @db.VarChar(255)
-  Kommentar String?   @db.LongText
-  Oprettet  DateTime  @default(now()) @db.DateTime(0)
-  Opdateret DateTime? @default(now()) @db.DateTime(0)
-}
-
-view loans_view {
-  UUID             Int       @id @default(0) @db.UnsignedInt
-  Navn             String    @default("") @db.Char(0)
-  Laaner           String?   @db.VarChar(255)
-  Udlaaner         String?   @db.VarChar(255)
-  Oprettet         DateTime  @default(now()) @db.DateTime(0)
-  Opdateret        DateTime  @default(now()) @db.DateTime(0)
-  Returneret       DateTime? @db.DateTime(0)
-  Recipent         String?   @db.VarChar(255)
-  Laanetid         String?   @db.VarChar(16)
-  Returneringsdato DateTime? @db.DateTime(0)
-  user_id          Int?      @default(0) @db.UnsignedInt
-}
-
-view loans_view_extended {
-  UUID                Int     @id @default(0) @db.UnsignedInt
-  location_of_use_id  Int?    @db.UnsignedInt
-  selfservice_case_id Int?    @db.UnsignedInt
-  loan_length         Int?
-  zone_id             Int?
-  kabinet             String? @db.VarChar(255)
-  shelf               String? @db.VarChar(255)
-  loaner_id           Int?    @default(0) @db.UnsignedInt
-  loaner_username     String? @db.VarChar(255)
-  personel_id         Int?    @default(0) @db.UnsignedInt
-  personel_username   String? @db.VarChar(255)
-  recipient_type_id   Int?    @default(0) @db.UnsignedInt
-  recipient_name      String? @db.VarChar(255)
-}
-
-view products_view {
-  UUID      Int      @id @default(0) @db.UnsignedInt
-  Navn      String   @db.VarChar(255)
-  Kategori  String?  @db.VarChar(255)
-  Brand     String?  @db.VarChar(255)
-  Oprettet  DateTime @default(now()) @db.DateTime(0)
-  Opdateret DateTime @default(now()) @db.DateTime(0)
-}
-
-view users_view {
-  UUID       Int      @id @default(0) @db.UnsignedInt
-  Navn       String   @default("") @db.Char(0)
-  Brugernavn String   @db.VarChar(255)
-  Oprettet   DateTime @default(now()) @db.DateTime(0)
-  Opdateret  DateTime @default(now()) @db.DateTime(0)
-}
-
-view product_status_view {
-  UUID Int    @id @default(0) @db.UnsignedInt
-  Navn String @db.VarChar(255)
-}
-
-view items_without_status {
-  UUID      Int       @id @default(0) @db.UnsignedInt
-  Navn      String?   @db.VarChar(255)
-  Stregkode String?   @db.VarChar(54)
-  Oprettet  DateTime  @default(now()) @db.DateTime(0)
-  Opdateret DateTime? @default(now()) @db.DateTime(0)
-}
-
-view items_with_status {
-  UUID      Int       @id @default(0) @db.UnsignedInt
-  Navn      String?   @db.VarChar(255)
-  Stregkode String?   @db.VarChar(54)
-  Status    String    @db.VarChar(255)
-  Oprettet  DateTime  @default(now()) @db.DateTime(0)
-  Opdateret DateTime? @default(now()) @db.DateTime(0)
-}
-
-view zones_view {
-  UUID    Int     @id @default(0) @db.UnsignedInt
-  Navn    String  @db.VarChar(255)
-  Bygning String? @db.VarChar(255)
-  Etage   Int
-}
-
-view buildings_view {
-  UUID Int     @id @default(0)
-  Navn String? @db.VarChar(255)
-}
-
-view user_loans {
-  UUID             Int       @id @default(0) @db.UnsignedInt
-  Produkt          String    @db.VarChar(255)
-  Oprettet         DateTime  @default(now()) @db.DateTime(0)
-  Returneret       DateTime? @db.DateTime(0)
-  Returneringsdato DateTime? @db.DateTime(0)
-  Kommentar        String?   @db.LongText
-  item_id          Int       @db.UnsignedInt
-  user_id          Int       @default(0) @db.UnsignedInt
+model Feedback {
+  id          Int       @id @default(autoincrement())
+  created_at  DateTime  @default(now()) @db.DateTime(0)
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime? @db.DateTime(0)
+  title       String    @db.VarChar(127)
+  description String    @db.Text
 }

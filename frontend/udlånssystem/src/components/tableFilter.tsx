@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 
 import { Input } from "@/components/ui/input";
@@ -11,6 +12,7 @@ export default function Filter({
   column: Column<any, any>;
   table: Table<any>;
 }) {
+  const { t } = useTranslation();
   const [_, setSearchParams] = useSearchParams();
 
   const columnFilterValue = column.getFilterValue();
@@ -42,7 +44,7 @@ export default function Filter({
           );
       }}
       onClick={(e) => e.stopPropagation()}
-      placeholder="Søg..."
+      placeholder={`${t("Search")}...`}
       type="text"
       value={(columnFilterValue ?? "") as string}
       disabled={!column.getCanFilter()}

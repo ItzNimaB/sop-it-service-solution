@@ -5,7 +5,7 @@ interface ILoanCreateInput {
     helpdesk_personel_id: number;
   };
   products: {
-    UUID: number;
+    id: number;
     withBag: boolean;
     withLock: boolean;
   }[];

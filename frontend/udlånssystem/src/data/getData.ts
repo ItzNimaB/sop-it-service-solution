@@ -1,47 +1,29 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { t } from "i18next";
 import { toast } from "sonner";
 
-const defaultConfig: Config = {
-  UUID: undefined,
-  withHeaders: false,
-};
-
 export default async function getData<T>(
   table: string,
-  config: Config & { withHeaders: true },
-): Promise<DataWithHeaders<T> | null>;
+  id?: string | number | null,
+): Promise<T | null> {
+  if (id === null) return null;
 
-export default async function getData<T>(
-  table: string,
-  config?: Config & { withHeaders?: false },
-): Promise<T | null>;
+  const url = table + (id ? "/" + id : "");
 
-export default async function getData<T>(
-  table: string,
-  config = defaultConfig,
-): Promise<T | DataWithHeaders<T> | null> {
-  if (config.UUID === null) return null;
+  const { data } = await axios.get<T>(url);
 
-  const { data }: { data: DataWithHeaders } = await axios
-    .get(table + (config.UUID ? "/" + config.UUID : ""))
-    .catch(handleError);
-
-  if (config.withHeaders) return data as DataWithHeaders<T>;
-
-  if (config.withHeaders === false) {
-    const dataWithoutHeader = data?.data;
-
-    if (dataWithoutHeader) return dataWithoutHeader;
-    return data as T;
+  if (!data) {
+    toast.error(t("No data found"));
+    return null;
   }
 
-  return data as T;
+  return data;
 }
 
-function handleError(err: any) {
-  if (err.response.status == 401) return "Du er ikke logget ind";
+function handleError(err: AxiosError) {
+  if (err?.response?.status == 401) return t("You are not logged in");
 
-  toast.error("Ukendt fejl " + err);
+  toast.error(t("Unknown error:") + " " + err);
 
-  return err;
+  return { status: 500, data: null };
 }

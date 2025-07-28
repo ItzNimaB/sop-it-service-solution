@@ -1,10 +1,12 @@
 import { NavLink } from "react-router-dom";
 
-export default function ({
-  destination = "/",
-  text = "Home",
-  icon = "fa-solid fa-house",
-}) {
+interface NavBtnProps {
+  destination?: string;
+  text: string;
+  icon?: string;
+}
+
+export default function ({ destination = "/", text, icon = "" }: NavBtnProps) {
   return (
     <NavLink
       to={destination}

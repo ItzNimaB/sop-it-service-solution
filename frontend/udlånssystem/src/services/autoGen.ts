@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { z } from "zod";
 
 export function autoGenZodSchema(fields: Field[]): z.ZodObject<any> {
@@ -8,7 +9,7 @@ export function autoGenZodSchema(fields: Field[]): z.ZodObject<any> {
 
     const defaultOptions = {
       description: field.label,
-      message: `${field.label} er påkrævet`,
+      message: t("field required", field.label),
     };
 
     if (!field?.type) field.type = "text";
@@ -26,8 +27,8 @@ export function autoGenZodSchema(fields: Field[]): z.ZodObject<any> {
       case "number":
         zodType = z
           .number(defaultOptions)
-          .int(`${field.label} skal være et heltal`)
-          .min(0, `${field.label} skal være et positivt heltal`);
+          .int(t("must be a integer", field.label))
+          .min(0, t("must be a positive integer", field.label));
         break;
       case "select":
         zodType = z.number(defaultOptions).int();

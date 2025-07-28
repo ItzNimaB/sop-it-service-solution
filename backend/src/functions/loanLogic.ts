@@ -1,14 +1,14 @@
-import prisma from "@/configs/prisma.config";
-import { loans } from "@prisma/client";
+import prisma from "@/config/prisma";
+import type { Loan } from "@prisma/client";
 
-export async function returnLoan(loanId: loans["UUID"]) {
-  const itemsNotReturned = await prisma.items_in_loan.findMany({
-    where: { loan_id: loanId, date_returned: null },
+export async function returnLoan(loanId: Loan["id"]) {
+  const itemsNotReturned = await prisma.itemInLoan.findMany({
+    where: { loan_id: loanId, returned_at: null },
   });
 
   if (itemsNotReturned.length === 0) {
-    await prisma.loans.update({
-      where: { UUID: loanId },
+    await prisma.loan.update({
+      where: { id: loanId },
       data: { date_of_return: new Date() },
     });
 

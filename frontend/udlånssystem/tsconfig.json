@@ -17,7 +17,8 @@
     "jsx": "react-jsx",
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@prisma": ["../../../backend/src/types/prisma"]
     },
     "verbatimModuleSyntax": true,
     "ignoreDeprecations": "5.0"

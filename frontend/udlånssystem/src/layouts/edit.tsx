@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 
 import FormEditPanel from "@/components/form-edit-panel";
@@ -12,8 +13,8 @@ import { toast } from "sonner";
 import type { z } from "zod";
 
 import FormPage from "./components/FormPage";
-
-const defaultFields: Field[] = [{ label: "Navn", binding: "name" }];
+import { getSelectOptions } from "./helpers/getSelectOptions";
+import { getDefaultFields } from "./util";
 
 interface EditLayoutProps {
   table: string;
@@ -25,14 +26,14 @@ interface EditLayoutProps {
 
 export default function EditLayout({
   table,
-  fields = defaultFields,
+  fields = getDefaultFields(),
   zodSchema = autoGenZodSchema(fields),
   panelSlot = <></>,
   formSlot = <></>,
 }: EditLayoutProps) {
-  const { id } = useParams();
-  const UUID = Number(id!);
+  const { id } = useParams() as { id: string };
 
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [editMode, setEditMode] = useState(false);
@@ -42,32 +43,19 @@ export default function EditLayout({
 
   const [fields2, setFields] = useState(fields);
 
-  async function fetchSelectOptions() {
-    for (let field of fields) {
-      if (field.type == "select") {
-        if (typeof field.options != "string") continue;
-
-        field.options = await getData<any>(field.options);
-        setFields((prev) => [...prev]);
-      }
-    }
-
-    setFields(fields);
-  }
-
   useEffect(() => {
     importDataFromDB();
   }, []);
 
   useEffect(() => {
-    fetchSelectOptions();
+    getSelectOptions(fields, setFields);
   }, [fields2]);
 
   async function importDataFromDB() {
-    const data = await getData<any>(table, { UUID });
+    const data = await getData<any>(table, id);
 
-    if (!data?.UUID) {
-      toast.error("Kunne ikke finde data");
+    if (!data?.id) {
+      toast.error(t("Could not find data"));
       navigate(getPrevPage());
       return;
     }
@@ -75,7 +63,7 @@ export default function EditLayout({
     setExportData({ ...data });
     setImportData({ ...data });
 
-    await fetchSelectOptions();
+    await getSelectOptions(fields, setFields);
   }
 
   function handleReset() {
@@ -112,34 +100,34 @@ export default function EditLayout({
       return;
     }
 
-    await updateItem(table, UUID, data);
+    await updateItem(table, id, data);
 
     importDataFromDB();
     setEditMode(false);
   }
 
   function handleDelete() {
-    const name = importData?.name || "#" + UUID;
+    const name = importData?.name || "#" + id;
 
-    toast(`Sikker på du vil slette "${name}"?`, {
+    toast(`${t("promtToastDelete", name)}`, {
       id: "promptDelete",
       position: "top-center",
       action: {
-        label: "Slet",
+        label: t("Delete"),
         onClick: async () => {
-          await deleteItem(table, UUID);
+          await deleteItem(table, id);
 
           navigate(getPrevPage());
         },
       },
       cancel: {
-        label: "Annuller",
+        label: t("Cancel"),
         onClick: () => toast.dismiss("promptDelete"),
       },
     });
   }
 
-  if (!importData) return <div>Loading...</div>;
+  if (!importData) return <div>{t("Loading") + "..."}</div>;
 
   return (
     <div className="box-border flex h-full gap-4 p-8">

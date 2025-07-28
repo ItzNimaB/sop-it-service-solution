@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import getData from "@/data/getData";
@@ -8,6 +9,7 @@ import { cheatCode } from "@/services/cheatCode";
 import { toast } from "sonner";
 
 export default function Home() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   useBarcode(handleBarcodeScan);
@@ -15,7 +17,7 @@ export default function Home() {
   const [cheatActive, setCheatActive] = useState(false);
   window.addEventListener(
     "cheatCode",
-    (e) => {
+    () => {
       if (!cheatActive) setCheatActive(true);
     },
     { once: true },
@@ -28,45 +30,46 @@ export default function Home() {
     const [scannedProduct] =
       (await getData<itemsView[]>("items_view?Stregkode=" + value)) || [];
 
-    if (!scannedProduct) return toast.warning("Produktet kunne ikke findes");
+    if (!scannedProduct) return toast.warning(t("Product not found"));
 
     if (scannedProduct.Status == "Available") {
-      navigate(`/udlaan/new?item=${scannedProduct.UUID}`);
+      navigate(`/udlaan/new?item=${scannedProduct.id}`);
       return;
     }
 
     if (scannedProduct.Status == "Lent") {
       const item_from_loan = await getData<itemsFromLoan[]>(
-        `items_from_loans?UUID=${scannedProduct.UUID}&Returneret=null`,
+        `items_from_loans?id=${scannedProduct.id}&Returneret=null`,
       );
 
       if (!item_from_loan?.length) {
         toast.error(
-          "Produktet er lånt ud, men kunne ikke findes på et aktivt lån",
+          t("Product is lent out, but could not be found on an active loan"),
         );
         return;
       }
 
       return navigate(
-        `/udlaan/${item_from_loan[0].loan_id}/returner?item=${scannedProduct.UUID}`,
+        `/udlaan/${item_from_loan[0].loan_id}/returner?item=${scannedProduct.id}`,
       );
     }
 
-    navigate(`/produkter/${scannedProduct.UUID}`);
+    navigate(`/products/${scannedProduct.id}`);
   }
 
-  if (cheatActive)
+  if (cheatActive) {
     return (
       <div className="flex items-center justify-center">
         <img src="/nyanCat.gif" className="w-full" alt="nyan cat" />
       </div>
     );
+  }
 
   return (
     <div className="flex max-h-screen flex-col items-center gap-2 pt-16">
-      <h1 className="text-[3rem]">Velkommen til helpdesk'en</h1>
+      <h1 className="text-5xl">{t("Welcome to the helpdesk")}</h1>
       <p className="text-foreground2 text-[1.2rem]">
-        Hvordan kan vi hjælpe dig i dag?
+        {t("Scan a product to get started")}
       </p>
       <img
         className="h-full w-3/5 object-cover"

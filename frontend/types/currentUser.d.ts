@@ -1,5 +1,5 @@
 interface currentUser {
-  date_created: string;
+  created_at: string;
   distiguishedName: string;
   exp: number;
   firstName: string;
@@ -9,7 +9,7 @@ interface currentUser {
   mail: string;
   moderatorLevel: boolean;
   username: string;
-  UUID: number;
+  id: number;
 }
 
 type userState = currentUser | null | undefined;

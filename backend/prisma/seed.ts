@@ -1,35 +1,36 @@
+import { isProd } from "@/config/env";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.buildings.upsert({
-    where: { UUID: 23 },
+  await prisma.building.upsert({
+    where: { id: 23 },
     update: {},
-    create: { UUID: 23, name: "MU7" },
+    create: { id: 23, name: "MU7" },
   });
-  await prisma.buildings.upsert({
-    where: { UUID: 24 },
+  await prisma.building.upsert({
+    where: { id: 24 },
     update: {},
-    create: { UUID: 24, name: "MU8" },
+    create: { id: 24, name: "MU8" },
   });
 
-  await prisma.product_status.createMany({
+  await prisma.productStatus.createMany({
     data: [
-      { UUID: 1, name: "Broken" },
-      { UUID: 2, name: "Deleted(Given away)" },
-      { UUID: 3, name: "Deleted(Thrown away)" },
+      { id: 1, name: "Broken" },
+      { id: 2, name: "Deleted(Given away)" },
+      { id: 3, name: "Deleted(Thrown away)" },
     ],
   });
 
-  await prisma.recipient_type.createMany({
+  await prisma.recipientType.createMany({
     data: [
-      { UUID: 1, name: "Til person" },
-      { UUID: 2, name: "Til lokale" },
+      { id: 1, name: "Til person" },
+      { id: 2, name: "Til lokale" },
     ],
   });
 
-  await prisma.zones.createMany({
+  await prisma.zone.createMany({
     data: [
       { name: "zone1", building_id: 23, floor_level: 0 },
       { name: "zone2", building_id: 23, floor_level: 0 },
@@ -56,6 +57,8 @@ async function main() {
       { name: "015", building_id: 24, floor_level: -1 },
     ],
   });
+
+  if (isProd) return;
 }
 
 main()

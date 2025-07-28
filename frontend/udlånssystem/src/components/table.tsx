@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
@@ -63,6 +64,7 @@ export default function DataTable<TData, TValue>({
   withPagination = true,
   saveSearch = true,
 }: DataTableProps<TData, TValue>) {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -107,11 +109,10 @@ export default function DataTable<TData, TValue>({
     const newFilters = [];
 
     for (const column of columns) {
-      const header = column.header as string;
-      if (!header) continue;
-      const value = params[header];
+      const { accessorKey } = column as { accessorKey: string };
+      const value = params[accessorKey];
 
-      if (value) newFilters.push({ id: header, value });
+      if (value) newFilters.push({ id: accessorKey, value });
     }
 
     setColumnFilters(newFilters);
@@ -120,10 +121,10 @@ export default function DataTable<TData, TValue>({
   useEffect(() => {
     const pageCount = table.getPageCount() - 1;
 
-    if (pagination.pageIndex > pageCount) {
+    if (pagination.pageIndex > pageCount || pagination.pageIndex < 0) {
       setPagination((prev) => ({ ...prev, pageIndex: pageCount }));
     }
-  }, [columnFilters]);
+  }, [columnFilters, pagination.pageIndex, table.getPageCount()]);
 
   let pressDownDuration: ReturnType<typeof setTimeout>;
 
@@ -227,7 +228,9 @@ export default function DataTable<TData, TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length}>No results.</TableCell>
+                <TableCell colSpan={columns.length}>
+                  {t("No results")}
+                </TableCell>
               </TableRow>
             )}
           </TableBody>
@@ -255,7 +258,7 @@ export default function DataTable<TData, TValue>({
             </Button>
 
             <div>
-              {pagination.pageIndex + 1} af {table.getPageCount()}
+              {pagination.pageIndex + 1} {t("of")} {table.getPageCount()}
             </div>
             <Button
               variant="outline"

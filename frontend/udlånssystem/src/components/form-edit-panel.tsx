@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import "@/styles/controlPanel.css";
 
 interface FormEditPanelProps {
@@ -23,25 +25,27 @@ export default function FormEditPanel({
   handleCancel = () => {},
   children = <></>,
 }: FormEditPanelProps) {
+  const { t } = useTranslation();
+
   return (
     <div className="control-panel">
       <div className="buttons">
         {editMode ? (
           <>
             <button disabled={!editMode} onClick={handleReset}>
-              Annuller
+              {t("Cancel")}
             </button>
-            <button onClick={handleUpdate}>Gem</button>
+            <button onClick={handleUpdate}>{t("Save")}</button>
           </>
         ) : (
           <>
-            <button onClick={handleCancel}>Tilbage</button>
+            <button onClick={handleCancel}>{t("Back")}</button>
             <button
               onClick={() => {
                 setEditMode(!editMode);
               }}
             >
-              Rediger
+              {t("Edit")}
             </button>
           </>
         )}
@@ -52,7 +56,7 @@ export default function FormEditPanel({
           onClick={handleDelete}
           disabled={disableDelete}
         >
-          Slet
+          {t("Delete")}
         </button>
       )}
       {children}

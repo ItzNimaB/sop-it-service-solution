@@ -1,4 +1,4 @@
-import prisma from "@/configs/prisma.config";
+import prisma from "@/config/prisma";
 import { addFullname } from "@/functions";
 
 export async function getAll(
@@ -6,21 +6,21 @@ export async function getAll(
   username?: string,
   user_id?: number
 ): Promise<IResponse> {
-  let user = await prisma.users.findFirst({
+  let user = await prisma.user.findFirst({
     where: { username },
   });
 
   if (!user && !moderatorLevel) return { status: 401, data: "User not found" };
 
-  user_id = moderatorLevel ? user_id : user?.UUID;
+  user_id = moderatorLevel ? user_id : user?.id;
 
-  let loans = await prisma.loans.findMany({
+  let loans = await prisma.loan.findMany({
     where: { user_id },
-    select: { UUID: true },
+    select: { id: true },
   });
 
   const loansView = await prisma.loans_view.findMany({
-    where: { UUID: { in: loans.map((loan) => loan.UUID) } },
+    where: { id: { in: loans.map((loan) => loan.id) } },
   });
 
   await addFullname(loansView, "Laaner");

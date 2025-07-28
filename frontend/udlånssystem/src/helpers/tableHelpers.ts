@@ -1,32 +1,18 @@
 import type { ColumnDef } from "@tanstack/react-table";
+import { t } from "i18next";
 
-import { dateToReadable } from "./dateHelpers";
-
-export const dateColumns = [
-  "Oprettet",
-  "Opdateret",
-  "Returneret",
-  "Returneringsdato",
+const defaultFields = [
+  { label: "id", binding: "id" },
+  { label: t("Name"), binding: "name" },
 ];
 
-function EnableFilter(header: string) {
-  if (dateColumns.includes(header)) return false;
-
-  return true;
-}
-
-export function columnsFormatter<T>(headers: string[]): ColumnDef<T, any>[];
-export function columnsFormatter<T>(
-  headers?: string[],
-): ColumnDef<T, any>[] | undefined;
-
-export function columnsFormatter<T>(headers?: string[]) {
-  if (!headers) return;
-
-  const columns: ColumnDef<T, any>[] = headers.map((header) => ({
-    header: header.replaceAll("_", " "),
-    accessorKey: String(header),
-    enableColumnFilter: EnableFilter(header),
+export function columnsFormatter<T extends { id: number }>(
+  fields: TableField[] = defaultFields,
+): ColumnDef<T>[] {
+  const columns: ColumnDef<T, any>[] = fields.map((field) => ({
+    header: field.label,
+    accessorKey: field.binding,
+    enableColumnFilter: field.enableFilter ?? true,
     filterFn: (rows, id, filterValue) => {
       const filterKey = (rows.original as Record<string, any>)[id];
 
@@ -36,10 +22,12 @@ export function columnsFormatter<T>(headers?: string[]) {
 
       return false;
     },
-    cell: (row) => {
-      if (dateColumns.includes(header)) return dateToReadable(row.getValue());
+    cell: ({ getValue }) => {
+      const value = getValue();
 
-      return row.getValue();
+      if (field.formatter) return field.formatter(value);
+
+      return value;
     },
   }));
 

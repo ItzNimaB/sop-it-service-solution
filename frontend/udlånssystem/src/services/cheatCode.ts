@@ -1,5 +1,3 @@
-// the last option dispatches the event to the listener first,
-// then dispatches event to window
 export function cheatCode() {
   //the cheat code is "up up down down left right left right b a"
   const codes = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
@@ -8,7 +6,6 @@ export function cheatCode() {
     if (codes[index] === e.keyCode) {
       index++;
       if (index === codes.length) {
-        console.log("cheat code activated");
         window.removeEventListener("keydown", keydownHandler);
         window.dispatchEvent(new Event("cheatCode"));
       }

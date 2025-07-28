@@ -14,7 +14,7 @@ export default function Edit() {
 
   if (!currentUser) return;
 
-  const { UUID: id } = currentUser;
+  const { id: id } = currentUser;
 
   const [userLoans] = useData<userLoans[]>("/user_loans?user_id=" + id, {
     withHeaders: true,
@@ -24,7 +24,7 @@ export default function Edit() {
 
   const columns = columnsFormatter<userLoans>(userLoans.headers);
 
-  const exclude: ExcludeList<userLoans> = ["UUID", "item_id", "user_id"];
+  const exclude: ExcludeList<userLoans> = ["id", "item_id", "user_id"];
 
   return (
     <div className="flex h-full gap-5 p-5">

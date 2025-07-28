@@ -1,4 +1,4 @@
-import ComingSoon from "@/components/ComingSoon";
+import ComingSoon from "@/components/coming-soon";
 
 export default function Notifications() {
   return <ComingSoon />;

@@ -54,7 +54,7 @@ export default function Layout({
       <Table
         columns={columns}
         data={inputData.data}
-        onRowClick={(original) => handleRowClick(original.UUID)}
+        onRowClick={(original) => handleRowClick(original.id)}
         exclude={exclude}
         noResultsText={noResultsText}
       />

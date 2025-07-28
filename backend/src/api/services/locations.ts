@@ -1,7 +1,7 @@
-import prisma from "@/configs/prisma.config";
+import prisma from "@/config/prisma";
 
 export async function getAll(): Promise<IResponse> {
-  const buildings = await prisma.buildings.findMany({
+  const buildings = await prisma.building.findMany({
     include: { zones: true },
   });
 

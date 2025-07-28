@@ -11,11 +11,19 @@ declare global {
   }
 
   interface user
-    extends Omit<users, "UUID" | "date_created" | "date_updated">,
+    extends Omit<users, "id" | "created_at" | "updated_at">,
       ldapUser {
-    UUID?: number;
+    id?: number;
     moderatorLevel: number;
   }
+
+  interface String {
+    toFirstLetterLowercase<T extends string>(this: T): FirstLetterLowercase<T>;
+  }
+
+  type FirstLetterLowercase<T extends string> = T extends `${infer F}${infer R}`
+    ? `${Lowercase<F>}${R}`
+    : never;
 }
 
 export {};
