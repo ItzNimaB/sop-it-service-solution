@@ -1,7 +1,9 @@
 import prisma from "@/configs/prisma.config";
 
-export async function getAll(): Promise<IResponse> {
-  const itemsView = await prisma.items_view.findMany();
+export async function getAll({ Stregkode }: any): Promise<IResponse> {
+  const itemsView = await prisma.items_view.findMany({
+    where: Stregkode ? { Stregkode } : {},
+  });
   const itemsInLoan = await prisma.items_in_loan.findMany({
     where: { date_returned: null },
   });
