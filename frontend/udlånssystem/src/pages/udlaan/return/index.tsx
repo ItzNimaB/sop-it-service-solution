@@ -15,7 +15,6 @@ import "@/styles/return.css";
 
 const exclude: ExcludeList<itemsFromLoan> = [
   "loan_id",
-  "Stregkode",
   "Returneret",
   "Med_taske",
   "Med_Laas",
