@@ -9,13 +9,13 @@ export const fields: Field<loanModel>[] = [
   {
     label: "Låner UUID",
     binding: "user_id",
-    type: "text",
+    type: "number",
     disabled: true,
   },
   {
     label: "Personel UUID",
     binding: "helpdesk_personel_id",
-    type: "text",
+    type: "number",
     disabled: true,
   },
 ];
