@@ -54,7 +54,14 @@ export async function createOne(values: ILoanCreateInput): Promise<IResponse> {
 
   if (!ldapUser) return { status: 404, data: { success: false } };
 
-  const userEmail = ldapUser?.mail || user?.username + "@edu.sde.dk";
+  let userEmail_var = user?.username + "@edu.sde.dk";
+  
+  let final_userEmail_var = userEmail_var;
+  if (userEmail_var[0] == "u" && !isNaN(Number(userEmail_var[1]))) {
+    final_userEmail_var = userEmail_var.slice(1);
+  }
+  
+  const userEmail = ldapUser?.mail || final_userEmail_var //user?.username + "@edu.sde.dk"; 
 
   const loanReceipt = await generateLoanHTML(newLoan.UUID, true);
 
