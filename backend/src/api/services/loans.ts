@@ -54,14 +54,14 @@ export async function createOne(values: ILoanCreateInput): Promise<IResponse> {
 
   if (!ldapUser) return { status: 404, data: { success: false } };
 
-  // i know this is dumb but this way i avoid regex lib also i know im comparing char to char but its easier than making the char from userEmail int just to make it back to char
-  const numbers: numbers[] = ["1","2","3","4","5","6","7","8","9","0"];
   let userEmail_var = user?.username + "@edu.sde.dk";
-  if (userEmail_var[0] == "u" &&  numbers.includes(userEmal_var[1]){
-    let final_userEmail_var = Email_var.slice(1);
+  
+  let final_userEmail_var = userEmail_var;
+  if (userEmail_var[0] == "u" && !isNaN(Number(userEmail_var[1]))) {
+    final_userEmail_var = userEmail_var.slice(1);
   }
   
-  const userEmail = ldapUser?.mail || filan_userEmail_var //user?.username + "@edu.sde.dk"; 
+  const userEmail = ldapUser?.mail || final_userEmail_var //user?.username + "@edu.sde.dk"; 
 
   const loanReceipt = await generateLoanHTML(newLoan.UUID, true);
 
