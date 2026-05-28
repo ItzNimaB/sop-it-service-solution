@@ -155,6 +155,17 @@ model users {
   loans_loans_user_idTousers              loans[]  @relation("loans_user_idTousers")
 }
 
+model signup_verifications {
+  UUID          Int      @id @default(autoincrement()) @db.UnsignedInt
+  email         String   @unique @db.VarChar(255)
+  username      String   @db.VarChar(255)
+  password_hash String   @db.VarChar(255)
+  otp_hash      String   @db.VarChar(255)
+  expires_at    DateTime @db.DateTime(0)
+  date_created  DateTime @default(now()) @db.DateTime(0)
+  date_updated  DateTime @default(now()) @db.DateTime(0)
+}
+
 model zones {
   UUID        Int       @id @default(autoincrement()) @db.UnsignedInt
   name        String    @db.VarChar(255)
@@ -174,24 +185,24 @@ model feedback {
 }
 
 view available_products_view {
-  UUID      Int     @id @default(0) @db.UnsignedInt
+  UUID      Int     @unique @default(0) @db.UnsignedInt
   Navn      String? @db.VarChar(255)
   Brand     String? @db.VarChar(255)
   Stregkode String? @db.VarChar(54)
 }
 
 view brands_view {
-  UUID Int    @id @default(0) @db.UnsignedInt
+  UUID Int    @unique @default(0) @db.UnsignedInt
   Navn String @db.VarChar(255)
 }
 
 view categories_view {
-  UUID Int    @id @default(0) @db.UnsignedInt
+  UUID Int    @unique @default(0) @db.UnsignedInt
   Navn String @db.VarChar(255)
 }
 
 view items_from_loans {
-  UUID       Int       @id @default(0) @db.UnsignedInt
+  UUID       Int       @unique @default(0) @db.UnsignedInt
   Oprettet   DateTime  @default(now()) @db.DateTime(0)
   Produkt    String    @db.VarChar(255)
   Med_taske  Boolean   @default(false)
@@ -202,7 +213,7 @@ view items_from_loans {
 }
 
 view items_view {
-  UUID      Int       @id @default(0) @db.UnsignedInt
+  UUID      Int       @unique @default(0) @db.UnsignedInt
   Navn      String?   @db.VarChar(255)
   Stregkode String?   @db.VarChar(54)
   Status    String?   @db.VarChar(255)
@@ -212,7 +223,7 @@ view items_view {
 }
 
 view loans_view {
-  UUID             Int       @id @default(0) @db.UnsignedInt
+  UUID             Int       @unique @default(0) @db.UnsignedInt
   Navn             String    @default("") @db.Char(0)
   Laaner           String?   @db.VarChar(255)
   Udlaaner         String?   @db.VarChar(255)
@@ -226,7 +237,7 @@ view loans_view {
 }
 
 view loans_view_extended {
-  UUID                Int     @id @default(0) @db.UnsignedInt
+  UUID                Int     @unique @default(0) @db.UnsignedInt
   location_of_use_id  Int?    @db.UnsignedInt
   selfservice_case_id Int?    @db.UnsignedInt
   loan_length         Int?
@@ -242,7 +253,7 @@ view loans_view_extended {
 }
 
 view products_view {
-  UUID      Int      @id @default(0) @db.UnsignedInt
+  UUID      Int      @unique @default(0) @db.UnsignedInt
   Navn      String   @db.VarChar(255)
   Kategori  String?  @db.VarChar(255)
   Brand     String?  @db.VarChar(255)
@@ -251,7 +262,7 @@ view products_view {
 }
 
 view users_view {
-  UUID       Int      @id @default(0) @db.UnsignedInt
+  UUID       Int      @unique @default(0) @db.UnsignedInt
   Navn       String   @default("") @db.Char(0)
   Brugernavn String   @db.VarChar(255)
   Oprettet   DateTime @default(now()) @db.DateTime(0)
@@ -259,12 +270,12 @@ view users_view {
 }
 
 view product_status_view {
-  UUID Int    @id @default(0) @db.UnsignedInt
+  UUID Int    @unique @default(0) @db.UnsignedInt
   Navn String @db.VarChar(255)
 }
 
 view items_without_status {
-  UUID      Int       @id @default(0) @db.UnsignedInt
+  UUID      Int       @unique @default(0) @db.UnsignedInt
   Navn      String?   @db.VarChar(255)
   Stregkode String?   @db.VarChar(54)
   Oprettet  DateTime  @default(now()) @db.DateTime(0)
@@ -272,7 +283,7 @@ view items_without_status {
 }
 
 view items_with_status {
-  UUID      Int       @id @default(0) @db.UnsignedInt
+  UUID      Int       @unique @default(0) @db.UnsignedInt
   Navn      String?   @db.VarChar(255)
   Stregkode String?   @db.VarChar(54)
   Status    String    @db.VarChar(255)
@@ -281,19 +292,19 @@ view items_with_status {
 }
 
 view zones_view {
-  UUID    Int     @id @default(0) @db.UnsignedInt
+  UUID    Int     @unique @default(0) @db.UnsignedInt
   Navn    String  @db.VarChar(255)
   Bygning String? @db.VarChar(255)
   Etage   Int
 }
 
 view buildings_view {
-  UUID Int     @id @default(0)
+  UUID Int     @unique @default(0)
   Navn String? @db.VarChar(255)
 }
 
 view user_loans {
-  UUID             Int       @id @default(0) @db.UnsignedInt
+  UUID             Int       @unique @default(0) @db.UnsignedInt
   Produkt          String    @db.VarChar(255)
   Oprettet         DateTime  @default(now()) @db.DateTime(0)
   Returneret       DateTime? @db.DateTime(0)

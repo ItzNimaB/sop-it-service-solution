@@ -50,4 +50,7 @@ router.post("/logout", (req, res) => {
   res.json({ message: "Logged out" });
 });
 
+router.post("/create-user", authController.CreateUser());
+router.post("/confirm-create-user", authController.ConfirmCreateUser());
+
 export default router;

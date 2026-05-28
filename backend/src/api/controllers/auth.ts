@@ -5,7 +5,7 @@ export function Login(): IController {
     const { username, password } = req.body;
 
     if (!username || !password)
-      return res.json({ error: "Missing credentials" });
+      return res.status(400).json({ error: "Missing credentials" });
 
     const response = await AuthService.login(username, password);
 
@@ -27,6 +27,32 @@ export function Validate(): IController {
     if (!token) return res.status(401).json({ error: "Validation failed" });
 
     const response = await AuthService.validate(token);
+
+    res.status(response.status).json(response.data);
+  };
+}
+
+export function CreateUser(): IController {
+  return async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password)
+      return res.status(400).json({ error: "Missing credentials" });
+
+    const response = await AuthService.createUser(email, password);
+
+    res.status(response.status).json(response.data);
+  };
+}
+
+export function ConfirmCreateUser(): IController {
+  return async (req, res) => {
+    const { email, otp } = req.body;
+
+    if (!email || !otp)
+      return res.status(400).json({ error: "Missing credentials" });
+
+    const response = await AuthService.confirmCreateUser(email, otp);
 
     res.status(response.status).json(response.data);
   };

@@ -27,6 +27,8 @@ app.use(passport.initialize());
 
 const router = Router();
 
+router.get("/health", (req, res) => res.json({ status: "ok" }));
+
 router.use("/auth", Routes.Auth);
 
 router.use(async (req, res, next) => {

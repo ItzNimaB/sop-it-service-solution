@@ -75,6 +75,7 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./frontend/user-signup:/usr/share/nginx/user-signup
     configs:
       - source: nginx
         target: /etc/nginx/nginx.conf

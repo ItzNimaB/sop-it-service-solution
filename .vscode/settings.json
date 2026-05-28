@@ -4,5 +4,6 @@
     "**/index.*": "${dirname}/index",
     "**/new.*": "${dirname}/new",
     "**/edit.*": "${dirname}/edit"
-  }
+  },
+  "prisma.pinToPrisma6": true
 }
