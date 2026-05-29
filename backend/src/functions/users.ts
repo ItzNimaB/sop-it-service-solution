@@ -1,8 +1,4 @@
-import { SearchOptions } from "ldapjs";
-
-import { attributes, getUsers } from ".";
-
-const { LDAP_USERS } = process.env;
+import { createUser, getUsers } from "./ldapHelper";
 
 const headers = [
   "firstName",
@@ -35,5 +31,26 @@ export async function getLdapUsers(): Promise<any> {
   } catch (error) {
     console.error("Error in LDAP client creation or binding:", error);
     return { error: "Internal server error" };
+  }
+}
+
+export async function createLdapUser(
+  username: string,
+  password: string | undefined,
+  email?: string,
+  passwordHash?: string
+): Promise<IResponse> {
+  try {
+    const user = await createUser({ username, password, email, passwordHash });
+
+    return { status: 200, data: user };
+  } catch (error) {
+    console.error("Error in LDAP client creation or binding:", error);
+
+    if (error instanceof Error && error.message === "User already exists") {
+      return { status: 400, data: error.message };
+    }
+
+    return { status: 500, data: "Internal server error" };
   }
 }

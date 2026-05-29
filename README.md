@@ -46,6 +46,7 @@ NODE_ENV="development" #Nodejs environment. Format: "development" or "production
 DATABASE_URL="database_url" #URL to the database. Format: "mysql://user:password@host:port/database".
 
 FRONTEND_URL="http://localhost:5173" #URL to the frontend. Format: "http://localhost:port,http://localhost:port2".
+SIGNUP_FRONTEND_URL="http://signup.localhost" #Public URL to the signup pages used in signup confirmation emails.
 
 BACKEND_PORT=3000 #Port the backend should run on. Default: 3000
 

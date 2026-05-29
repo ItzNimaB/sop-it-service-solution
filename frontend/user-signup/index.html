@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="index.js" defer></script>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        
+            <div class="form-group">
+                <p>Mail:</p>
+                <input type="email" id="emailFelt" placeholder="Indtast din mail">
+            </div>
+            <div class="form-group">
+                <p>Adgangskode:</p>
+                <input type="password" id="adgangskodeFelt" placeholder="Indtast din adgangskode">
+            </div>
+            <div class="form-group">
+                <p>Bekræft adgangskode:</p>
+                <input type="password" id="bekraftAdgangskodeFelt" placeholder="Bekræft din adgangskode">
+            </div>
+            <br>
+            <button onclick="validerEmail()"> Login </button>
+
+            <p class="fejl_besked" id="beskedFelt"></p>
+
+        </form>
+
+    </div>
+</body>
+</html>

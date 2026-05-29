@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import { Client, SearchEntry, SearchOptions, createClient } from "ldapjs";
+import { createHash, randomBytes } from "crypto";
 import { promisify } from "util";
 
 dotenv.config();
@@ -9,16 +10,33 @@ const {
   LDAP_PORT,
   LDAP_USERNAME,
   LDAP_PASSWORD,
-  NODE_ENV,
   LDAP_USERS = "",
   LDAP_ADMINS = "",
   LDAP_SUPERIORS = "",
 } = process.env;
 
 export const attributes = ["cn", "sAMAccountName", "mail", "memberOf"];
+const defaultUserOu =
+  "OU=OU_Programmoer,OU=OU_Elever,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=dk";
+const defaultMemberOf =
+  "CN=SG_Programmoer,OU=OU_Programmoer,OU=OU_Elever,OU=OU_IT-SKP,OU=OU_Main,DC=ITSKP-ODENSE,DC=dk";
+const sambaSidBase = "S-1-5-21-3623811015-3361044348-30300820";
 
 interface GetLdapUsersFilter {
   username?: string;
+}
+
+interface CreateLdapUserInput {
+  username: string;
+  password?: string;
+  passwordHash?: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  dn?: string;
+  ou?: string;
+  memberOf?: string[];
+  sambaSid?: string;
 }
 
 function searchOptions(filter: GetLdapUsersFilter = { username: "*" }) {
@@ -78,6 +96,85 @@ export async function createLdapClient(): Promise<Client> {
   await clientAsynct(LDAP_USERNAME, LDAP_PASSWORD);
 
   return client;
+}
+
+function hashPassword(password: string) {
+  const salt = randomBytes(8);
+  const hash = createHash("sha1")
+    .update(Buffer.concat([Buffer.from(password), salt]))
+    .digest();
+
+  return `{SSHA}${Buffer.concat([hash, salt]).toString("base64")}`;
+}
+
+function buildSambaSid() {
+  const rid = 2000 + Math.floor(Math.random() * 100000);
+
+  return `${sambaSidBase}-${rid}`;
+}
+
+function buildUserEntry({
+  username,
+  password,
+  passwordHash,
+  email = `${username}@edu.sde.dk`,
+  firstName,
+  lastName = username,
+  memberOf = [defaultMemberOf],
+  sambaSid = buildSambaSid(),
+}: CreateLdapUserInput) {
+  const givenName = firstName || username;
+  const cn = `${givenName} ${lastName}`;
+
+  return {
+    objectClass: [
+      "top",
+      "inetOrgPerson",
+      "sambaSamAccount",
+      "person",
+      "organizationalPerson",
+    ],
+    sn: lastName,
+    givenName,
+    displayName: cn,
+    cn,
+    mail: email,
+    memberOf,
+    sAMAccountName: username,
+    userPassword: passwordHash || hashPassword(password || ""),
+    sambaSID: sambaSid,
+  };
+}
+
+export async function createUser(data: CreateLdapUserInput): Promise<user> {
+  if (!data.username || (!data.password && !data.passwordHash)) {
+    throw new Error("Username and password are required");
+  }
+
+  const [existingUser] = await getUsers({ username: data.username });
+  if (existingUser) throw new Error("User already exists");
+
+  const client = await createLdapClient();
+  const dn =
+    data.dn || `CN=${data.username},${data.ou || defaultUserOu}`;
+
+  try {
+    const addAsync = promisify(client.add).bind(client);
+    await addAsync(dn, buildUserEntry(data));
+
+    const [createdUser] = await getUsers({ username: data.username });
+    if (!createdUser) throw new Error("User was created but could not be read");
+
+    return createdUser;
+  } finally {
+    client.unbind((err) => {
+      if (err) console.error("Error in unbinding: ", err);
+    });
+  }
+}
+
+export function createLdapPasswordHash(password: string) {
+  return hashPassword(password);
 }
 
 export async function getUsers(filter?: GetLdapUsersFilter): Promise<user[]> {
