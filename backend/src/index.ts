@@ -14,15 +14,14 @@ dotenv.config();
 
 const app = express();
 
-var origin: string = "http://localhost:5173";
+const allowedOrigins = [
+  ...(process.env.FRONTEND_URL ?? "http://localhost:5173").split(","),
+  ...(process.env.SIGNUP_FRONTEND_URL ?? "").split(","),
+]
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
-if (process.env.FRONTEND_URL) origin = process.env.FRONTEND_URL;
-if (process.env.SIGNUP_FRONTEND_URL) {
-  if (origin.length > 0) origin += ",";
-  origin += process.env.SIGNUP_FRONTEND_URL;
-}
-
-app.use(cors({ origin, credentials: true }));
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("json spaces", 4);
