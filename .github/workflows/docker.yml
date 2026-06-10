@@ -40,7 +40,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: "backend.tar"
-          target: "/tmp/"
+          target: "~/"
         if: steps.is_act.outputs.act == 'false'
 
       - name: Load and run Docker image on server
@@ -51,7 +51,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            docker load -i /tmp/backend.tar
+            docker load -i ~/backend.tar
             docker rm sop-backend -f || true
             docker run -d --name sop-backend --env-file ~/.env --network="host" sop-backend:latest
         if: steps.is_act.outputs.act == 'false'
