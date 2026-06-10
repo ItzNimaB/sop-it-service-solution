@@ -121,6 +121,14 @@ async function userExists(username: string) {
   return existingLdapUser.data.some((user: user) => user.username === username);
 }
 
+function isNumericUsername(username: string) {
+  const isNumeric =
+    typeof Number(username) === "number" && !isNaN(Number(username));
+  const isRightLength = username.length === 6;
+
+  return isNumeric && isRightLength;
+}
+
 export async function createUser(
   email: string,
   password: string
@@ -132,7 +140,8 @@ export async function createUser(
       return { status: 400, data: "Email must end with @edu.sde.dk" };
     }
 
-    const username = getUsernameFromSchoolMail(normalizedEmail);
+    let username = getUsernameFromSchoolMail(normalizedEmail);
+    if (isNumericUsername(username)) username = "u" + username;
 
     if (await userExists(username))
       return { status: 400, data: "User with that username already exists" };
