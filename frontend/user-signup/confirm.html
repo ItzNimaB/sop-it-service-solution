@@ -1,79 +1,96 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="da">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
-    <link rel="stylesheet" href="index.css">
-</head>
-<body>
+    <link rel="stylesheet" href="index.css" />
+    <script src="index.js" defer></script>
+  </head>
+  <body>
     <div class="login-container">
-        <h2>Login</h2>
+      <h2>Login</h2>
 
-        <p class="modtaget_mail">Indtast den 6-cifrede kode, du har modtaget på mailen:</p>
-        <div class="kode-container">
-            <input type="text" class="kode-input" id="kodeFelt" maxlength="6" pattern="[0-9]*" inputmode="numeric" oninput="opdaterBokse()">
-            <div class="kode-bokse">
-                <div class="boks" id="b1"></div>
-                <div class="boks" id="b2"></div>
-                <div class="boks" id="b3"></div>
-                <div class="boks" id="b4"></div>
-                <div class="boks" id="b5"></div>
-                <div class="boks" id="b6"></div>
-            </div>
+      <p class="modtaget_mail">
+        Indtast den 6-cifrede kode, du har modtaget på mailen:
+      </p>
+      <div class="kode-container">
+        <input
+          type="text"
+          class="kode-input"
+          id="kodeFelt"
+          maxlength="6"
+          pattern="[0-9]*"
+          inputmode="numeric"
+          oninput="opdaterBokse()"
+        />
+        <div class="kode-bokse">
+          <div class="boks" id="b1"></div>
+          <div class="boks" id="b2"></div>
+          <div class="boks" id="b3"></div>
+          <div class="boks" id="b4"></div>
+          <div class="boks" id="b5"></div>
+          <div class="boks" id="b6"></div>
         </div>
-        <br>
-        <br>
-        <button type="button" onclick="validateOTP()"> Bekræft </button>
-        <div class="kode-feedback" id="kodeFeedback"></div>
+      </div>
+      <br />
+      <br />
+      <button type="button" onclick="validateOTP()">Bekræft</button>
+      <div class="kode-feedback" id="kodeFeedback"></div>
     </div>
     <script>
-        function opdaterBokse() {
-            const inputField = document.getElementById('kodeFelt');
-            inputField.value = inputField.value.replace(/[^0-9]/g, '');
-            const input = inputField.value;
-            for (let i = 1; i <= 6; i++) {
-                const boks = document.getElementById('b' + i);
-                boks.textContent = input[i - 1] || '';
-            }
+      function opdaterBokse() {
+        const inputField = document.getElementById("kodeFelt");
+        inputField.value = inputField.value.replace(/[^0-9]/g, "");
+        const input = inputField.value;
+        for (let i = 1; i <= 6; i++) {
+          const boks = document.getElementById("b" + i);
+          boks.textContent = input[i - 1] || "";
+        }
+      }
+
+      async function validateOTP() {
+        console.log("Validating OTP...");
+        const otp = document.getElementById("kodeFelt").value;
+        const feedback = document.getElementById("kodeFeedback");
+        feedback.textContent = "";
+
+        const backendUrl = "https://udlaan.itskp-odense.dk";
+
+        const email = new URLSearchParams(window.location.search).get("email");
+
+        if (!email) {
+          feedback.textContent = "Ingen email angivet. Prøv at starte forfra.";
+          return;
         }
 
-        async function validateOTP() {
-            console.log('Validating OTP...');
-            const otp = document.getElementById('kodeFelt').value;
-            const feedback = document.getElementById('kodeFeedback');
-            feedback.textContent = '';
-
-            const email = new URLSearchParams(window.location.search).get('email');
-
-            if (!email) {
-                feedback.textContent = 'Ingen email angivet. Prøv at starte forfra.';
-                return;
-            }
-
-            if (otp.length !== 6) {
-                feedback.textContent = 'Koden skal være 6 cifre.';
-                return;
-            }
-
-            try {
-                const response = await fetch('/api/auth/confirm-create-user', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, otp })
-                });
-
-                if (response.ok) {
-                    window.location.href = '/welcome.html';
-                } else {
-                    const data = await response.json();
-                    feedback.textContent = data.message || data.error || data || 'Ugyldig kode. Prøv igen.';
-                }
-            } catch (error) {
-                console.error('Error validating OTP:', error);
-                feedback.textContent = 'Der opstod en fejl. Prøv igen senere.';
-            }
+        if (otp.length !== 6) {
+          feedback.textContent = "Koden skal være 6 cifre.";
+          return;
         }
+
+        try {
+          const response = await fetch(
+            backendUrl + "/api/auth/confirm-create-user",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, otp }),
+            },
+          );
+
+          if (response.ok) {
+            window.location.href = "/welcome.html";
+          } else {
+            const data = await response.json();
+            feedback.textContent =
+              data.message || data.error || data || "Ugyldig kode. Prøv igen.";
+          }
+        } catch (error) {
+          console.error("Error validating OTP:", error);
+          feedback.textContent = "Der opstod en fejl. Prøv igen senere.";
+        }
+      }
     </script>
-</body>
+  </body>
 </html>
