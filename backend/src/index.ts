@@ -14,9 +14,13 @@ dotenv.config();
 
 const app = express();
 
-var origin: string | string[] = "http://localhost:5173";
+var origin: string = "http://localhost:5173";
 
-if (process.env.FRONTEND_URL) origin = process.env.FRONTEND_URL.split(",");
+if (process.env.FRONTEND_URL) origin = process.env.FRONTEND_URL;
+if (process.env.SIGNUP_FRONTEND_URL) {
+  if (origin.length > 0) origin += ",";
+  origin += process.env.SIGNUP_FRONTEND_URL;
+}
 
 app.use(cors({ origin, credentials: true }));
 app.use(express.json());
