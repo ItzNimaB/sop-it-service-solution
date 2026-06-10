@@ -41,6 +41,12 @@ jobs:
       - name: Build frontend
         run: npm run build
 
+      - name: Prepare deploy artifacts
+        run: |
+          rm -rf ../admin-dist
+          mkdir -p ../admin-dist
+          cp -a dist/. ../admin-dist/
+
       - name: Deploy to server
         if: steps.is_act.outputs.act == 'false'
         uses: appleboy/scp-action@v0.1.4
@@ -49,7 +55,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "frontend/udlånssystem/dist/*"
+          source: "frontend/admin-dist/*"
           target: "/var/www/lager/admin/"
           rm: true
-          strip_components: 3 #remove frontend/udlånssystem/dist when copying to /var/www/lager/
+          strip_components: 2 #remove frontend/admin-dist when copying to /var/www/lager/
