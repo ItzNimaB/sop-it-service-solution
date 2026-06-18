@@ -1,5 +1,10 @@
 import { createUser, getUsers } from "./ldapHelper";
 
+type PerfTracker = {
+  mark: (label: string, meta?: Record<string, unknown>) => void;
+  time: <T>(label: string, fn: () => T | Promise<T>) => Promise<T>;
+};
+
 const headers = [
   "firstName",
   "lastName",
@@ -12,14 +17,37 @@ const headers = [
 
 export async function addFullname(
   loans: { Navn: string; [usernameKey: string]: string | any }[],
-  usernameKey: string
+  usernameKey: string,
+  perf?: PerfTracker
 ) {
-  const { data } = await getLdapUsers();
+  const { data } = perf
+    ? await perf.time("addFullname.getLdapUsers", getLdapUsers)
+    : await getLdapUsers();
 
-  for (let loan of loans) {
-    let user = data.find(({ username }: any) => username == loan[usernameKey]);
+  perf?.mark("addFullname.ldapUsers.loaded", {
+    ldapUserCount: data?.length,
+    loanCount: loans.length,
+    usernameKey,
+  });
 
-    loan.Navn = user?.fullName || "";
+  await perf?.time("addFullname.matchFullNames", () => {
+    for (let loan of loans) {
+      let user = data.find(
+        ({ username }: any) => username == loan[usernameKey]
+      );
+
+      loan.Navn = user?.fullName || "";
+    }
+  });
+
+  if (!perf) {
+    for (let loan of loans) {
+      let user = data.find(
+        ({ username }: any) => username == loan[usernameKey]
+      );
+
+      loan.Navn = user?.fullName || "";
+    }
   }
 }
 
