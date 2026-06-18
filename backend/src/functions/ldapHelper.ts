@@ -52,6 +52,19 @@ interface getModeratorLevelProps {
   dn: string;
 }
 
+function getSingleValue(value?: string | string[]) {
+  if (Array.isArray(value)) return value[0] || "";
+
+  return value || "";
+}
+
+function getArrayValue(value?: string | string[]) {
+  if (!value) return undefined;
+  if (Array.isArray(value)) return value;
+
+  return [value];
+}
+
 export function getModeratorLevel({ memberOf, dn }: getModeratorLevelProps) {
   if (memberOf?.includes(LDAP_SUPERIORS)) return 2;
 
@@ -61,25 +74,48 @@ export function getModeratorLevel({ memberOf, dn }: getModeratorLevelProps) {
   return 0;
 }
 
+function getEntryValueMap(entry: SearchEntry) {
+  const entryWithFallbacks = entry as SearchEntry & {
+    object?: Record<string, string | string[]>;
+  };
+  const ldapUser = {} as any;
+  const attributes = entry.pojo?.attributes || entry.json?.attributes;
+
+  if (attributes) {
+    attributes.forEach(({ type, values }) => {
+      ldapUser[type] = type === "memberOf" ? values : values[0];
+    });
+  } else if (entryWithFallbacks.object) {
+    Object.assign(ldapUser, entryWithFallbacks.object);
+  }
+
+  ldapUser.dn =
+    entry.pojo?.objectName ||
+    entry.json?.objectName ||
+    entry.objectName ||
+    entryWithFallbacks.object?.dn;
+
+  return ldapUser;
+}
+
 export function formatEntryResult(entry: SearchEntry): user {
-  let ldapUser = {} as any;
-
-  entry.pojo.attributes.map(({ type, values }) => {
-    if (type === "memberOf") ldapUser[type] = values;
-    else ldapUser[type] = values[0];
-
-    ldapUser.dn = entry.pojo.objectName;
-  });
+  const ldapUser = getEntryValueMap(entry);
+  const fullName = getSingleValue(ldapUser.cn);
+  const [firstName = "", lastName = ""] = fullName.split(" ");
+  const memberOf = getArrayValue(ldapUser.memberOf);
 
   const user: user = {
-    dn: ldapUser.dn,
-    firstName: ldapUser.cn.split(" ")[0],
-    lastName: ldapUser.cn.split(" ")[1],
-    fullName: ldapUser.cn,
-    username: ldapUser.sAMAccountName,
-    mail: ldapUser.mail,
-    memberOf: ldapUser.memberOf,
-    moderatorLevel: getModeratorLevel(ldapUser),
+    dn: getSingleValue(ldapUser.dn),
+    firstName,
+    lastName,
+    fullName,
+    username: getSingleValue(ldapUser.sAMAccountName),
+    mail: getSingleValue(ldapUser.mail),
+    memberOf,
+    moderatorLevel: getModeratorLevel({
+      dn: getSingleValue(ldapUser.dn),
+      memberOf,
+    }),
   };
 
   return user;

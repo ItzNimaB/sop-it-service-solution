@@ -31,19 +31,37 @@ export const opts: LdapStrategy.Options = {
   passReqToCallback: true,
 };
 
+function getSingleValue(value?: string | string[]) {
+  if (Array.isArray(value)) return value[0] || "";
+
+  return value || "";
+}
+
+function getArrayValue(value?: string | string[]) {
+  if (!value) return undefined;
+  if (Array.isArray(value)) return value;
+
+  return [value];
+}
+
 passport.use(
   new LdapStrategy(opts, (req, user, done) => {
     if (!user) return done(null, false);
 
+    const dn = getSingleValue(user.dn);
+    const fullName = getSingleValue(user.cn);
+    const [firstName = "", lastName = ""] = fullName.split(" ");
+    const memberOf = getArrayValue(user.memberOf);
+
     const ldapUser: user = {
-      dn: user.dn,
-      firstName: user.cn.split(" ")[0],
-      lastName: user.cn.split(" ")[1],
-      fullName: user.cn,
-      username: user.sAMAccountName,
-      mail: user.mail,
-      memberOf: user.memberOf,
-      moderatorLevel: getModeratorLevel(user),
+      dn,
+      firstName,
+      lastName,
+      fullName,
+      username: getSingleValue(user.sAMAccountName),
+      mail: getSingleValue(user.mail),
+      memberOf,
+      moderatorLevel: getModeratorLevel({ dn, memberOf }),
     };
 
     return done(null, ldapUser);
