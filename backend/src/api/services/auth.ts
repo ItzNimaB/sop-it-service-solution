@@ -222,6 +222,10 @@ export async function confirmCreateUser(
       return { status: 400, data: "Invalid verification code" };
     }
 
+    if (isNumericUsername(verification.username)) {
+      verification.username = "u" + verification.username;
+    }
+
     if (await userExists(verification.username))
       return { status: 400, data: "User with that username already exists" };
 
