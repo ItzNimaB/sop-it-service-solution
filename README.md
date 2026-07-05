@@ -6,7 +6,11 @@
 📆 This project is in early development - Expect constant changes.
 
 ## Dokumentation
-📝 The [wiki](https://github.com/kenn7575/sop-it-service-solution/wiki) page on this repo holds the dokumentation for this project.
+📝 Den danske udviklerdokumentation ligger i [docs/UDVIKLERDOKUMENTATION.md](docs/UDVIKLERDOKUMENTATION.md).
+
+📘 Den danske brugsmanual til admin-systemet ligger i [docs/BRUGSMANUAL_ADMIN.md](docs/BRUGSMANUAL_ADMIN.md).
+
+The [wiki](https://github.com/kenn7575/sop-it-service-solution/wiki) page on this repo may also hold supplementary documentation for this project.
 
 ## Discussions
 🤙 The [discussions](https://github.com/kenn7575/sop-it-service-solution/discussions) page is the perfect place to chat with others about the project and propose new ideas or features.
