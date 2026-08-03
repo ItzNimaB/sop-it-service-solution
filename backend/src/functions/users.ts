@@ -23,31 +23,31 @@ export async function addFullname(
   const { data } = perf
     ? await perf.time("addFullname.getLdapUsers", getLdapUsers)
     : await getLdapUsers();
+  const ldapUsers = Array.isArray(data) ? data : [];
+  const usersByUsername = new Map(
+    ldapUsers
+      .filter(({ username }: any) => username !== undefined)
+      .map(({ username, fullName }: any) => [username, fullName || ""])
+  );
 
   perf?.mark("addFullname.ldapUsers.loaded", {
-    ldapUserCount: data?.length,
+    ldapUserCount: ldapUsers.length,
     loanCount: loans.length,
     usernameKey,
   });
 
-  await perf?.time("addFullname.matchFullNames", () => {
+  const matchFullNames = () => {
     for (let loan of loans) {
-      let user = data.find(
-        ({ username }: any) => username == loan[usernameKey]
-      );
-
-      loan.Navn = user?.fullName || "";
+      loan.Navn = usersByUsername.get(loan[usernameKey]) || "";
     }
+  };
+
+  await perf?.time("addFullname.matchFullNames", () => {
+    matchFullNames();
   });
 
   if (!perf) {
-    for (let loan of loans) {
-      let user = data.find(
-        ({ username }: any) => username == loan[usernameKey]
-      );
-
-      loan.Navn = user?.fullName || "";
-    }
+    matchFullNames();
   }
 }
 
