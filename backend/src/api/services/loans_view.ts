@@ -3,6 +3,8 @@ import { performance } from "perf_hooks";
 import prisma from "@/configs/prisma.config";
 import { addFullname } from "@/functions";
 
+const logPerformance = process.env.LOG_PERFORMANCE === "true";
+
 type PerfStep = {
   label: string;
   ms?: number;
@@ -33,6 +35,8 @@ function createPerfTracker(route: string, requestId?: string) {
 
   return {
     mark(label: string, meta?: Record<string, unknown>) {
+      if (!logPerformance) return;
+
       steps.push({
         label,
         atMs: Number((performance.now() - startedAt).toFixed(2)),
@@ -41,6 +45,8 @@ function createPerfTracker(route: string, requestId?: string) {
     },
 
     async time<T>(label: string, fn: () => T | Promise<T>): Promise<T> {
+      if (!logPerformance) return await fn();
+
       const stepStartedAt = performance.now();
 
       try {
@@ -54,6 +60,8 @@ function createPerfTracker(route: string, requestId?: string) {
     },
 
     log(status: number, meta?: Record<string, unknown>) {
+      if (!logPerformance) return;
+
       console.info(
         JSON.stringify({
           type: "performance",
@@ -68,6 +76,8 @@ function createPerfTracker(route: string, requestId?: string) {
     },
 
     prettyLog(status: number, meta?: Record<string, unknown>) {
+      if (!logPerformance) return;
+
       const totalMs = Number((performance.now() - startedAt).toFixed(2));
       const summary = formatMeta(meta);
 

@@ -2,6 +2,8 @@ import { performance } from "perf_hooks";
 
 import * as loansViewService from "@services/loans_view";
 
+const logPerformance = process.env.LOG_PERFORMANCE === "true";
+
 function createRequestId() {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
@@ -24,12 +26,14 @@ export function GetAll(): IController {
 
     res.status(response.status).json(response.data);
 
-    console.info(
-      `Controller: GET /api/loans_view | Request: ${requestId} | Status: ${
-        response.status
-      } | Service: ${serviceDoneMs} ms | Total: ${Number(
-        (performance.now() - startedAt).toFixed(2)
-      )} ms`
-    );
+    if (logPerformance) {
+      console.info(
+        `Controller: GET /api/loans_view | Request: ${requestId} | Status: ${
+          response.status
+        } | Service: ${serviceDoneMs} ms | Total: ${Number(
+          (performance.now() - startedAt).toFixed(2)
+        )} ms`
+      );
+    }
   };
 }
