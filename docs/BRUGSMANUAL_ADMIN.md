@@ -15,7 +15,7 @@ Hvis login fejler, kan du se en fejlbesked på siden, fx:
 
 - Forkert unilogin eller adgangskode.
 - Adgang nægtet.
-- Server problemer.
+- Serverproblemer.
 
 Når du er logget ind, vises navigationen i venstre side.
 
