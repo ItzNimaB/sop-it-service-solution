@@ -35,6 +35,8 @@ function createPerfTracker(route: string, requestId?: string) {
 
   return {
     mark(label: string, meta?: Record<string, unknown>) {
+      if (!logPerformance) return;
+
       steps.push({
         label,
         atMs: Number((performance.now() - startedAt).toFixed(2)),
@@ -43,6 +45,8 @@ function createPerfTracker(route: string, requestId?: string) {
     },
 
     async time<T>(label: string, fn: () => T | Promise<T>): Promise<T> {
+      if (!logPerformance) return await fn();
+
       const stepStartedAt = performance.now();
 
       try {
