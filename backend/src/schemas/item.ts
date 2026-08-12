@@ -7,4 +7,5 @@ export const getItemSchema = z.object({
 export const createItemSchema = z.object({
   product_id: z.number(),
   amount: z.number(),
+  barcode_number: z.number().optional(),
 });
