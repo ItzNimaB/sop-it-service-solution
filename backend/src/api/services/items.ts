@@ -21,10 +21,15 @@ export async function getOne(UUID?: string | number): Promise<IResponse> {
 
 export async function createMultiple(
   product_id: number | string,
-  amount = 1
+  amount = 1,
+  barcode_number?: number
 ): Promise<IResponse> {
   product_id = Number(product_id);
-  const validated = createItemSchema.safeParse({ product_id, amount });
+  const validated = createItemSchema.safeParse({
+    product_id,
+    amount,
+    barcode_number,
+  });
 
   if (validated.error) return { status: 400, data: validated.error };
 
@@ -32,7 +37,10 @@ export async function createMultiple(
 
   for (let i = 0; i < validated.data.amount; i++) {
     const itemTransaction = prisma.items.create({
-      data: { product_id: validated.data.product_id },
+      data: {
+        product_id: validated.data.product_id,
+        barcode_number: validated.data.barcode_number,
+      },
     });
 
     transactions.push(itemTransaction);

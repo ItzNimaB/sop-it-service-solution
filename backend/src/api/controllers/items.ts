@@ -12,9 +12,13 @@ export function GetOne(): IController {
 
 export function CreateOne(): IController {
   return async (req, res) => {
-    const { product_id, amount } = req.body.data;
+    const { product_id, amount, barcode_number } = req.body.data;
 
-    const response = await ItemsService.createMultiple(product_id, amount);
+    const response = await ItemsService.createMultiple(
+      product_id,
+      amount,
+      barcode_number
+    );
 
     res.status(response.status).json(response.data);
   };
