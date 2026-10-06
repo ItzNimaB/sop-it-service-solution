@@ -3,6 +3,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Udlånskvittering</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Libre+Barcode+128&display=swap"
+    />
     <style
     >
       body {
@@ -79,11 +83,20 @@
       }
       .barcode {
         margin-left: 10px;
-        text-align: right;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        white-space: nowrap;
       }
-      .barcode img {
-        height: 50px;
-        display: block;
+      .barcode-bars {
+        font-family: "Libre Barcode 128", monospace;
+        font-size: 40px;
+        line-height: 1;
+        margin: 0;
+      }
+      .barcode-label {
+        font-size: 13px;
+        margin: 0;
       }
       .footer {
         margin-top: 60px;
@@ -151,11 +164,8 @@
             <p>{{this.Produkt}}</p>
             {{#if this.Stregkode}}
               <div class="barcode">
-                <img
-                  src="https://api-bwipjs.metafloor.com/?bcid=code128&text={{this.Stregkode}}&scale=3&height=10&includetext"
-                  alt="{{this.Stregkode}}"
-                  height="50"
-                />
+                <div class="barcode-bars">{{this.Stregkode}}</div>
+                <div class="barcode-label">{{this.Stregkode}}</div>
               </div>
             {{/if}}
           </div>
