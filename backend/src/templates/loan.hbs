@@ -3,6 +3,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Udlånskvittering</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Libre+Barcode+128&display=swap"
+    />
     <style
     >
       body {
@@ -68,16 +72,31 @@
       .product-item {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         margin-bottom: 10px;
         border-radius: 4px;
         padding: 3px;
       }
       .product-item p {
         margin: 0;
-        flex: 1;
+        font-size: 16px;
       }
       .barcode {
         margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        white-space: nowrap;
+      }
+      .barcode-bars {
+        font-family: "Libre Barcode 128", monospace;
+        font-size: 40px;
+        line-height: 1;
+        margin: 0;
+      }
+      .barcode-label {
+        font-size: 13px;
+        margin: 0;
       }
       .footer {
         margin-top: 60px;
@@ -143,6 +162,12 @@
         {{#each itemsInLoan}}
           <div class="product-item">
             <p>{{this.Produkt}}</p>
+            {{#if this.Stregkode}}
+              <div class="barcode">
+                <div class="barcode-bars">{{this.Stregkode}}</div>
+                <div class="barcode-label">{{this.Stregkode}}</div>
+              </div>
+            {{/if}}
           </div>
         {{/each}}
       </div>
