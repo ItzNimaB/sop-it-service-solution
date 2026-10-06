@@ -68,16 +68,22 @@
       .product-item {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         margin-bottom: 10px;
         border-radius: 4px;
         padding: 3px;
       }
       .product-item p {
         margin: 0;
-        flex: 1;
+        font-size: 16px;
       }
       .barcode {
         margin-left: 10px;
+        text-align: right;
+      }
+      .barcode img {
+        height: 50px;
+        display: block;
       }
       .footer {
         margin-top: 60px;
@@ -143,6 +149,15 @@
         {{#each itemsInLoan}}
           <div class="product-item">
             <p>{{this.Produkt}}</p>
+            {{#if this.Stregkode}}
+              <div class="barcode">
+                <img
+                  src="https://api-bwipjs.metafloor.com/?bcid=code128&text={{this.Stregkode}}&scale=3&height=10&includetext"
+                  alt="{{this.Stregkode}}"
+                  height="50"
+                />
+              </div>
+            {{/if}}
           </div>
         {{/each}}
       </div>
