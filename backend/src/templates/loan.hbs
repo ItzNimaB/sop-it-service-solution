@@ -84,6 +84,9 @@
       .product-table .barcode-col img {
         display: inline-block;
         height: 50px;
+        background-color: #ffffff;
+        padding: 4px;
+        border-radius: 4px;
       }
       .footer {
         margin-top: 40px;
@@ -147,10 +150,10 @@
               <td class="barcode-col">
                 {{#if this.Stregkode}}
                   <img
-                    src="https://api-bwipjs.metafloor.com/?bcid=code128&text={{this.Stregkode}}&scale=3&height=10&includetext"
+                    src="https://api-bwipjs.metafloor.com/?bcid=code128&text={{this.Stregkode}}&scale=3&height=10&includetext&backgroundcolor=ffffff&paddingwidth=5&paddingheight=5"
                     alt="{{this.Stregkode}}"
                     height="50"
-                    style="height: 50px; border: 0;"
+                    style="height: 50px; background-color: #ffffff; padding: 4px; border-radius: 4px; border: 0;"
                   />
                 {{/if}}
               </td>
