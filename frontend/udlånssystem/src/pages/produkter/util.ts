@@ -15,6 +15,13 @@ export const fields: Field<itemModel>[] = [
     required: false,
   },
   {
+    label: "Afdeling",
+    binding: "department_id",
+    type: "select",
+    options: "departments",
+    required: false,
+  },
+  {
     label: "Stregkode Nummer",
     binding: "barcode_number",
     type: "number",
