@@ -22,6 +22,15 @@ async function main() {
     ],
   });
 
+  await prisma.departments.createMany({
+    data: [
+      { UUID: 1, name: "Hovedforløb" },
+      { UUID: 2, name: "Skoleoplæring" },
+      { UUID: 3, name: "Mediegrafikere" },
+    ],
+    skipDuplicates: true,
+  });
+
   await prisma.recipient_type.createMany({
     data: [
       { UUID: 1, name: "Til person" },

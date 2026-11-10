@@ -83,6 +83,11 @@ export default function Nav() {
               destination: "/produktstatusser",
             },
             {
+              text: "Afdelinger",
+              icon: "fa-solid fa-sitemap",
+              destination: "/afdelinger",
+            },
+            {
               text: "Bygninger",
               icon: "fa-solid fa-building",
               destination: "/bygninger",

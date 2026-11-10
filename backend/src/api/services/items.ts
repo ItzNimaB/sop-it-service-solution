@@ -19,16 +19,24 @@ export async function getOne(UUID?: string | number): Promise<IResponse> {
   return { status: 200, data: item };
 }
 
+interface CreateItemExtras {
+  product_status_id?: number | null;
+  department_id?: number | null;
+  description?: string | null;
+}
+
 export async function createMultiple(
   product_id: number | string,
   amount = 1,
-  barcode_number?: number
+  barcode_number?: number | null,
+  extras: CreateItemExtras = {}
 ): Promise<IResponse> {
   product_id = Number(product_id);
   const validated = createItemSchema.safeParse({
     product_id,
     amount,
     barcode_number,
+    ...extras,
   });
 
   if (validated.error) return { status: 400, data: validated.error };
@@ -40,6 +48,9 @@ export async function createMultiple(
       data: {
         product_id: validated.data.product_id,
         barcode_number: validated.data.barcode_number,
+        product_status_id: validated.data.product_status_id,
+        department_id: validated.data.department_id,
+        description: validated.data.description,
       },
     });
 

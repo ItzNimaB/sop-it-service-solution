@@ -33,17 +33,20 @@ model items {
   date_updated        DateTime?          @default(now()) @db.DateTime(0)
   storage_location_id Int?               @db.UnsignedInt
   product_status_id   Int?               @db.UnsignedInt
+  department_id       Int?               @db.UnsignedInt
   product_id          Int                @db.UnsignedInt
   description         String?            @db.LongText
   barcode_number      Int?
   products            products           @relation(fields: [product_id], references: [UUID], onDelete: NoAction, onUpdate: NoAction, map: "product_id_fk")
   product_status      product_status?    @relation(fields: [product_status_id], references: [UUID], onDelete: NoAction, onUpdate: NoAction, map: "product_status_id_fk")
   storage_locations   storage_locations? @relation(fields: [storage_location_id], references: [UUID], onDelete: NoAction, onUpdate: NoAction, map: "storage_location_id_fk")
+  departments         departments?       @relation(fields: [department_id], references: [UUID], onDelete: NoAction, onUpdate: NoAction, map: "department_id_fk")
   items_in_loan       items_in_loan[]
 
   @@index([storage_location_id], map: "items_ibfk_1")
   @@index([product_id], map: "product_id")
   @@index([product_status_id], map: "product_status_id")
+  @@index([department_id], map: "department_id")
 }
 
 model items_in_loan {
@@ -96,6 +99,14 @@ model product_status {
   UUID  Int     @id @default(autoincrement()) @db.UnsignedInt
   name  String  @db.VarChar(255)
   items items[]
+}
+
+model departments {
+  UUID          Int     @id @default(autoincrement()) @db.UnsignedInt
+  name          String  @db.VarChar(255)
+  contact_name  String? @db.VarChar(255)
+  contact_email String? @db.VarChar(255)
+  items         items[]
 }
 
 model products {
@@ -217,6 +228,7 @@ view items_view {
   Navn      String?   @db.VarChar(255)
   Stregkode String?   @db.VarChar(54)
   Status    String?   @db.VarChar(255)
+  Afdeling  String?   @db.VarChar(255)
   Kommentar String?   @db.LongText
   Oprettet  DateTime  @default(now()) @db.DateTime(0)
   Opdateret DateTime? @default(now()) @db.DateTime(0)
@@ -270,6 +282,11 @@ view users_view {
 }
 
 view product_status_view {
+  UUID Int    @unique @default(0) @db.UnsignedInt
+  Navn String @db.VarChar(255)
+}
+
+view departments_view {
   UUID Int    @unique @default(0) @db.UnsignedInt
   Navn String @db.VarChar(255)
 }

@@ -21,6 +21,7 @@ type FieldType =
   | buildingModel
   | categoryModel
   | categoryGroupModel
+  | departmentModel
   | itemModel
   | itemInLoanModel
   | loanModel
