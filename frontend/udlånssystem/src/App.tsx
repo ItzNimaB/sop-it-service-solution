@@ -1,4 +1,4 @@
-import { Suspense, createContext, useState } from "react";
+import { Suspense, createContext, useCallback, useState } from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
 
 import Loading from "@/components/Loading";
@@ -13,6 +13,7 @@ import loanReturn from "@/pages/udlaan/return";
 
 import { getPages } from "@/helpers/routeHelpers";
 import useRealtimeLogout from "@/hooks/useRealtimeLogout";
+import { markSessionExpired } from "@/services/session";
 
 import "./axios.config";
 
@@ -23,7 +24,12 @@ export const CurrentUserContext = createContext<CurrentUserContextType>({
 function Layout() {
   const [currentUser, setCurrentUser] = useState<userState>();
 
-  useRealtimeLogout(currentUser);
+  const expireSession = useCallback(() => {
+    markSessionExpired();
+    setCurrentUser(null);
+  }, []);
+
+  useRealtimeLogout(currentUser, expireSession);
 
   return (
     <CurrentUserContext.Provider

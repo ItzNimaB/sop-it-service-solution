@@ -4,18 +4,16 @@ import { CurrentUserContext } from "@/App";
 import axios from "axios";
 import { toast } from "sonner";
 
-//validate session token
 export const validateSession = async () => {
-  let { data } = await axios.post("auth/validate").catch((err) => {
-    err.response.data.user = null;
-    return err.response;
-  });
+  try {
+    const { data } = await axios.post("auth/validate");
 
-  data.user = data;
-  return data;
+    return { ...data, user: data };
+  } catch {
+    return { error: true, user: null };
+  }
 };
 
-//login user
 export function useLoginViaSession() {
   const { setCurrentUser } = useContext(CurrentUserContext);
 

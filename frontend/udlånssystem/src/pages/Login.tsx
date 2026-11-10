@@ -1,6 +1,11 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { loginViaCredentials, useLoginViaSession } from "@/services/login";
+import {
+  SESSION_EXPIRED_MESSAGE,
+  clearSessionExpired,
+  wasSessionExpired,
+} from "@/services/session";
 
 import { CurrentUserContext } from "@/App";
 
@@ -15,12 +20,22 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
 
   const [errorMessages, setErrorMessages] = useState("");
+  const [notice, setNotice] = useState(() =>
+    wasSessionExpired() ? SESSION_EXPIRED_MESSAGE : "",
+  );
+
+  useEffect(() => {
+    clearSessionExpired();
+  }, []);
 
   async function login(e: React.FormEvent) {
     e.preventDefault();
 
     loginViaCredentials(username, password).then((res) => {
-      if (res.status == 200 && res.user) setCurrentUser(res.user);
+      if (res.status == 200 && res.user) {
+        setNotice("");
+        setCurrentUser(res.user);
+      }
       if (res.status === 401)
         setErrorMessages("Forkert unilogin eller adgangskode");
       if (res.status === 403) setErrorMessages("Adgang nægtet");
@@ -44,7 +59,11 @@ export default function LoginPage() {
               Velkommen tilbage
             </h1>
 
-            {errorMessages && <p className="errorMessage">{errorMessages}</p>}
+            {errorMessages ? (
+              <p className="errorMessage">{errorMessages}</p>
+            ) : (
+              notice && <p className="errorMessage">{notice}</p>
+            )}
           </div>
 
           <div className="question mt-[20px]">
